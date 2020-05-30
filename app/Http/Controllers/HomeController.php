@@ -67,51 +67,19 @@ public function postNow(Request $request){
        die();
 }
 
-    public function postToLinkedin(Request $request)
+    public function saveLinkedinToken(Request $request)
     {
-        $post = $request->session()->get('post');
-        
-        $code = $_GET['code'];
+        $code = $request->input('code');
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL,"https://www.linkedin.com/oauth/v2/accessToken");
         curl_setopt($ch, CURLOPT_POST, 0);   
-        curl_setopt($ch, CURLOPT_POSTFIELDS,"grant_type=authorization_code&code=".$code."&redirect_uri="."http://3.23.161.239/signin-linkedin"."&client_id="."77i3oxfcqltbv7"."&client_secret="."rvoOaE3TfnSu1B9I");
+        curl_setopt($ch, CURLOPT_POSTFIELDS,"grant_type=authorization_code&code=".$code."&redirect_uri="."http://postslate.com:9000/signin-linkedin"."&client_id="."77i3oxfcqltbv7"."&client_secret="."rvoOaE3TfnSu1B9I");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $server_output = json_decode( curl_exec ($ch) );
-        var_dump($server_output);
-        die();
+        $access_token = $server_output->access_token;
         curl_close ($ch);
 
-       $endpoint = "https://api.linkedin.com/v1/people/~/shares?oauth2_access_token=".$server_output->access_token."&format=json";
-        
-       $data_string = ' 
-       {
-           "comment": "'.$post.'",
-           "visibility": {
-             "code": "anyone"
-           }
-         }
-       ';
-       
-       $ch = curl_init($endpoint);
-       
-       curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-       curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
-       curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-       curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-           'Content-Type: application/json',
-           'x-li-format: json',
-           'Content-Length: ' . strlen($data_string),
-       ));
-       
-       $result = curl_exec($ch);
-       
-       //closing
-       curl_close($ch);
-       
-       var_dump($result);
-       die();
-       //return redirect("/dashboard/createpost");
+       return redirect("http://postslate.com/dashboard/?access_token=$access_token");
     }
 }

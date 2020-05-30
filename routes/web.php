@@ -17,9 +17,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
+Route::post('/Login', 'Auth\LoginController@login');
+Route::post('/Register', 'Auth\RegisterController@register');
 
-Route::get('/signin-linkedin', 'HomeController@postToLinkedin');
+Route::get('/signin-linkedin', 'HomeController@saveLinkedinToken');
 Route::get('/postnow', 'HomeController@postNow');
 Route::post('/add-linkedin-account', 'HomeController@addLinkedinAccount');
 Route::get('/home', 'HomeController@index')->name('home');

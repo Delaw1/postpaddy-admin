@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\User;
-use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -17,19 +17,9 @@ class RegisterController extends Controller
     |--------------------------------------------------------------------------
     |
     | This controller handles the registration of new users as well as their
-    | validation and creation. By default this controller uses a trait to
-    | provide this functionality without requiring any additional code.
+    | validation and creation.
     |
     */
-
-    use RegistersUsers;
-
-    /**
-     * Where to redirect users after registration.
-     *
-     * @var string
-     */
-    protected $redirectTo = RouteServiceProvider::HOME;
 
     /**
      * Create a new controller instance.
@@ -41,19 +31,24 @@ class RegisterController extends Controller
         $this->middleware('guest');
     }
 
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function validator(array $data)
+    protected function register(Request $request)
     {
-        return Validator::make($data, [
+        $validation = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
+
+        if($validation->fails())
+        {
+            $data = json_decode($validation->errors(), true);
+            
+            $data = ['status' => 'failure']  + $data;
+
+            return response()->json($data);
+        }
+
+        return response()->json(['status' => 'success'] );
     }
 
     /**

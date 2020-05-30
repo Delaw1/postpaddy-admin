@@ -21,6 +21,9 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+
+            $table->text('linkedin_access_token')->nullable();
+            $table->text('twitter_access_token')->nullable();
         });
     }
 
