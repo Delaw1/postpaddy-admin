@@ -63,6 +63,11 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL,"https://digifigs.com/postslate-emails/mail-em.php?name=".$data["name"]."&email=".$data["email"]);
+        curl_exec ($ch);
+        curl_close ($ch);
+
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
