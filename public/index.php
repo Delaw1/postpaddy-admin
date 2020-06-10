@@ -8,7 +8,7 @@
  */
 
 //header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Origin: http://postslate.com");
+header("Access-Control-Allow-Origin: http://postslate.com,http://postslate.com:9000");
 header("Access-Control-Allow-Credentials: true");
 header('Access-Control-Allow-Headers: Content-Type, Authorization');
 
