@@ -17,10 +17,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get("/unauthorized", function(){return response()->json(["status"=>"failure","message"=>"unauthorized"]);})->name("login");
 Route::post('/Login', 'Auth\LoginController@login');
 Route::post('/Register', 'Auth\RegisterController@register');
 
-Route::get('/signin-linkedin', 'HomeController@saveLinkedinToken');
+Route::get('/add_linkedin_account', 'SocialMedia\LinkedinController@addAccount');
+Route::get('/linkedin_callback', 'SocialMedia\LinkedinController@saveAccessToken');
 Route::get('/postnow', 'HomeController@postNow');
-Route::post('/add-linkedin-account', 'HomeController@addLinkedinAccount');
-Route::get('/home', 'HomeController@index')->name('home');
