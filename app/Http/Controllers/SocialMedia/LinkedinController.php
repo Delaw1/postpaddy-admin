@@ -5,6 +5,7 @@ namespace App\Http\Controllers\SocialMedia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use \App\Http\Controllers\Controller;
+use \App\User;
 
 class LinkedinController extends Controller
 {
@@ -39,11 +40,12 @@ class LinkedinController extends Controller
         curl_close ($ch);
 
         $user = Auth::user();
-        $user->linkedin_access_token = $token;
+        $user->linkedin_access_token = $access_token;
         $user->save();
 
         return redirect("http://postslate.com/dashboard/");
     }
+
 
 public function postNow(Request $request){
     $post = $request->input("post");
