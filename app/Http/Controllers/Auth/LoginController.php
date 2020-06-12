@@ -22,7 +22,7 @@ class LoginController extends Controller
         );
         /* check if user credentials is okay */
         if (Auth::attempt($conditions)) {
-            $response['success'] = 'Successfully login';
+            $response['success'] = 'Successfully logged in';
         } else {
             $response['failure'] = 'Incorrect user credentials';
         }
