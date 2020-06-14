@@ -24,7 +24,7 @@ class LoginController extends Controller
         /* check if user credentials is okay */
         if (Auth::attempt($conditions)) {
                 if(Str::contains($request->header("Content-Type"), 'form')){
-                    return redirect(env("APP_FRONTEND_URL") . "/dashboard" );
+                    return redirect($request->headers->get('origin') . "/dashboard" );
                 }
                 else
                 {
