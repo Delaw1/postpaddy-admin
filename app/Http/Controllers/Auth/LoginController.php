@@ -6,12 +6,13 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
+use Illuminate\Support\Str;
 
 class LoginController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('guest')->except('logout');
+        //$this->middleware('guest')->except('logout');
     }
 
     public function login(Request $request){
@@ -22,7 +23,13 @@ class LoginController extends Controller
         );
         /* check if user credentials is okay */
         if (Auth::attempt($conditions)) {
-            $response['success'] = 'Successfully logged in';
+                if(Str::contains($request->header("Content-Type"), 'form-data')){
+                    return redirect(env("APP_FRONTEND_URL") . "/dashboard" );
+                }
+                else
+                {
+                    $response['success'] = 'Successfully logged in';
+                }
         } else {
             $response['failure'] = 'Incorrect user credentials';
         }
