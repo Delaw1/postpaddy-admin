@@ -19,6 +19,7 @@ class CompanyManager extends Controller
     public function CreateCompany(Request $request)
     {
         $input = $request->all();
+        $input["user_id"] = Auth::user()->id;
 
         $validation = Validator::make($input, [
             'name' => ['required', 'string', 'unique:companies']
@@ -36,5 +37,13 @@ class CompanyManager extends Controller
         $company = Company::create($input);
 
         return response()->json(['status' => 'success', 'company'=>$company] );
+    }
+
+    public function GetCompanies(Request $request){
+        $user = Auth::user();
+
+        $companies = Company::where("user_id", $user->id)->get();
+
+        return response()->json(['status' => 'success', 'companies'=>$companies] );
     }
 }

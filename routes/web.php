@@ -23,8 +23,13 @@ Route::get("/unauthorized", function(){return response()->json(["status"=>"failu
 Route::post('/Login', 'Auth\LoginController@login');
 Route::post('/Register', 'Auth\RegisterController@register');
 
-//
+//Company APIs
 Route::post('/CreateCompany', 'CompanyManager@CreateCompany');
+Route::get('/GetCompanies', 'CompanyManager@GetCompanies');
+
+//Posts
+Route::get('/GetPosts', 'Posting\PostManager@GetPosts');
+Route::post('/UploadMedia', 'Posting\PostManager@UploadMedia');
 Route::post('/CreatePost', 'Posting\PostManager@CreatePost');
 
 //Social
