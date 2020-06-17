@@ -24,13 +24,13 @@ class PostManager extends Controller
         $input["user_id"] = Auth::user()->id;
 
         $validation = Validator::make($input, [
-            'company_id' => ['required', 'integer', 'exists:posts'],
+           // 'company_id' => ['required', 'integer', 'exists:posts'],
             'content' => ['required', 'string'],
             'media' => ['array'],
             'media.*'=>['required', 'string'],
-            'platforms' => ['array'],
+            'platforms' => ['required', 'array'],
             'platforms.*'=>['required', 'string'],
-            'schedule_date' => ['date:format:dd/mm/Y']
+            'schedule_date' => ['integer']
         ]);
 
         if($validation->fails())
@@ -42,6 +42,7 @@ class PostManager extends Controller
             return response()->json($data);
         }
 
+        if(empty($input["media"])){$input["media"] = "[]";}
         $post = Post::create($input);
 
         return response()->json(['status' => 'success', 'post'=>$post] );
