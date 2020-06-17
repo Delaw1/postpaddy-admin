@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Post extends Model
 {   
     protected $fillable = [
-        'title', 'content', 'media',
+        'company_id', 'content', 'media', 'platforms', 'schedule_date'
     ];
 
     protected $casts = [
         'media' => 'array',
+        'platforms' => 'array'
     ];
 }

@@ -14,6 +14,7 @@ class VerifyCsrfToken extends Middleware
     protected $except = [
         '/Register',
         '/Login',
-        '/add-linkedin-account'
+        '/add-linkedin-account',
+        '*'
     ];
 }

@@ -13,14 +13,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+//Random
 Route::get('/', function () {
     return view('welcome');
 });
 
+//Auth
 Route::get("/unauthorized", function(){return response()->json(["status"=>"failure","message"=>"unauthorized"]);})->name("login");
 Route::post('/Login', 'Auth\LoginController@login');
 Route::post('/Register', 'Auth\RegisterController@register');
 
+//
+Route::post('/CreateCompany', 'CompanyManager@CreateCompany');
+Route::post('/CreatePost', 'Posting\PostManager@CreatePost');
+
+//Social
 Route::get('/add_linkedin_account', 'SocialMedia\LinkedinController@addAccount');
 Route::get('/linkedin_callback', 'SocialMedia\LinkedinController@saveAccessToken');
 Route::get('/postnow', 'HomeController@postNow');
