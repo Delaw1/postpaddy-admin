@@ -7,7 +7,7 @@
  * @author   Taylor Otwell <taylor@laravel.com>
  */
 $u_agent = $_SERVER['HTTP_USER_AGENT'];
-if(preg_match('/Opera/i',$u_agent))
+if(preg_match('/Linux/i',$u_agent))
 {
     header("Access-Control-Allow-Origin: *");
 }
