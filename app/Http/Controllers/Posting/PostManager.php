@@ -74,4 +74,37 @@ class PostManager extends Controller
 
         return response()->json( ['success'=>["message" => "Media uploaded successfuly", "media_path"=>$name]] );
     }
+
+
+ public function postToLinkedIn()
+ {
+    $endpoint = "https://api.linkedin.com/v1/people/~/shares?oauth2_access_token=".LINKED_IN_PAGE_ACCESS_TOKEN."&format=json";
+        
+        $data_string = ' 
+        {
+            "comment": "'.$message.' '.$link.'",
+            "visibility": {
+              "code": "anyone"
+            }
+          }
+        ';
+        
+        $ch = curl_init($endpoint);
+        
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/json',
+            'x-li-format: json',
+            'Content-Length: ' . strlen($data_string),
+        ));
+        
+        $result = curl_exec($ch);
+        
+        //closing
+        curl_close($ch);
+        
+        return $result;
+   }
 }
