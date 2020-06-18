@@ -9,7 +9,8 @@
 $u_agent = $_SERVER['HTTP_USER_AGENT'];
 if(preg_match('/Linux/i',$u_agent))
 {
-    header("Access-Control-Allow-Origin: *");
+    header("Access-Control-Allow-Origin: http://postslate.com");
+    header('Access-Control-Allow-Credentials: true');
 }
 else{
     header("Access-Control-Allow-Origin: http://localhost:3000");
