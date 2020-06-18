@@ -6,8 +6,14 @@
  * @package  Laravel
  * @author   Taylor Otwell <taylor@laravel.com>
  */
-
-header("Access-Control-Allow-Origin: http://localhost:3000");
+$u_agent = $_SERVER['HTTP_USER_AGENT'];
+if(preg_match('/Opera/i',$u_agent))
+{
+    header("Access-Control-Allow-Origin: *");
+}
+else{
+    header("Access-Control-Allow-Origin: http://localhost:3000");
+}
 header('Access-Control-Allow-Credentials: true');
 header('Access-Control-Allow-Headers: Content-Type, Authorization');
 
