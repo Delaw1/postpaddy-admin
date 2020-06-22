@@ -59,7 +59,7 @@ class PostManager extends Controller
     //upload featured media
     public function uploadMedia(Request $request){
         $validator = Validator::make( $request->all(), [
-            'media' => 'required|mimes:3gp,mp4,avi,mov,jpeg,png,jpg,gif,svg|max:20480',
+            'media.*' => 'required|mimes:3gp,mp4,avi,mov,jpeg,png,jpg,gif,svg|max:20480',
         ]);
 
         //return errors if any
@@ -67,12 +67,17 @@ class PostManager extends Controller
             return response()->json( ['error'=>$validator->errors()], 422 );
         }
         
-        $media = $request->file('media');
-        $name = time().'.'.$media->getClientOriginalExtension();
-        $destinationPath = public_path(self::UPLOADS_DIR);
-        $media->move($destinationPath, $name);
+        $names = array();
 
-        return response()->json( ['success'=>["message" => "Media uploaded successfuly", "media_path"=>$name]] );
+        foreach( $request->file('media') as $media ){  
+            $name = time().'.'.$media->getClientOriginalExtension();
+            $destinationPath = public_path(self::UPLOADS_DIR);
+            $media->move($destinationPath, $name);
+
+            array_push( $names, $name);
+        }
+
+        return response()->json( ['success'=>["message" => "Media uploaded successfuly", "media_path"=>$names]] );
     }
 
 
