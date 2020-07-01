@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\User;
+use \Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -72,5 +73,19 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+    }
+
+    public function verifyEmail($emailb64)
+    {
+        $email = base64_decode($emailb64);
+        $user = User::where('email', '=', $email)->first();
+        if(!$user){
+            die("Invalid verification linkl!");
+        }
+        else{
+            $user->email_verified_at = Carbon::now();
+            $user->save();
+            return redirect( env('APP_FRONTEND_URL') . '/verify-account-success' );
+        }
     }
 }

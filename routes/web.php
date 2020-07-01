@@ -22,6 +22,7 @@ Route::get('/', function () {
 Route::get("/unauthorized", function(){return response()->json(["status"=>"failure","message"=>"unauthorized"]);})->name("login");
 Route::post('/Login', 'Auth\LoginController@login');
 Route::post('/Register', 'Auth\RegisterController@register');
+Route::get('/VerifyEmail/{emailb64}', 'Auth\RegisterController@verifyEmail');
 
 //Company APIs
 Route::post('/CreateCompany', 'CompanyManager@CreateCompany');

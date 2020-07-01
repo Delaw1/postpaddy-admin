@@ -22,8 +22,12 @@ class LoginController extends Controller
             'password' => $request->input('password')
         );
         /* check if user credentials is okay */
-        if (Auth::attempt($conditions)) {
-                if(Str::contains($request->header("Content-Type"), 'form')){
+        if (Auth::attempt($conditions)) 
+        {
+               if(Auth::user()->email_verified_at == NULL){
+                   $response['failure'] = 'Please verify your email.';
+               }
+               elseif(Str::contains($request->header("Content-Type"), 'form')){
                     return redirect($request->headers->get('origin') . "/dashboard" );
                 }
                 else
@@ -31,7 +35,7 @@ class LoginController extends Controller
                     $response['success'] = 'Successfully logged in';
                 }
         } else {
-            $response['failure'] = 'Incorrect user credentials';
+            $response['failure'] = 'Incorrect email or password';
         }
         return response()->json([$response]);
     }
