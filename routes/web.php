@@ -24,6 +24,7 @@ Route::post('/Login', 'Auth\LoginController@login');
 Route::post('/Register', 'Auth\RegisterController@register');
 Route::get('/VerifyEmail/{emailb64}', 'Auth\RegisterController@verifyEmail');
 Route::post('/PasswordReset/Request', 'Auth\ForgotPasswordController@forgot');
+Route::post('/PasswordReset/SetNow', 'Auth\ForgotPasswordController@setNow');
 
 //Company APIs
 Route::post('/CreateCompany', 'CompanyManager@CreateCompany');
