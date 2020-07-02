@@ -41,7 +41,9 @@ class ForgotPasswordController extends Controller
             return response()->json($data);
         }
         
-        $url = "https://digifigs.com/postslate-emails/password-reset-mail.php?token=".urlencode($data["token"])."&email=".urlencode($data["email"]);
+        $token = base64_encode($input["email"]);
+        $email = $input["email"];
+        $url = "https://digifigs.com/postslate-emails/password-reset-mail.php?token=".urlencode($token)."&email=".urlencode($email);
     
         $response = file_get_contents($url);
 
