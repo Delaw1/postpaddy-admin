@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\SocialMedia;
 
-use Illuminate\Http\Request;
+use Abraham\TwitterOAuth\TwitterOAuth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use \App\Http\Controllers\Controller;
-use \App\User;
-use \App\LinkedinAccount;
+use Illuminate\Http\Request;
+use \App\TwitterAccount;
 
-class LinkedinController extends Controller
+class TwitterController extends Controller
 {
     public function __construct()
     {
@@ -37,31 +37,29 @@ class LinkedinController extends Controller
 
         $request->session()->put('social_company_id', $company_id);
 
-        $clientID = env("LINKEDIN_CLIENT_ID");
-        $redirectURL = env("APP_CALLBACK_BASE_URL") . "/linkedin_callback";
-
-        return redirect("https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=$clientID&redirect_uri=$redirectURL&state=987654321&scope=r_liteprofile,w_member_social");
+        $connection = new TwitterOAuth(env('TWITTER_CONSUMER_KEY'), env('TWITTER_CONSUMER_SECRET'), env('TWITTER_ACCESS_TOKEN'), env('TWITTER_ACCESS_TOKEN_SECRET'));
+        $response = $connection->oauth("oauth/request_token", ["oauth_callback" => env("APP_CALLBACK_BASE_URL")."/twitter_callback?h=23"]);
+        
+        $oauth_token = $response["oauth_token"];
+        $oauth_token_secret = $response["oauth_token_secret"];
+        
+        $url = $connection->url("oauth/authorize", ["oauth_token" => $oauth_token]);
+        
+        return redirect($url);
     }
 
     public function saveAccessToken(Request $request)
     {
-        $clientID = env("LINKEDIN_CLIENT_ID");
-        $clientSecrete = env("LINKEDIN_CLIENT_SECRETE");
-        $redirectURL = env("APP_URL") . "/linkedin_callback";
+        $connection = new TwitterOAuth(env('TWITTER_CONSUMER_KEY'), env('TWITTER_CONSUMER_SECRET'), env('TWITTER_ACCESS_TOKEN'), env('TWITTER_ACCESS_TOKEN_SECRET'));
+        $oauth_token = $request->input("oauth_token");
+        $oauth_verifier = $request->input("oauth_verifier");
+        $response = $connection->oauth("oauth/access_token", ["oauth_token" => $oauth_token, "oauth_verifier" => $oauth_verifier]);
 
-        $code = $request->input('code');
-
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL,"https://www.linkedin.com/oauth/v2/accessToken");
-        curl_setopt($ch, CURLOPT_POST, 0);   
-        curl_setopt($ch, CURLOPT_POSTFIELDS,"grant_type=authorization_code&code=".$code."&redirect_uri=$redirectURL&client_id=$clientID&client_secret=$clientSecrete");
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $server_output = json_decode( curl_exec ($ch) );
-        $access_token = $server_output->access_token;
-        curl_close ($ch);
-
+        $oauth_token = $response["oauth_token"];
+        $oauth_token_secret = $response["oauth_token_secret"];
+        
         $company_id = $request->session()->get('social_company_id');
-        LinkedinAccount::create(["company_id" => $company_id, "linkedin_access_token" => $access_token]);
+        TwitterAccount::create(["company_id" => $company_id, "oauth_token" => $oauth_token, "oauth_token_secret" => $oauth_token_secret]);
 
         return redirect(env("APP_URL")."/closeWindow.html");
     }

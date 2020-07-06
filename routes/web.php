@@ -37,7 +37,13 @@ Route::get('/GetPosts', 'Posting\PostManager@GetPosts');
 Route::post('/UploadMedia', 'Posting\PostManager@UploadMedia');
 Route::post('/CreatePost', 'Posting\PostManager@CreatePost');
 
-//Social
+//SOCIALS
 Route::get('/add_linkedin_account', 'SocialMedia\LinkedinController@addAccount');
 Route::get('/linkedin_callback', 'SocialMedia\LinkedinController@saveAccessToken');
-Route::get('/postnow', 'HomeController@postNow');
+
+Route::get('/add_twitter_account', 'SocialMedia\TwitterController@addAccount');
+Route::get('/twitter_callback', 'SocialMedia\TwitterController@saveAccessToken');
+
+Route::get('/add_facebook_account', 'SocialMedia\FacebookController@addAccount');
+Route::get('/add_instagram_account', 'SocialMedia\TwitterController@addAccount');
+Route::get('/add_pinterest_account', 'SocialMedia\FacebookController@addAccount');
