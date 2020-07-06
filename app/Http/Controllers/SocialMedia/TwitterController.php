@@ -59,6 +59,7 @@ class TwitterController extends Controller
         $oauth_token_secret = $response["oauth_token_secret"];
         
         $company_id = $request->session()->get('social_company_id');
+        DB::delete('delete from twitter_accounts where id = ?',[$company_id]);
         TwitterAccount::create(["company_id" => $company_id, "oauth_token" => $oauth_token, "oauth_token_secret" => $oauth_token_secret]);
 
         return redirect(env("CLOSE_WINDOW_URL"));
