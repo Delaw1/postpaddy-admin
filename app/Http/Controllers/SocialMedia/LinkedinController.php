@@ -63,7 +63,7 @@ class LinkedinController extends Controller
         $company_id = $request->session()->get('social_company_id');
         LinkedinAccount::create(["company_id" => $company_id, "linkedin_access_token" => $access_token]);
 
-        return redirect(env("APP_URL")."/closeWindow.html");
+        return redirect(env("CLOSE_WINDOW_URL"));
     }
 
     public function postNow(Request $request){

@@ -61,7 +61,7 @@ class TwitterController extends Controller
         $company_id = $request->session()->get('social_company_id');
         TwitterAccount::create(["company_id" => $company_id, "oauth_token" => $oauth_token, "oauth_token_secret" => $oauth_token_secret]);
 
-        return redirect(env("APP_URL")."/closeWindow.html");
+        return redirect(env("CLOSE_WINDOW_URL"));
     }
 
     public function postNow(Request $request){
