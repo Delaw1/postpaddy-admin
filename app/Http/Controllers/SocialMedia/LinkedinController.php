@@ -47,7 +47,7 @@ class LinkedinController extends Controller
     {
         $clientID = env("LINKEDIN_CLIENT_ID");
         $clientSecrete = env("LINKEDIN_CLIENT_SECRETE");
-        $redirectURL = env("APP_URL") . "/linkedin_callback";
+        $redirectURL = env("APP_CALLBACK_BASE_URL") . "/linkedin_callback";
 
         $code = $request->input('code');
 
