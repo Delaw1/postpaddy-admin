@@ -29,6 +29,8 @@ Route::post('/PasswordReset/SetNow', 'Auth\ForgotPasswordController@setNow');
 //Company APIs
 Route::post('/CreateCompany', 'CompanyManager@CreateCompany');
 Route::get('/GetCompanies', 'CompanyManager@GetCompanies');
+Route::get('/DeleteCompany/{id}', 'CompanyManager@DeleteCompany');
+Route::post('/UpdateCompany', 'CompanyManager@UpdateCompany');
 
 //Posts
 Route::get('/GetPosts', 'Posting\PostManager@GetPosts');
