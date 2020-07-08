@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\SocialMedia;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use \App\Http\Controllers\Controller;
-use \App\User;
+use Illuminate\Http\Request;
 use \App\LinkedinAccount;
+use Illuminate\Session;
+use \App\User;
 use DB;
 
 class LinkedinController extends Controller
@@ -36,7 +37,7 @@ class LinkedinController extends Controller
             return response()->json($data);
         }
 
-        $request->session()->put('social_company_id', $company_id);
+        Session::put('social_company_id', $company_id);
 
         $clientID = env("LINKEDIN_CLIENT_ID");
         $redirectURL = env("APP_CALLBACK_BASE_URL") . "/linkedin_callback";
@@ -61,7 +62,7 @@ class LinkedinController extends Controller
         $access_token = $server_output->access_token;
         curl_close ($ch);
 
-        $company_id = $request->session()->get('social_company_id');
+        $company_id = Session::get('social_company_id');
         DB::delete('delete from linkedin_accounts where id = ?',[$company_id]);
         LinkedinAccount::create(["company_id" => $company_id, "linkedin_access_token" => $access_token]);
 
