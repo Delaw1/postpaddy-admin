@@ -36,7 +36,7 @@ class TwitterController extends Controller
             return response()->json($data);
         }
 
-        $request->session()->put('social_company_id', $company_id);
+        Session::put('social_company_id', $company_id);
 
         $connection = new TwitterOAuth(env('TWITTER_CONSUMER_KEY'), env('TWITTER_CONSUMER_SECRET'), env('TWITTER_ACCESS_TOKEN'), env('TWITTER_ACCESS_TOKEN_SECRET'));
         $response = $connection->oauth("oauth/request_token", ["oauth_callback" => env("APP_CALLBACK_BASE_URL")."/twitter_callback?h=23"]);
@@ -59,7 +59,7 @@ class TwitterController extends Controller
         $oauth_token = $response["oauth_token"];
         $oauth_token_secret = $response["oauth_token_secret"];
         
-        $company_id = $request->session()->get('social_company_id');
+        $company_id = Session::get('social_company_id');
         DB::delete('delete from twitter_accounts where id = ?',[$company_id]);
         TwitterAccount::create(["company_id" => $company_id, "oauth_token" => $oauth_token, "oauth_token_secret" => $oauth_token_secret]);
 
