@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers\Posting;
 
-use Illuminate\Http\Request;
+use \App\Http\Controllers\SocialMedia\LinkedinController;
+use \App\Http\Controllers\SocialMedia\TwitterController;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use \App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use \App\User;
+use \App\Utils;
 use \App\Post;
 
 class PostManager extends Controller
 {
-    public const UPLOADS_DIR= 'uploads';
-    
     public function __construct()
     {
        $this->middleware('auth');
@@ -42,8 +43,15 @@ class PostManager extends Controller
             return response()->json($data);
         }
 
-        if(empty($input["media"])){$input["media"] = "[]";}
+        if(empty($input["media"])){$input["media"] = [];}
         $post = Post::create($input);
+
+        foreach($input["platforms"] as $platform){
+            switch($platform){
+                case "linkedin": (new LinkedinController())->postNow($post); break;
+                case "twitter": (new TwitterController())->postNow($post); break;
+            }
+        }
 
         return response()->json(['status' => 'success', 'post'=>$post] );
     }
@@ -71,7 +79,7 @@ class PostManager extends Controller
 
         foreach( $request->file('media') as $media ){  
             $name = time().mt_rand(1, 9999).'.'.$media->getClientOriginalExtension();
-            $destinationPath = public_path(self::UPLOADS_DIR);
+            $destinationPath = public_path(Utils::UPLOADS_DIR);
             $media->move($destinationPath, $name);
 
             array_push( $names, $name);
@@ -79,37 +87,4 @@ class PostManager extends Controller
 
         return response()->json( ['success'=>["message" => "Media uploaded successfuly", "media_path"=>$names]] );
     }
-
-
- public function postToLinkedIn()
- {
-    $endpoint = "https://api.linkedin.com/v1/people/~/shares?oauth2_access_token=".LINKED_IN_PAGE_ACCESS_TOKEN."&format=json";
-        
-        $data_string = ' 
-        {
-            "comment": "'.$message.' '.$link.'",
-            "visibility": {
-              "code": "anyone"
-            }
-          }
-        ';
-        
-        $ch = curl_init($endpoint);
-        
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Content-Type: application/json',
-            'x-li-format: json',
-            'Content-Length: ' . strlen($data_string),
-        ));
-        
-        $result = curl_exec($ch);
-        
-        //closing
-        curl_close($ch);
-        
-        return $result;
-   }
 }

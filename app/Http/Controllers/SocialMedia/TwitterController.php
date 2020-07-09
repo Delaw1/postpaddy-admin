@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use \App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use \App\TwitterAccount;
+use \App\Post;
+use \App\Utils;
 use Session;
 use DB;
 
@@ -67,38 +69,23 @@ class TwitterController extends Controller
         return redirect(env("CLOSE_WINDOW_URL"));
     }
 
-    public function postNow(Request $request){
-        $post = $request->input("post");
-        $token = "AQUT8TrEkDJyJT89uXCExDXQ-s1rS-v-w4khChQ36zSKYRS-vG4Zdp2nHqpCtq8nHKOLSqXAJvWTEqaWF8Deqno4BMg-hSpmN2O4hwDj9NE9Y-AAdMXQHuSUeS_tcByUj1eyc0M9lNTdpg-X2B-cC_w6dPaEg0pLq9HeKA0nQlFtpkBuzEoQBdl2YX3ec3NTJKgV7WZxvz-cWSBmcK5PA67ze22AXCpeULoaBlmjYO5TV1P1KnTWOlJvPnZcBs-5ipzDIgFIAKFB41YqTG1mAY45JGn60RTAAxQM-DWaMwDxkzNyD-fv_sOfj5rQH19MMHA3j_pbVM22RESbYRa_9nE6BBBm8Q";
-        $endpoint = "https://api.linkedin.com/v2/people/~/shares?oauth2_access_token=".$token."&format=json";
-            
-        $data_string = ' 
-        {
-            "comment": "'.$post.'",
-            "visibility": {
-                "code": "anyone"
-            }
-            }
-        ';
-        
-        $ch = curl_init($endpoint);
-        
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Content-Type: application/json',
-            'x-li-format: json',
-            'Content-Length: ' . strlen($data_string),
-        ));
-        
-        $result = curl_exec($ch);
-        
-        //closing
-        curl_close($ch);
-        
-        var_dump($result);
-        die();
-    }
+    public function postNow($post){
+        $text = $post->content;
+        $media = $post->media;
+        $twitterAccount = TwitterAccount::where("company_id", '=', $post->company_id)->first();
+        if($twitterAccount == null){return NULL;}
 
+        $connection = new TwitterOAuth(env('TWITTER_CONSUMER_KEY'), env('TWITTER_CONSUMER_SECRET'), $twitterAccount->oauth_token, $twitterAccount->oauth_token_secret);
+        
+        $data = array("status" => $text);
+
+        if(!empty($media)){
+            foreach($media as $m){
+                $upload = $connection->upload('media/upload', ['media' => public_path(Utils::UPLOADS_DIR."/$m")]);
+                $data["media_ids"] = $upload->media_id_string.",";
+            }
+        }
+
+        $statusUpdate = $connection->post("statuses/update", $data);
+    }
 }

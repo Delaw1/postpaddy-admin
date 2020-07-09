@@ -5,9 +5,12 @@ namespace App\Http\Controllers\SocialMedia;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use \App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
 use \App\LinkedinAccount;
 use \App\User;
+use \App\Post;
+use \App\Utils;
 use Session;
 use DB;
 
@@ -53,14 +56,8 @@ class LinkedinController extends Controller
 
         $code = $request->input('code');
 
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL,"https://www.linkedin.com/oauth/v2/accessToken");
-        curl_setopt($ch, CURLOPT_POST, 0);   
-        curl_setopt($ch, CURLOPT_POSTFIELDS,"grant_type=authorization_code&code=".$code."&redirect_uri=$redirectURL&client_id=$clientID&client_secret=$clientSecrete");
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $server_output = json_decode( curl_exec ($ch) );
+        $server_output = Utils::curlPostRequest("https://www.linkedin.com/oauth/v2/accessToken", "grant_type=authorization_code&code=".$code."&redirect_uri=$redirectURL&client_id=$clientID&client_secret=$clientSecrete", NULL, []);
         $access_token = $server_output->access_token;
-        curl_close ($ch);
 
         $company_id = Session::get('social_company_id');
         DB::delete('delete from linkedin_accounts where id = ?',[$company_id]);
@@ -69,38 +66,107 @@ class LinkedinController extends Controller
         return redirect(env("CLOSE_WINDOW_URL"));
     }
 
-    public function postNow(Request $request){
-        $post = $request->input("post");
-        $token = "AQUT8TrEkDJyJT89uXCExDXQ-s1rS-v-w4khChQ36zSKYRS-vG4Zdp2nHqpCtq8nHKOLSqXAJvWTEqaWF8Deqno4BMg-hSpmN2O4hwDj9NE9Y-AAdMXQHuSUeS_tcByUj1eyc0M9lNTdpg-X2B-cC_w6dPaEg0pLq9HeKA0nQlFtpkBuzEoQBdl2YX3ec3NTJKgV7WZxvz-cWSBmcK5PA67ze22AXCpeULoaBlmjYO5TV1P1KnTWOlJvPnZcBs-5ipzDIgFIAKFB41YqTG1mAY45JGn60RTAAxQM-DWaMwDxkzNyD-fv_sOfj5rQH19MMHA3j_pbVM22RESbYRa_9nE6BBBm8Q";
-        $endpoint = "https://api.linkedin.com/v2/people/~/shares?oauth2_access_token=".$token."&format=json";
-            
-        $data_string = ' 
-        {
-            "comment": "'.$post.'",
-            "visibility": {
-                "code": "anyone"
+    public function postNow($post)
+    {
+        $text = $post->content;
+        $media = $post->media;
+        $linkedinAccount = LinkedinAccount::where("company_id", '=', $post->company_id)->first();
+        if($linkedinAccount == null){return NULL;}
+
+        $response = Utils::curlGetRequest('https://api.linkedin.com/v2/me', "oauth2_access_token=".$linkedinAccount->linkedin_access_token, []);
+        $personID = $response->id;
+        
+        $uploadedContents = [];
+
+        if(!empty($media)){
+            foreach($media as $m)
+            {
+                $id = $this->uploadMedia($personID, $linkedinAccount->linkedin_access_token, $m);
+                array_push( $uploadedContents, $id );
             }
-            }
-        ';
+        }
         
-        $ch = curl_init($endpoint);
+        $data = $this->buildPost($personID, $text, $uploadedContents);
         
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Content-Type: application/json',
-            'x-li-format: json',
-            'Content-Length: ' . strlen($data_string),
-        ));
-        
-        $result = curl_exec($ch);
-        
-        //closing
-        curl_close($ch);
-        
-        var_dump($result);
-        die();
+        $body = json_encode($data);
+        /*var_dump*/ ( Utils::curlPostRequest('https://api.linkedin.com/v2/ugcPosts', 'oauth2_access_token='.$linkedinAccount->linkedin_access_token, $body, ['Content-Type: application/json']) );
     }
 
+    public function uploadMedia($personID, $linkedin_access_token, $fileID){
+        $data = array (
+            'registerUploadRequest' => 
+            array (
+              'recipes' => 
+              array (
+                 'urn:li:digitalmediaRecipe:feedshare-image',
+              ),
+              'owner' => 'urn:li:person:'.$personID,
+              'serviceRelationships' => 
+              array (
+                  array (
+                  'relationshipType' => 'OWNER',
+                  'identifier' => 'urn:li:userGeneratedContent',
+                ),
+              ),
+            ),
+        );
+
+        $body = json_encode($data);
+        $response = Utils::curlPostRequest('https://api.linkedin.com/v2/assets', 'action=registerUpload&oauth2_access_token='.$linkedin_access_token, $body, ['Content-Type: application/json']);
+        $uploadURL = $response->value->uploadMechanism->{"com.linkedin.digitalmedia.uploading.MediaUploadHttpRequest"}->uploadUrl;
+        $assetID =$response->value->asset;
+        
+        Utils::curlPostRequest( $uploadURL, "&oauth2_access_token=$linkedin_access_token", File::get(public_path(Utils::UPLOADS_DIR."/$fileID")), [] );
+
+        return $assetID;
+    }
+
+    public function buildPost($personID, $text, $uploadedContents){
+        $data = array (
+            'author' => "urn:li:person:$personID",
+            'lifecycleState' => 'PUBLISHED',
+            'specificContent' => 
+            array (
+              'com.linkedin.ugc.ShareContent' => 
+              array (
+                'shareCommentary' => 
+                array (
+                  'text' => $text,
+                ),
+                'shareMediaCategory' => !empty($uploadedContents) ? 'IMAGE' : 'NONE',
+                'media' =>
+                $this->buildMediaObjectArray($uploadedContents)
+              ),
+            ),
+            'visibility' => 
+            array (
+              'com.linkedin.ugc.MemberNetworkVisibility' => 'PUBLIC',
+            )
+        );
+
+        return $data;
+    }
+
+    public function buildMediaObjectArray($uploadedContents){
+        $contents = array();
+        foreach($uploadedContents as $contentID){
+            $data =
+                array (
+                  'status' => 'READY',
+                //   'description' => 
+                //   array (
+                //     'text' => 'Center stage!',
+                //   ),
+                  'media' => $contentID,
+                //   'title' => 
+                //   array (
+                //     'text' => 'LinkedIn Talent Connect 2018',
+                //   ),
+            );
+
+            array_push($contents, $data);
+        }
+
+        return $contents;
+    }
 }
