@@ -33,6 +33,7 @@ class LoginController extends Controller
                 else
                 {
                     $response['success'] = 'Successfully logged in';
+                    $response["user_data"] = Auth::user();
                 }
         } else {
             $response['failure'] = 'Incorrect email or password';
