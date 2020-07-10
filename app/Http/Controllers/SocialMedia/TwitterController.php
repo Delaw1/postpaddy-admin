@@ -79,7 +79,7 @@ class TwitterController extends Controller
         
         $data = array("status" => $text);
 
-        if(!empty($media)){
+        if(!empty($media) && $media != "[]"){
             foreach($media as $m){
                 $upload = $connection->upload('media/upload', ['media' => public_path(Utils::UPLOADS_DIR."/$m")]);
                 $data["media_ids"] = $upload->media_id_string.",";

@@ -25,7 +25,7 @@ class PostManager extends Controller
         $input["user_id"] = Auth::user()->id;
 
         $validation = Validator::make($input, [
-           // 'company_id' => ['required', 'integer', 'exists:posts'],
+           'company_id' => ['required', 'integer'],
             'content' => ['required', 'string'],
             'media' => ['array'],
             'media.*'=>['required', 'string'],
@@ -107,7 +107,7 @@ class PostManager extends Controller
         $date = \Carbon\Carbon::now();
         $date->setTimezone("Africa/Lagos");
 
-        $posts = Post::where('schedule_date', '>=', $date->timestamp)->where('is_posted','!=',true)->get();
+        $posts = Post::where('schedule_date', '<=', $date->timestamp)->where('is_posted','!=',true)->get();
         
         foreach($posts as $post)
         {
@@ -120,7 +120,7 @@ class PostManager extends Controller
 
             $post->update(["is_posted"=>true]);
         }
-        
+
         die();
     }
 }

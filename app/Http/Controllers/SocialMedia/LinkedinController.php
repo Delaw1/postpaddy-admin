@@ -78,7 +78,7 @@ class LinkedinController extends Controller
         
         $uploadedContents = [];
 
-        if(!empty($media)){
+        if(!empty($media) && $media != "[]"){
             foreach($media as $m)
             {
                 $id = $this->uploadMedia($personID, $linkedinAccount->linkedin_access_token, $m);
