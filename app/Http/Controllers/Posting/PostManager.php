@@ -87,4 +87,17 @@ class PostManager extends Controller
 
         return response()->json( ['success'=>["message" => "Media uploaded successfuly", "media_path"=>$names]] );
     }
+
+    public function DeletePost( $id ) 
+    {
+        $post = Post::find( $id );
+
+        if ( $post == NULL ) {
+            return response()->json( ['status' => 'failure', 'message' => 'post does not exist'] );
+        }
+
+        Post::destroy($id);
+
+        return response()->json( ['success' =>'Post deleted'] );
+    }
 }

@@ -47,8 +47,10 @@ class CompanyManager extends Controller {
         $company = Company::find( $id );
 
         if ( $company == NULL ) {
-            return response()->json( ['status' => 'failure', 'company does not exist'] );
+            return response()->json( ['status' => 'failure', 'message' => 'company does not exist'] );
         }
+
+        Company::destroy($id);
 
         return response()->json( ['success' =>'Company deleted'] );
     }

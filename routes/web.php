@@ -36,6 +36,7 @@ Route::post('/UpdateCompany', 'CompanyManager@UpdateCompany');
 Route::get('/GetPosts', 'Posting\PostManager@GetPosts');
 Route::post('/UploadMedia', 'Posting\PostManager@UploadMedia');
 Route::post('/CreatePost', 'Posting\PostManager@CreatePost');
+Route::get('/DeletePost/{id}', 'Posting\PostManager@DeletePost');
 
 //SOCIALS
 Route::get('/add_linkedin_account', 'SocialMedia\LinkedinController@addAccount');
