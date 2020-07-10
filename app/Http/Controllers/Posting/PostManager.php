@@ -46,10 +46,12 @@ class PostManager extends Controller
         if(empty($input["media"])){$input["media"] = [];}
         $post = Post::create($input);
 
-        foreach($input["platforms"] as $platform){
-            switch($platform){
-                case "linkedin": (new LinkedinController())->postNow($post); break;
-                case "twitter": (new TwitterController())->postNow($post); break;
+        if($input["schedule_date"] == NULL){
+            foreach($input["platforms"] as $platform){
+                switch($platform){
+                    case "linkedin": (new LinkedinController())->postNow($post); break;
+                    case "twitter": (new TwitterController())->postNow($post); break;
+                }
             }
         }
 
@@ -99,5 +101,23 @@ class PostManager extends Controller
         Post::destroy($id);
 
         return response()->json( ['success' =>'Post deleted'] );
+    }
+
+    public function scheduler(){
+        $date = \Carbon\Carbon::now();
+        $date->setTimezone("Africa/Lagos");
+
+        $posts = Post::where('schedule_date', '>=', $date->timestamp)->where('is_posted','!=',true)->get();
+        
+        foreach($posts as $post)
+        {
+            foreach($post->platforms as $platform){
+                switch($platform){
+                    case "linkedin": (new LinkedinController())->postNow($post); print("posted to linkedin"); break;
+                    case "twitter": (new TwitterController())->postNow($post); print("posted to twitter"); break;
+                }
+            }
+        }
+        die();
     }
 }

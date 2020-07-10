@@ -37,6 +37,7 @@ Route::get('/GetPosts', 'Posting\PostManager@GetPosts');
 Route::post('/UploadMedia', 'Posting\PostManager@UploadMedia');
 Route::post('/CreatePost', 'Posting\PostManager@CreatePost');
 Route::get('/DeletePost/{id}', 'Posting\PostManager@DeletePost');
+Route::get('/scheduler', 'Posting\PostManager@scheduler');
 
 //SOCIALS
 Route::get('/add_linkedin_account', 'SocialMedia\LinkedinController@addAccount');
