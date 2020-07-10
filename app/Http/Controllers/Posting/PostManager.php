@@ -117,7 +117,10 @@ class PostManager extends Controller
                     case "twitter": (new TwitterController())->postNow($post); print("posted to twitter"); break;
                 }
             }
+
+            $post->update(["is_posted"=>true]);
         }
+        
         die();
     }
 }
