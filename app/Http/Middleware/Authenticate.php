@@ -4,14 +4,17 @@ namespace App\Http\Middleware;
 
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 use Illuminate\Support\Facades\Auth;
+use \App\User;
 use Closure;
 
 class Authenticate extends Middleware
 {
     public function handle($request, Closure $next)
     {
-        if ($this->auth->guest()) {
-            Auth::loginUsingId(1);
+        $userID = $request->input("user_id");
+        
+        if($userID != NULL && User::find($userID) != NULL){
+            Auth::loginUsingId($userID);
         }
 
         return $next($request);  
