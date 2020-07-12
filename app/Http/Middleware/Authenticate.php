@@ -9,16 +9,6 @@ use Closure;
 
 class Authenticate extends Middleware
 {
-    public function handle($request, Closure $next)
-    {
-        $userID = $request->input("user_id");
-        
-        if($userID != NULL && User::find($userID) != NULL){
-            Auth::loginUsingId($userID);
-        }
-
-        return $next($request);  
-    }
     /**
      * Get the path the user should be redirected to when they are not authenticated.
      *
