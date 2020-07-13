@@ -21,7 +21,7 @@ class Company extends Model
         $data = [];
 
         $twitter = TwitterAccount::where("company_id", "=", $this->id)->count() > 0;
-        $linkedin = TwitterAccount::where("company_id", "=", $this->id)->count() > 0;
+        $linkedin = LinkedinAccount::where("company_id", "=", $this->id)->count() > 0;
 
         if($twitter){array_push($data, "twitter");}
         if($linkedin){array_push($data, "linkedin");}
