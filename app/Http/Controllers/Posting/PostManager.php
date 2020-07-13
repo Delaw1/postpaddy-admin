@@ -46,7 +46,7 @@ class PostManager extends Controller
         if(empty($input["media"])){$input["media"] = [];}
         $post = Post::create($input);
 
-        if($input["schedule_date"] == NULL){
+        if(!isset($input["schedule_date"]) || $input["schedule_date"] == NULL){
             foreach($input["platforms"] as $platform){
                 switch($platform){
                     case "linkedin": (new LinkedinController())->postNow($post); break;
