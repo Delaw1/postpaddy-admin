@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 //Random
 Route::get('/', function () {
     return view('welcome');
-});
+}); 
 
 //Auth
 Route::get("/unauthorized", function(){return response()->json(["status"=>"failure","message"=>"unauthorized"]);})->name("login");
