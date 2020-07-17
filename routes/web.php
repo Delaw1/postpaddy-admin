@@ -14,11 +14,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 //Random
-Route::get('/', function () {
-    return view('welcome');
-}); 
 
-Route::group(['middleware' => ['cors']], function() {
+
+Route::group(['middleware' => 'cors'], function() {
+
+    Route::get('/', function () {
+        return view('welcome');
+    }); 
     //Auth
     Route::get("/unauthorized", function(){return response()->json(["status"=>"failure","message"=>"unauthorized"]);})->name("login");
     Route::post('/Login', 'Auth\LoginController@login');
