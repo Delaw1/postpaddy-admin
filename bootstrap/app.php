@@ -11,8 +11,8 @@
 |
 */
 
-header('Access-Control-Allow-Origin: localhost:3000');
-header('Access-Control-Allow-Credentials', true);
+header('Access-Control-Allow-Origin: http://localhost:3000');
+header('Access-Control-Allow-Credentials: true');
 header('Access-Control-Allow-Methods: *');
 header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token, Authorization, X-Requested-With, x-xsrf-token');
 
