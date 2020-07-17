@@ -18,34 +18,36 @@ Route::get('/', function () {
     return view('welcome');
 }); 
 
-//Auth
-Route::get("/unauthorized", function(){return response()->json(["status"=>"failure","message"=>"unauthorized"]);})->name("login");
-Route::post('/Login', 'Auth\LoginController@login');
-Route::post('/Register', 'Auth\RegisterController@register');
-Route::get('/VerifyEmail/{emailb64}', 'Auth\RegisterController@verifyEmail');
-Route::post('/PasswordReset/Request', 'Auth\ForgotPasswordController@forgot');
-Route::post('/PasswordReset/SetNow', 'Auth\ForgotPasswordController@setNow');
+Route::group(['middleware' => ['cors']], function() {
+    //Auth
+    Route::get("/unauthorized", function(){return response()->json(["status"=>"failure","message"=>"unauthorized"]);})->name("login");
+    Route::post('/Login', 'Auth\LoginController@login');
+    Route::post('/Register', 'Auth\RegisterController@register');
+    Route::get('/VerifyEmail/{emailb64}', 'Auth\RegisterController@verifyEmail');
+    Route::post('/PasswordReset/Request', 'Auth\ForgotPasswordController@forgot');
+    Route::post('/PasswordReset/SetNow', 'Auth\ForgotPasswordController@setNow');
 
-//Company APIs
-Route::post('/CreateCompany', 'CompanyManager@CreateCompany');
-Route::get('/GetCompanies', 'CompanyManager@GetCompanies');
-Route::get('/DeleteCompany/{id}', 'CompanyManager@DeleteCompany');
-Route::post('/UpdateCompany', 'CompanyManager@UpdateCompany');
+    //Company APIs
+    Route::post('/CreateCompany', 'CompanyManager@CreateCompany');
+    Route::get('/GetCompanies', 'CompanyManager@GetCompanies');
+    Route::get('/DeleteCompany/{id}', 'CompanyManager@DeleteCompany');
+    Route::post('/UpdateCompany', 'CompanyManager@UpdateCompany');
 
-//Posts
-Route::get('/GetPosts', 'Posting\PostManager@GetPosts');
-Route::post('/UploadMedia', 'Posting\PostManager@UploadMedia');
-Route::post('/CreatePost', 'Posting\PostManager@CreatePost');
-Route::get('/DeletePost/{id}', 'Posting\PostManager@DeletePost');
-Route::get('/scheduler', 'Posting\PostManager@scheduler');
+    //Posts
+    Route::get('/GetPosts', 'Posting\PostManager@GetPosts');
+    Route::post('/UploadMedia', 'Posting\PostManager@UploadMedia');
+    Route::post('/CreatePost', 'Posting\PostManager@CreatePost');
+    Route::get('/DeletePost/{id}', 'Posting\PostManager@DeletePost');
+    Route::get('/scheduler', 'Posting\PostManager@scheduler');
 
-//SOCIALS
-Route::get('/add_linkedin_account', 'SocialMedia\LinkedinController@addAccount');
-Route::get('/linkedin_callback', 'SocialMedia\LinkedinController@saveAccessToken');
+    //SOCIALS
+    Route::get('/add_linkedin_account', 'SocialMedia\LinkedinController@addAccount');
+    Route::get('/linkedin_callback', 'SocialMedia\LinkedinController@saveAccessToken');
 
-Route::get('/add_twitter_account', 'SocialMedia\TwitterController@addAccount');
-Route::get('/twitter_callback', 'SocialMedia\TwitterController@saveAccessToken');
+    Route::get('/add_twitter_account', 'SocialMedia\TwitterController@addAccount');
+    Route::get('/twitter_callback', 'SocialMedia\TwitterController@saveAccessToken');
 
-Route::get('/add_facebook_account', 'SocialMedia\FacebookController@addAccount');
-Route::get('/add_instagram_account', 'SocialMedia\TwitterController@addAccount');
-Route::get('/add_pinterest_account', 'SocialMedia\FacebookController@addAccount');
+    Route::get('/add_facebook_account', 'SocialMedia\FacebookController@addAccount');
+    Route::get('/add_instagram_account', 'SocialMedia\TwitterController@addAccount');
+    Route::get('/add_pinterest_account', 'SocialMedia\FacebookController@addAccount');
+});
