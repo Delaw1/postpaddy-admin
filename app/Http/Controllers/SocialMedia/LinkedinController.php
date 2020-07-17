@@ -23,7 +23,7 @@ class LinkedinController extends Controller
 
     public function addAccount(Request $request)
     {
-        $input = $request->all();
+        $input = $request->all(); 
         $company_id = $request->input("company_id");
         $input["id"] = $company_id;
 
