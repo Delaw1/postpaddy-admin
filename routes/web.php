@@ -22,7 +22,7 @@ Route::group(['middleware' => 'cors'], function() {
 });
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('welcome'); 
 }); 
 //Auth
 Route::get("/unauthorized", function(){return response()->json(["status"=>"failure","message"=>"unauthorized"]);})->name("login");
