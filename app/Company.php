@@ -9,7 +9,7 @@ use \App\LinkedinAccount;
 class Company extends Model
 {
     protected $fillable = [
-        'user_id', 'name', 'email_address'
+        'user_id', 'name', 'email_address' 
     ];
 
     protected $casts = [

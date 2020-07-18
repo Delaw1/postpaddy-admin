@@ -19,7 +19,8 @@ class CompanyManager extends Controller {
         $input['user_id'] = Auth::user()->id;
 
         $validation = Validator::make( $input, [
-            'name' => ['required', 'string', 'unique:companies'] 
+            'name' => ['required', 'string', 'unique:companies'],
+            'email' => ['required', 'string', 'email','unique:companies']
         ] );
 
         if ( $validation->fails() ) {
