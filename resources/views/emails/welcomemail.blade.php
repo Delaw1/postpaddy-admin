@@ -41,7 +41,6 @@
             max-width: 30rem;
             margin-top: 2rem;
             margin-bottom: 2rem;
-            /* margin-left: 1.5rem; */
         }
         .logo {
             width: 30%;
@@ -149,15 +148,15 @@
             <p class="description">We are glad you decided to use our product. Before we get started, we’ll need to verify your email.</p>
             <a href="{{VERIFY_LINK}}"><button class="verify">Verify your email</button></a>
         </div>
-        <h2 class="feedback-prompt lg">We'd love to hear from you!</h2>
+        <!-- <h2 class="feedback-prompt lg">We'd love to hear from you!</h2>
         <p class="text-with-link lg">Help us improve by sharing your feedback in this short <u><a href="#">survey</a></u></p>
         <div class="social-icon-wrapper lg">
-            <img src="https://postslate.com/api/images/facebook-2@2x.png" alt="" class="social-icon" >
-            <img src="https://postslate.com/api/images/twitter@2x.png" alt="" class="social-icon" >
-            <img src="https://postslate.com/api/images/instagram-glyph-1@2x.png" alt="" class="social-icon" >
+            <img src="../images/facebook-2@2x.png" alt="" class="social-icon" >
+            <img src="../images/twitter@2x.png" alt="" class="social-icon" >
+            <img src="../images/instagram-glyph-1@2x.png" alt="" class="social-icon" >
         </div>
         <p class="bottom lg">Copyright © 2020 <a href="#"><b>Postslate</b></a> All Rights Reserved. </p>
-        <p class="bottom lg"><a href="mailto:help@Postslate.com"><b>help@Postslate.com</b></a> | +234 90 1908 9009</p>
+        <p class="bottom lg"><a href="mailto:help@Postslate.com"><b>help@Postslate.com</b></a> | +234 90 1908 9009</p> -->
     </div>
 </body>
 </html>
