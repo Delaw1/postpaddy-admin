@@ -60,6 +60,7 @@ Route::group(['middleware' => 'cors'], function() {
         return $_SERVER['HTTP_ORIGIN'];
         // return "{{env('APP_FRONTEND_URL')}}/dashboard/accounts/add-social-media-accounts?linkedin=true";
     });
+    
 });
 
 
