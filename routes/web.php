@@ -59,6 +59,6 @@ Route::get('/add_pinterest_account', 'SocialMedia\FacebookController@addAccount'
 Route::get('/get_remaining_social/{id}', 'CompanyManager@socialMedia');
 
 Route::get('/test', function() {
-    return env('APP_FRONTEND_URL')."/dashboard/accounts/add-social-media-accounts?linkedin=true";
+    return redirect(env('APP_FRONTEND_URL')."/dashboard/accounts/add-social-media-accounts?linkedin=true");
     // return "{{env('APP_FRONTEND_URL')}}/dashboard/accounts/add-social-media-accounts?linkedin=true";
 });
