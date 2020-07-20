@@ -144,7 +144,7 @@
 <body>
     <div class="wrapper">
         <div class="inner">
-            <img src="images/Postslate_Full_Logo@4x.png" alt="Postslate" class="logo" >
+            <img src="{{env('APP_FRONTEND_URL')}}/api/images/Postslate_Full_Logo@4x.png" alt="Postslate" class="logo" >
             <p class="greeting">He {{NAME}},<br>Welcome to <b>Postslate!</b></p>
             <p class="description">We are glad you decided to use our product. Before we get started, we’ll need to verify your email.</p>
             <a href="{{VERIFY_LINK}}"><button class="verify">Verify your email</button></a>
@@ -152,9 +152,9 @@
         <h2 class="feedback-prompt lg">We'd love to hear from you!</h2>
         <p class="text-with-link lg">Help us improve by sharing your feedback in this short <u><a href="#">survey</a></u></p>
         <div class="social-icon-wrapper lg">
-            <img src="images/facebook-2@2x.png" alt="" class="social-icon" >
-            <img src="images/twitter@2x.png" alt="" class="social-icon" >
-            <img src="images/instagram-glyph-1@2x.png" alt="" class="social-icon" >
+            <img src="{{env('APP_FRONTEND_URL')}}/api/images/facebook-2@2x.png" alt="" class="social-icon" >
+            <img src="{{env('APP_FRONTEND_URL')}}/api/images/twitter@2x.png" alt="" class="social-icon" >
+            <img src="{{env('APP_FRONTEND_URL')}}/api/images/instagram-glyph-1@2x.png" alt="" class="social-icon" >
         </div>
         <p class="bottom lg">Copyright © 2020 <a href="#"><b>Postslate</b></a> All Rights Reserved. </p>
         <p class="bottom lg"><a href="mailto:help@Postslate.com"><b>help@Postslate.com</b></a> | +234 90 1908 9009</p>
