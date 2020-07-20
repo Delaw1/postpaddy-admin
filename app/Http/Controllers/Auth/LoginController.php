@@ -27,9 +27,9 @@ class LoginController extends Controller
                if(Auth::user()->email_verified_at == NULL){
                    $response['failure'] = 'Please verify your email';
                }
-               elseif(Str::contains($request->header("Content-Type"), 'form')){
-                    return redirect($request->headers->get('origin') . "/dashboard" );
-                }
+            //    elseif(Str::contains($request->header("Content-Type"), 'form')){
+            //         return redirect($request->headers->get('origin') . "/dashboard" );
+            //     }
                 else
                 {
                     $response['success'] = 'Successfully logged in';
