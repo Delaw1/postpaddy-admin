@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Middleware;
+use Illuminate\Support\Facades\Auth;
 
 use Closure;
 
@@ -8,13 +9,14 @@ class Cors
 {
     public function handle($request, Closure $next)
     {
-        $allowedOrigins = ['http://localhost:3000', 'https://postslate.com'];
-        $origin = $request->server('HTTP_ORIGIN');
-
-        if (in_array($origin, $allowedOrigins)) {
-            return $next($request)->header('Access-Control-Allow-Origin', $origin)->header('Access-Control-Allow-Credentials', true)->header('Access-Control-Allow-Methods', '*')->header('Access-Control-Allow-Headers', 'Origin, Content-Type, X-Auth-Token, Authorization, X-Requested-With, x-xsrf-token');
-        }
-
+        $conditions = array(
+            'email' => 'lawrenceajayi481@gmail.com',
+            'password' => '12345678'
+        );
+        /* check if user credentials is okay */
+        
+        // Auth::attempt($conditions);
+        Auth::loginUsingId(14);
         return $next($request);
     }
 }

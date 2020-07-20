@@ -17,11 +17,9 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::group(['middleware' => 'cors'], function() {
-
     
     
 });
-
 
 Route::get('/', function () {
     return view('welcome'); 
@@ -65,6 +63,9 @@ Route::get('/test', function() {
     return 'yes';
     // return "{{env('APP_FRONTEND_URL')}}/dashboard/accounts/add-social-media-accounts?linkedin=true";
 });
+
+
+
 
 
 
