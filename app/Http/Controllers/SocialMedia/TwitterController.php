@@ -67,6 +67,9 @@ class TwitterController extends Controller
         TwitterAccount::create(["company_id" => $company_id, "oauth_token" => $oauth_token, "oauth_token_secret" => $oauth_token_secret]);
 
         // return redirect(env("CLOSE_WINDOW_URL"));
+        if(env("APP_ENV")=="development") {
+            return redirect(env('APP_FRONTEND_URL_DEV')."/dashboard/accounts/add-social-media-accounts?twitter=true");
+          }
         return redirect(env('APP_FRONTEND_URL')."/dashboard/accounts/add-social-media-accounts?twitter=true");
     }
 
