@@ -55,3 +55,5 @@ Route::get('/twitter_callback', 'SocialMedia\TwitterController@saveAccessToken')
 Route::get('/add_facebook_account', 'SocialMedia\FacebookController@addAccount');
 Route::get('/add_instagram_account', 'SocialMedia\TwitterController@addAccount');
 Route::get('/add_pinterest_account', 'SocialMedia\FacebookController@addAccount');
+
+Route::get('/get_remaining_social/{id}', 'CompanyManager@socialMedia');

@@ -77,4 +77,10 @@ class CompanyManager extends Controller {
 
         return response()->json( ['success' => 'Company updated'] );
     }
+
+    public function socialMedia($id) {
+        $user = Auth::user();
+        $platform = Company::where('id', $id)->first();
+        return response()->json(['status' => 'success', 'platform'=>$platform->platforms]);
+    }
 }
