@@ -9,7 +9,7 @@ use \App\Http\Controllers\Controller;
 // use \App\User;
 use \App\Company;
 
-class CompanyManager extends Controller {
+class CompanyManager extends Controller { 
     public function __construct() {
         $this->middleware( 'auth' );
     }
@@ -20,7 +20,7 @@ class CompanyManager extends Controller {
 
         $validation = Validator::make( $input, [
             'name' => ['required', 'string', 'unique:companies'],
-            'email' => ['required', 'string', 'email','unique:companies']
+            'email_address' => ['required', 'string', 'email','unique:companies']
         ] );
 
         if ( $validation->fails() ) {
