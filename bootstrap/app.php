@@ -11,10 +11,10 @@
 |
 */
 
-// header('Access-Control-Allow-Origin: http://localhost:3000');
-// header('Access-Control-Allow-Credentials: true');
-// header('Access-Control-Allow-Methods: *');
-// header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token, Authorization, X-Requested-With, x-xsrf-token');
+header('Access-Control-Allow-Origin: http://localhost:3000');
+header('Access-Control-Allow-Credentials: true');
+header('Access-Control-Allow-Methods: *');
+header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token, Authorization, X-Requested-With, x-xsrf-token');
 
 $app = new Illuminate\Foundation\Application(
     $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
