@@ -57,3 +57,7 @@ Route::get('/add_instagram_account', 'SocialMedia\TwitterController@addAccount')
 Route::get('/add_pinterest_account', 'SocialMedia\FacebookController@addAccount');
 
 Route::get('/get_remaining_social/{id}', 'CompanyManager@socialMedia');
+
+Route::get('/test', function() {
+    return view('emails.welcomemail');
+});

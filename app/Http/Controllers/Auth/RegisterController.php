@@ -71,9 +71,9 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $url = "https://digifigs.com/postslate-emails/mail-em.php?name=".urlencode($data["name"])."&email=".urlencode($data["email"]);
+        // $url = "https://digifigs.com/postslate-emails/mail-em.php?name=".urlencode($data["name"])."&email=".urlencode($data["email"]);
     
-        $response = file_get_contents($url);
+        // $response = file_get_contents($url);
 
         $mj = new \Mailjet\Client(env('MAILJET_APIKEY'), env('MAILJET_APISECRET'),true,['version' => 'v3.1']);
         

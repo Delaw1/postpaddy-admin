@@ -1,18 +1,16 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
-    <title>Welcome</title>
     <style>
         body {
             font-family: 'Poppins', sans-serif;
         }
         h1,h2,h3,h4,h5,h6,p {
             margin: 0px;
-        }lo
+        }
         a {
             text-decoration: none;
             color: #354052;
@@ -33,60 +31,61 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            height: 933px;
-            width: 600px;
+            padding: 2rem 0;
+            width: 100%;
             background-color: #F5F5F5;
         }
         .inner {
             background-color: #FFF;
-            height: 546px;
-            width: 557px;
-            margin-top: 60px;
-            margin-bottom: 52px;
+            height: auto;
+            max-width: 30rem;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            /* margin-left: 1.5rem; */
         }
         .logo {
-            width: 140px;
-            margin-top: 28px;
-            margin-left: 48px;
-            margin-bottom: 28px;
+            width: 30%;
+            margin-top: 2rem;
+            margin-left: 3rem;
+            margin-bottom: 1rem;
         }
         .greeting {
-            font-size: 36px;
-            line-height: 48px;
-            margin-bottom: 54px;
-            margin-left: 48px;
+            font-size: 1.5rem;
+            line-height: 2rem;
+            margin-bottom: 2rem;
+            margin-left: 3rem;
         }
         .description {
-            width: 420px;
-            font-size: 19px;
-            line-height: 29px;
-            margin-left: 48px;
+            width: 70%;
+            font-size: 1rem;
+            line-height: 1.5rem;
+            margin-left: 3rem;
         }
         .verify {
             box-shadow: none;
             border: none;
             border-radius: 5px;
-            font-size: 28px;
-            line-height: 25px;
+            font-size: 1.2rem;
             font-weight: 600;
             color: #FFF;
             background-color: #01A3FA;
-            width: 456px;
-            height: 85px;
-            margin-left: 48px;
-            margin-top: 40px;
+            width: 15rem;
+            height: 3rem;
+            margin-left: 3rem;
+            margin-top: 4rem;
+            margin-bottom: 5rem;
             cursor: pointer;
         }
         .feedback-prompt {
-            font-size: 31px;
-            line-height: 51px;;
+            font-size: 1.7rem;
+            line-height: 3rem;
         }
         .text-with-link {
-            font-size: 13.6px;
+            font-size: 0.7rem;
             text-align: center;
         }
         .bottom {
-            font-size: 13.6px;
+            font-size: 0.7rem;
             line-height: 22px;
         }
         .social-icon-wrapper {
@@ -110,9 +109,7 @@
             .inner {
                 margin-top: 0px;
                 margin-bottom: 0px;
-                height: 411px;
-                width: 360px;
-                border: 1px solid #8D8D8D;
+                width: 100%;
             }
             .logo {
                 height: 43px;
@@ -127,7 +124,6 @@
                 font-size: 25px;
                 line-height: 35px;
                 margin-left: 28px;
-                margin-bottom: 15px
             }
             .description {
                 font-size: 16px;
@@ -148,20 +144,20 @@
 <body>
     <div class="wrapper">
         <div class="inner">
-            <img src="https://digifigs.com/postslate-emails/images/Logo.png" alt="postslate" class="logo" >
-            <p class="greeting">Hey {{NAME}},<br>Welcome to <b>postslate!</b></p>
+            <img src="images/Postslate_Full_Logo@4x.png" alt="Postslate" class="logo" >
+            <p class="greeting">He {{NAME}},<br>Welcome to <b>Postslate!</b></p>
             <p class="description">We are glad you decided to use our product. Before we get started, we’ll need to verify your email.</p>
             <a href="{{VERIFY_LINK}}"><button class="verify">Verify your email</button></a>
         </div>
-        <!--<h2 class="feedback-prompt lg">We'd love to hear from you!</h2>-->
-        <!--<p class="text-with-link lg">Help us improve by sharing your feedback in this short <u><a href="#">survey</a></u></p>-->
-        <!--<div class="social-icon-wrapper lg">-->
-        <!--    <img src="https://digifigs.com/postslate-emails/images/facebook-2@2x.png" alt="" class="social-icon" >-->
-        <!--    <img src="https://digifigs.com/postslate-emails/images/twitter@2x.png" alt="" class="social-icon" >-->
-        <!--    <img src="https://digifigs.com/postslate-emails/images/instagram-glyph-1@2x.png" alt="" class="social-icon" >-->
-        <!--</div>-->
-        <!--<p class="bottom lg">Copyright © 2020 <a href="#"><b>postslate</b></a> All Rights Reserved. </p>-->
-        <!--<p class="bottom lg"><a href="mailto:help@postslate.com"><b>help@postslate.com</b></a> | +234 90 1908 9009</p>-->
+        <h2 class="feedback-prompt lg">We'd love to hear from you!</h2>
+        <p class="text-with-link lg">Help us improve by sharing your feedback in this short <u><a href="#">survey</a></u></p>
+        <div class="social-icon-wrapper lg">
+            <img src="images/facebook-2@2x.png" alt="" class="social-icon" >
+            <img src="images/twitter@2x.png" alt="" class="social-icon" >
+            <img src="images/instagram-glyph-1@2x.png" alt="" class="social-icon" >
+        </div>
+        <p class="bottom lg">Copyright © 2020 <a href="#"><b>Postslate</b></a> All Rights Reserved. </p>
+        <p class="bottom lg"><a href="mailto:help@Postslate.com"><b>help@Postslate.com</b></a> | +234 90 1908 9009</p>
     </div>
 </body>
 </html>
