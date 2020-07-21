@@ -26,8 +26,12 @@ class Utils
         curl_setopt($ch, CURLOPT_URL, $url.'?'.$params);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $server_output = json_decode( curl_exec ($ch) );
+        // $server_output = json_decode( curl_exec ($ch) );
+        // curl_close ($ch);
+
+        $output =  curl_exec($ch);
         curl_close ($ch);
+        $server_output = json_decode($output);
 
         return $server_output;
     }
