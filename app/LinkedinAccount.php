@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class LinkedinAccount extends Model
 {
     protected $fillable = [
-        'company_id', 'linkedin_access_token' 
+        'company_id', 'linkedin_access_token', 'linkedin_id'
     ];
 
     protected $hidden = [
