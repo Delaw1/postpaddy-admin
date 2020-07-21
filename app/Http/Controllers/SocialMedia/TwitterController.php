@@ -17,8 +17,8 @@ class TwitterController extends Controller
 {
     public function __construct()
     {
-    //    $this->middleware('auth');
-    Auth::loginUsingId(1);
+       $this->middleware('auth');
+    // Auth::loginUsingId(1);
     }
 
     public function addAccount(Request $request)
@@ -78,7 +78,7 @@ class TwitterController extends Controller
           }
           return redirect(env('APP_FRONTEND_URL') . "/dashboard/accounts/add-social-media-accounts?twitter=existing");
         }
-        
+
         $company_id = Session::get('social_company_id');
 
         // DB::delete('delete from twitter_accounts where id = ?',[$company_id]);

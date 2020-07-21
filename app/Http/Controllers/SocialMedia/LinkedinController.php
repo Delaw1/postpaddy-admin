@@ -19,8 +19,8 @@ class LinkedinController extends Controller
 {
   public function __construct()
   {
-    //  $this->middleware('auth');
-    Auth::loginUsingId(1);
+     $this->middleware('auth');
+    // Auth::loginUsingId(1);
   }
 
   public function addAccount(Request $request)
