@@ -62,10 +62,27 @@ class TwitterController extends Controller
 
         $oauth_token = $response["oauth_token"];
         $oauth_token_secret = $response["oauth_token_secret"];
+
+        $get_id = $connection->get('account/verify_credentials');
+        $twitter_id = strval($get_id->id);
+
+        $data = ['twitter_id' => $twitter_id];
+
+        $validation = Validator::make($data, [
+          'twitter_id' => ['required', 'unique:twitter_accounts']
+        ]);
+    
+        if ($validation->fails()) {
+          if (env("APP_ENV") == "development") {
+            return redirect(env('APP_FRONTEND_URL_DEV') . "/dashboard/accounts/add-social-media-accounts?twitter=existing");
+          }
+          return redirect(env('APP_FRONTEND_URL') . "/dashboard/accounts/add-social-media-accounts?twitter=existing");
+        }
         
         $company_id = Session::get('social_company_id');
-        DB::delete('delete from twitter_accounts where id = ?',[$company_id]);
-        TwitterAccount::create(["company_id" => $company_id, "oauth_token" => $oauth_token, "oauth_token_secret" => $oauth_token_secret]);
+
+        // DB::delete('delete from twitter_accounts where id = ?',[$company_id]);
+        TwitterAccount::create(["company_id" => $company_id, "oauth_token" => $oauth_token, "oauth_token_secret" => $oauth_token_secret, "twitter_id" => $twitter_id]);
 
         // return redirect(env("CLOSE_WINDOW_URL"));
         if(env("APP_ENV")=="development") {

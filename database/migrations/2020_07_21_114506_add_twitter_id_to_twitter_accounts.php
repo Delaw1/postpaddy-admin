@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddLinkedinIdToLinkedinAccounts extends Migration
+class AddTwitterIdToTwitterAccounts extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddLinkedinIdToLinkedinAccounts extends Migration
      */
     public function up()
     {
-        Schema::table('linkedin_accounts', function (Blueprint $table) {
-            $table->string('linkedin_id');
+        Schema::table('twitter_accounts', function (Blueprint $table) {
+            $table->string('twitter_id');
         });
     }
 
@@ -25,8 +25,8 @@ class AddLinkedinIdToLinkedinAccounts extends Migration
      */
     public function down()
     {
-        Schema::table('linkedin_accounts', function (Blueprint $table) {
-            $table->dropColumn(['linkedin_id']);
+        Schema::table('twitter_accounts', function (Blueprint $table) {
+            $table->dropColumn(['twitter_id']);
         });
     }
 }

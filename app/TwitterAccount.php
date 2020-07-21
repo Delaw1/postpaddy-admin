@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class TwitterAccount extends Model
 {
     protected $fillable = [
-        'company_id', 'oauth_token', 'oauth_token_secret'
+        'company_id', 'oauth_token', 'oauth_token_secret', 'twitter_id'
     ];
 
     protected $hidden = [
