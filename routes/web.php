@@ -60,6 +60,7 @@ Route::get('/add_pinterest_account', 'SocialMedia\FacebookController@addAccount'
 Route::get('/get_remaining_social/{id}', 'CompanyManager@socialMedia');
 
 Route::get('/test', 'SocialMedia\LinkedinController@test');
+Route::get('/sendmail', 'CompanyManager@sendMail');
 
 
 

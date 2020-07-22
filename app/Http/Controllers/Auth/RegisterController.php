@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Mail\MyMail;
 
-// require '../vendor/autoload.php';
 use \Mailjet\Resources;
 
 

@@ -18,7 +18,7 @@ class TwitterController extends Controller
     public function __construct()
     {
     //    $this->middleware('auth');
-    Auth::loginUsingId(4);
+    Auth::loginUsingId(1);
     }
 
     public function addAccount(Request $request)

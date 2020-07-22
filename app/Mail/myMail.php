@@ -7,18 +7,22 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class myMail extends Mailable
+class MyMail extends Mailable
 {
     use Queueable, SerializesModels;
-
+    public $details;
+    public $subject;
+    public $view;
     /**
-     * Create a new message instance.
+     * Create a new message instance. 
      *
      * @return void
      */
-    public function __construct($view)
+    public function __construct($subject, $details, $view)
     {
-        $this->view = $view;
+        $this->details = $details;
+        $this->subject = $subject;
+        $this->view = $view; 
     }
 
     /**
@@ -28,6 +32,6 @@ class myMail extends Mailable
      */
     public function build()
     {
-        return $this->view($this->view);
+        return $this->subject($this->subject)->view($this->view);
     }
 }

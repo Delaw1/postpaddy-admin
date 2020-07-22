@@ -16,8 +16,8 @@ class PostManager extends Controller
 {
     public function __construct()
     {
-    //    $this->middleware('auth');
-        Auth::loginUsingId(4);
+        //    $this->middleware('auth');
+        Auth::loginUsingId(1);
     }
 
     public function CreatePost(Request $request)
@@ -26,100 +26,114 @@ class PostManager extends Controller
         $input["user_id"] = Auth::user()->id;
 
         $validation = Validator::make($input, [
-           'company_id' => ['required', 'integer'],
+            'company_id' => ['required', 'integer'],
             'content' => ['required', 'string'],
             'media' => ['array'],
-            'media.*'=>['required', 'string'],
+            'media.*' => ['required', 'string'],
             'platforms' => ['required', 'array'],
-            'platforms.*'=>['required', 'string'],
+            'platforms.*' => ['required', 'string'],
             'schedule_date' => ['integer']
         ]);
 
-        if($validation->fails())
-        {
+        if ($validation->fails()) {
             $data = json_decode($validation->errors(), true);
-            
+
             $data = ['status' => 'failure']  + $data;
 
             return response()->json($data);
         }
 
-        if(empty($input["media"])){$input["media"] = [];}
+        if (empty($input["media"])) {
+            $input["media"] = [];
+        }
+        // $post = $input;
         $post = Post::create($input);
 
-        if(!isset($input["schedule_date"]) || $input["schedule_date"] == NULL){
-            foreach($input["platforms"] as $platform){
-                switch($platform){
-                    case "linkedin": (new LinkedinController())->postNow($post); break;
-                    case "twitter": (new TwitterController())->postNow($post); break;
+        if (!isset($input["schedule_date"]) || $input["schedule_date"] == NULL) {
+            foreach ($input["platforms"] as $platform) {
+                switch ($platform) {
+                    case "linkedin":
+                        (new LinkedinController())->postNow($post);
+                        break;
+                    case "twitter":
+                        (new TwitterController())->postNow($post);
+                        break;
                 }
             }
         }
 
-        return response()->json(['status' => 'success', 'post'=>$post] );
+        return response()->json(['status' => 'success', 'post' => $post]);
     }
 
-    public function GetPosts(Request $request){
+    public function GetPosts(Request $request)
+    {
         $user = Auth::user();
 
         $posts = Post::where("user_id", $user->id)->get();
 
-        return response()->json(['status' => 'success', 'posts'=>$posts] );
+        return response()->json(['status' => 'success', 'posts' => $posts]);
     }
 
     //upload featured media
-    public function uploadMedia(Request $request){
-        $validator = Validator::make( $request->all(), [
+    public function uploadMedia(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
             'media.*' => 'required|mimes:3gp,mp4,avi,mov,jpeg,png,jpg,gif,svg|max:20480',
         ]);
 
         //return errors if any
-        if ( $validator->fails() ) {
-            return response()->json( ['error'=>$validator->errors()], 422 );
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 422);
         }
-        
+
         $names = array();
 
-        foreach( $request->file('media') as $media ){  
-            $name = time().mt_rand(1, 9999).'.'.$media->getClientOriginalExtension();
+        foreach ($request->file('media') as $media) {
+            $name = time() . mt_rand(1, 9999) . '.' . $media->getClientOriginalExtension();
             $destinationPath = public_path(Utils::UPLOADS_DIR);
             $media->move($destinationPath, $name);
 
-            array_push( $names, $name);
+            array_push($names, $name);
         }
 
-        return response()->json( ['success'=>["message" => "Media uploaded successfuly", "media_path"=>$names]] );
+        return response()->json(['success' => ["message" => "Media uploaded successfuly", "media_path" => $names]]);
     }
 
-    public function DeletePost( $id ) 
+    public function DeletePost($id)
     {
-        $post = Post::find( $id );
+        $post = Post::find($id);
 
-        if ( $post == NULL ) {
-            return response()->json( ['status' => 'failure', 'message' => 'post does not exist'] );
+        if ($post == NULL) {
+            return response()->json(['status' => 'failure', 'message' => 'post does not exist']);
         }
 
         Post::destroy($id);
 
-        return response()->json( ['success' =>'Post deleted'] );
+        return response()->json(['success' => 'Post deleted']);
     }
 
-    public function scheduler(){
+    public function scheduler()
+    {
         $date = \Carbon\Carbon::now();
         $date->setTimezone("Africa/Lagos");
 
-        $posts = Post::where('schedule_date', '<=', $date->timestamp)->where('is_posted','!=',true)->get();
-        
-        foreach($posts as $post)
-        {
-            foreach($post->platforms as $platform){
-                switch($platform){
-                    case "linkedin": (new LinkedinController())->postNow($post); print("posted to linkedin"); break;
-                    case "twitter": (new TwitterController())->postNow($post); print("posted to twitter"); break;
+        $posts = Post::where('schedule_date', '<=', $date->timestamp)->where('is_posted', '!=', true)->get();
+
+        foreach ($posts as $post) {
+            foreach ($post->platforms as $platform) {
+                switch ($platform) {
+                    case "linkedin":
+                        (new LinkedinController())->postNow($post);
+                        print("posted to linkedin");
+                        break;
+                    case "twitter":
+                        (new TwitterController())->postNow($post);
+                        print("posted to twitter");
+                        break;
                 }
             }
 
-            $post->update(["is_posted"=>true]);
+            $post->update(["is_posted" => true]);
         }
 
         die();
