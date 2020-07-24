@@ -105,8 +105,8 @@ class CompanyManager extends Controller
         $mail = Mail::to($email)->send($mailBody);
 
         if ($mail) {
-            return 'Email sent successfully';
+            return true;
         }
-        return 'Email not sent, try again';
+        return false;
     }
 }

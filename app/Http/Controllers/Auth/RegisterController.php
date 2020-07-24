@@ -76,7 +76,7 @@ class RegisterController extends Controller
 
         $mj = new \Mailjet\Client(env('MAILJET_APIKEY'), env('MAILJET_APISECRET'),true,['version' => 'v3.1']);
         
-        $html = file_get_contents(resource_path('views\emails\welcomemail.blade.php'));
+        $html = file_get_contents(resource_path('views/emails/welcomemail.blade.php'));
         $html = str_replace(
             ['{{NAME}}', '{{VERIFY_LINK}}'],
             [$data['name'], "https://postslate.com/api/VerifyEmail/".base64_encode($data['email'])],

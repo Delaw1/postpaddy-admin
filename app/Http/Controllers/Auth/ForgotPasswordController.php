@@ -28,7 +28,7 @@ class ForgotPasswordController extends Controller
     {
         $input = $request->all();
 
-        $validation = Validator::make($input, [
+        $validation = Validator::make($input, [ 
             'email' => ['required', 'email', 'exists:users']
         ]);
 
