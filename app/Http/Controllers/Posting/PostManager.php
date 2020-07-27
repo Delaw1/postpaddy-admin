@@ -61,6 +61,7 @@ class PostManager extends Controller
                         break;
                 }
             }
+            $post->update(["is_posted" => true]);
         }
 
         return response()->json(['status' => 'success', 'post' => $post]);
@@ -70,7 +71,16 @@ class PostManager extends Controller
     {
         $user = Auth::user();
 
-        $posts = Post::where("user_id", $user->id)->get();
+        $posts = Post::where("user_id", $user->id)->where('is_posted', '=', true)->get();
+
+        return response()->json(['status' => 'success', 'posts' => $posts]);
+    }
+
+    public function GetScheduledPosts(Request $request)
+    {
+        $user = Auth::user();
+
+        $posts = Post::where("user_id", $user->id)->where('schedule_date', '!=', '')->where('is_posted', '!=', true)->get();
 
         return response()->json(['status' => 'success', 'posts' => $posts]);
     }

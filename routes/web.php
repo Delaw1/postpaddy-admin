@@ -41,6 +41,7 @@ Route::post('/UpdateCompany', 'CompanyManager@UpdateCompany');
 
 //Posts
 Route::get('/GetPosts', 'Posting\PostManager@GetPosts');
+Route::get('/GetScheduledPosts', 'Posting\PostManager@GetScheduledPosts');
 Route::post('/UploadMedia', 'Posting\PostManager@UploadMedia');
 Route::post('/CreatePost', 'Posting\PostManager@CreatePost');
 Route::get('/DeletePost/{id}', 'Posting\PostManager@DeletePost');
