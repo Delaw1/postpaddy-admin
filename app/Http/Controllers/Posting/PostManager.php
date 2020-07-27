@@ -132,16 +132,13 @@ class PostManager extends Controller
         $validation = Validator::make($input, [
             'company_id' => ['required', 'integer'],
             'content' => ['required', 'string'],
-            'media' => ['array'],
-            'media.*' => ['required', 'string'],
-            'platforms' => ['required', 'array'],
-            'platforms.*' => ['required', 'string'],
+            // 'media' => ['array'],
+            // 'media.*' => ['required', 'string'],
+            // 'platforms' => ['required', 'array'],
+            // 'platforms.*' => ['required', 'string'],
             'schedule_date' => ['integer'],
             'hashtag' => ['string']
         ]);
-
-
-
 
         if ($validation->fails()) {
             $data = json_decode($validation->errors(), true);
@@ -157,8 +154,9 @@ class PostManager extends Controller
         // $post = $input;
         $post = Post::where('id', $request->post_id)->first();
         $post->update($input);
-        if (!isset($input["schedule_date"]) || $input["schedule_date"] == NULL) {
-            foreach ($input["platforms"] as $platform) {
+        // return $post["hashtag"];
+        if ($post["schedule_date"] == 0 || $post["schedule_date"] == NULL) {
+            foreach ($post["platforms"] as $platform) {
                 switch ($platform) {
                     case "linkedin":
                         (new LinkedinController())->postNow($post);
