@@ -33,7 +33,8 @@ class PostManager extends Controller
             'media.*' => ['required', 'string'],
             'platforms' => ['required', 'array'],
             'platforms.*' => ['required', 'string'],
-            'schedule_date' => ['integer']
+            'schedule_date' => ['integer'],
+            'hashtag' => ['string']
         ]);
 
         if ($validation->fails()) {
@@ -135,7 +136,8 @@ class PostManager extends Controller
             'media.*' => ['required', 'string'],
             'platforms' => ['required', 'array'],
             'platforms.*' => ['required', 'string'],
-            'schedule_date' => ['integer']
+            'schedule_date' => ['integer'],
+            'hashtag' => ['string']
         ]);
 
 
