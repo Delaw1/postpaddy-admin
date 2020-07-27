@@ -45,6 +45,7 @@ Route::get('/GetScheduledPosts', 'Posting\PostManager@GetScheduledPosts');
 Route::post('/UploadMedia', 'Posting\PostManager@UploadMedia');
 Route::post('/CreatePost', 'Posting\PostManager@CreatePost');
 Route::get('/DeletePost/{id}', 'Posting\PostManager@DeletePost');
+Route::post('/UpdatePost', 'Posting\PostManager@UpdatePost');
 Route::get('/scheduler', 'Posting\PostManager@scheduler');
 
 //SOCIALS

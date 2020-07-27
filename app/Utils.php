@@ -4,7 +4,7 @@ namespace App;
 
 class Utils
 {
-    public const UPLOADS_DIR= 'uploads';
+    public const UPLOADS_DIR= 'uploads'; 
 
     public static function curlPostRequest($url, $params, $body, $headers)
     {

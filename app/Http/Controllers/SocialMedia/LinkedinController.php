@@ -56,11 +56,11 @@ class LinkedinController extends Controller
     $clientSecrete = env("LINKEDIN_CLIENT_SECRETE");
     $redirectURL = env("APP_CALLBACK_BASE_URL") . "/linkedin_callback";
 
-    // $code = $request->input('code');
+    $code = $request->input('code');
 
-    // $server_output = Utils::curlPostRequest("https://www.linkedin.com/oauth/v2/accessToken", "grant_type=authorization_code&code=".$code."&redirect_uri=$redirectURL&client_id=$clientID&client_secret=$clientSecrete", NULL, []);
-    // $access_token = $server_output->access_token;
-    $access_token = "AQWEsFed9pklRM4pEClcWwNY5FVPAmxPBQU8AzzHC0KZknROs7Eo-lxUSugu3sDkMDjQtFdLdCb30Q7G5M941PHEfQlV3WoZaqBuAXr6wvcHu16tGa1dL0aWz2BDU2O148z7H_OGWfqZgTV8FIq7fhvCB_B4WU3X5QjJwBWyZRgrSDLcv1zdTawsAKQJWqMAQrYXMXaOUdwq2619X2c5AjTnleJ3_r2YdT_5Od8qQfWx3kvFxaRrPRgeQrUidmWH_4CLqCg8gVxHlr9JlRWPr7jEi1kgx0OH8VEPvW7A5vuii0boFhNjCfekrl_AEdWGjqzCiezcdJ1wPqQTiCnJD8n-hc2sJg";
+    $server_output = Utils::curlPostRequest("https://www.linkedin.com/oauth/v2/accessToken", "grant_type=authorization_code&code=".$code."&redirect_uri=$redirectURL&client_id=$clientID&client_secret=$clientSecrete", NULL, []);
+    $access_token = $server_output->access_token;
+    // $access_token = "AQWEsFed9pklRM4pEClcWwNY5FVPAmxPBQU8AzzHC0KZknROs7Eo-lxUSugu3sDkMDjQtFdLdCb30Q7G5M941PHEfQlV3WoZaqBuAXr6wvcHu16tGa1dL0aWz2BDU2O148z7H_OGWfqZgTV8FIq7fhvCB_B4WU3X5QjJwBWyZRgrSDLcv1zdTawsAKQJWqMAQrYXMXaOUdwq2619X2c5AjTnleJ3_r2YdT_5Od8qQfWx3kvFxaRrPRgeQrUidmWH_4CLqCg8gVxHlr9JlRWPr7jEi1kgx0OH8VEPvW7A5vuii0boFhNjCfekrl_AEdWGjqzCiezcdJ1wPqQTiCnJD8n-hc2sJg";
 
     $get_id = Utils::curlGetRequest('https://api.linkedin.com/v2/me', 'oauth2_access_token=' . $access_token, []);
 

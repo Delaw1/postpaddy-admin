@@ -13,7 +13,7 @@ class Company extends Model
     ];
 
     protected $casts = [
-        'platforms' => 'array'
+        'platforms' => 'array' 
     ];
 
     public function getPlatformsAttribute($value)

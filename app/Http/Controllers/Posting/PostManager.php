@@ -123,6 +123,55 @@ class PostManager extends Controller
         return response()->json(['success' => 'Post deleted']);
     }
 
+    public function UpdatePost(Request $request)
+    {
+        $input = $request->all();
+        // $input["user_id"] = Auth::user()->id;
+
+        $validation = Validator::make($input, [
+            'company_id' => ['required', 'integer'],
+            'content' => ['required', 'string'],
+            'media' => ['array'],
+            'media.*' => ['required', 'string'],
+            'platforms' => ['required', 'array'],
+            'platforms.*' => ['required', 'string'],
+            'schedule_date' => ['integer']
+        ]);
+
+
+
+
+        if ($validation->fails()) {
+            $data = json_decode($validation->errors(), true);
+
+            $data = ['status' => 'failure']  + $data;
+
+            return response()->json($data);
+        }
+
+        // if (empty($input["media"])) {
+        //     $input["media"] = [];
+        // }
+        // $post = $input;
+        $post = Post::where('id', $request->post_id)->first();
+        $post->update($input);
+        if (!isset($input["schedule_date"]) || $input["schedule_date"] == NULL) {
+            foreach ($input["platforms"] as $platform) {
+                switch ($platform) {
+                    case "linkedin":
+                        (new LinkedinController())->postNow($post);
+                        break;
+                    case "twitter":
+                        (new TwitterController())->postNow($post);
+                        break;
+                }
+            }
+            $post->update(["is_posted" => true]);
+        }
+
+        return response()->json(['status' => 'success', 'post' => $post]);
+    }
+
     public function scheduler()
     {
         $date = \Carbon\Carbon::now();
