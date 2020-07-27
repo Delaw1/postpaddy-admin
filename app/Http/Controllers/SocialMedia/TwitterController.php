@@ -93,7 +93,7 @@ class TwitterController extends Controller
     }
 
     public function postNow($post){
-        $text = $post->content.' '.$post->hashtag;
+        $text = $post->content."\r\n\n".$post->hashtag;
         $media = $post->media;
         $twitterAccount = TwitterAccount::where("company_id", '=', $post->company_id)->first();
         if($twitterAccount == null){return NULL;}

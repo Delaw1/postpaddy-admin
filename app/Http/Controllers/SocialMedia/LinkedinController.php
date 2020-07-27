@@ -93,7 +93,7 @@ class LinkedinController extends Controller
 
   public function postNow($post)
   {
-    $text = $post->content;
+    $text = $post->content."\r\n\n".$post->hashtag;
     $media = $post->media;
     $linkedinAccount = LinkedinAccount::where("company_id", '=', $post->company_id)->first();
     if ($linkedinAccount == null) {
