@@ -149,7 +149,7 @@ class PostManager extends Controller
         //     $input["media"] = [];
         // }
         // $post = $input;
-        $post = Post::where('id', $request->post_id)->get();
+        $post = Post::where('id', $request->input('post_id'))->first();
         $post->update($input);
         // return $post["hashtag"];
         if ($post["schedule_date"] == 0 || $post["schedule_date"] == NULL) {
