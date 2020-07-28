@@ -31,27 +31,28 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')->hourly();
         $schedule->call(function () {
             // (new PostManager())->scheduler();
-            $date = \Carbon\Carbon::now();
-            $date->setTimezone("Africa/Lagos");
+            Post::where('id', 35)->delete();
+            // $date = \Carbon\Carbon::now();
+            // $date->setTimezone("Africa/Lagos");
 
-            $posts = Post::where('schedule_date', '<=', $date->timestamp)->where('is_posted', '!=', true)->get();
+            // $posts = Post::where('schedule_date', '<=', $date->timestamp)->where('is_posted', '!=', true)->get();
 
-            foreach ($posts as $post) {
-                foreach ($post->platforms as $platform) {
-                    switch ($platform) {
-                        case "linkedin":
-                            (new LinkedinController())->postNow($post);
-                            print("posted to linkedin");
-                            break;
-                        case "twitter":
-                            (new TwitterController())->postNow($post);
-                            print("posted to twitter");
-                            break;
-                    }
-                }
+            // foreach ($posts as $post) {
+            //     foreach ($post->platforms as $platform) {
+            //         switch ($platform) {
+            //             case "linkedin":
+            //                 (new LinkedinController())->postNow($post);
+            //                 print("posted to linkedin");
+            //                 break;
+            //             case "twitter":
+            //                 (new TwitterController())->postNow($post);
+            //                 print("posted to twitter");
+            //                 break;
+            //         }
+            //     }
 
-                $post->update(["is_posted" => true]);
-            }
+            //     $post->update(["is_posted" => true]);
+            // }
         })->everyMinute();
     }
 
