@@ -32,8 +32,7 @@ class PostManager extends Controller
             'media.*' => ['required', 'string'],
             'platforms' => ['required', 'array'],
             'platforms.*' => ['required', 'string'],
-            'schedule_date' => ['integer'],
-            'hashtag' => ['string']
+            'schedule_date' => ['integer']
         ]);
 
         if ($validation->fails()) {
@@ -41,7 +40,7 @@ class PostManager extends Controller
 
             $data = ['status' => 'failure']  + $data;
 
-            return response()->json($data);
+            return response()->json($data, 400);
         }
 
         if (empty($input["media"])) {
@@ -64,7 +63,7 @@ class PostManager extends Controller
             $post->update(["is_posted" => true]);
         }
 
-        return response()->json(['status' => 'success', 'post' => $post]);
+        return response()->json(['status' => 'success', 'post' => $post], 201);
     }
 
     public function GetPosts(Request $request)
@@ -107,7 +106,7 @@ class PostManager extends Controller
             array_push($names, $name);
         }
 
-        return response()->json(['success' => ["message" => "Media uploaded successfuly", "media_path" => $names]]);
+        return response()->json(['success' => ["message" => "Media uploaded successfuly", "media_path" => $names]], 200);
     }
 
     public function DeletePost($id)
@@ -115,7 +114,7 @@ class PostManager extends Controller
         $post = Post::find($id);
 
         if ($post == NULL) {
-            return response()->json(['status' => 'failure', 'message' => 'post does not exist']);
+            return response()->json(['status' => 'failure', 'message' => 'post does not exist'], 404);
         }
 
         Post::destroy($id);
@@ -131,12 +130,11 @@ class PostManager extends Controller
         $validation = Validator::make($input, [
             'company_id' => ['required', 'integer'],
             'content' => ['required', 'string'],
-            // 'media' => ['array'],
-            // 'media.*' => ['required', 'string'],
-            // 'platforms' => ['required', 'array'],
-            // 'platforms.*' => ['required', 'string'],
-            'schedule_date' => ['integer'],
-            'hashtag' => ['string']
+            'media' => ['array'],
+            'media.*' => ['required', 'string'],
+            'platforms' => ['required', 'array'],
+            'platforms.*' => ['required', 'string'],
+            'schedule_date' => ['integer']
         ]);
 
         if ($validation->fails()) {
@@ -144,7 +142,7 @@ class PostManager extends Controller
 
             $data = ['status' => 'failure']  + $data;
 
-            return response()->json($data);
+            return response()->json($data, 400);
         }
 
         // if (empty($input["media"])) {
@@ -168,7 +166,7 @@ class PostManager extends Controller
             $post->update(["is_posted" => true]);
         }
 
-        return response()->json(['status' => 'success', 'post' => $post]);
+        return response()->json(['status' => 'success', 'post' => $post], 200);
     }
 
     public function scheduler()
