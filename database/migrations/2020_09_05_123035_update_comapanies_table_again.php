@@ -16,6 +16,9 @@ class UpdateComapaniesTableAgain extends Migration
         // Schema::table('companies', function (Blueprint $table) {
         //     $table->integer("removed")->default(0);
         // });
+        Schema::table('companies', function (Blueprint $table) {
+            $table->dropColumn(['removed']);
+        });
     }
 
     /**
