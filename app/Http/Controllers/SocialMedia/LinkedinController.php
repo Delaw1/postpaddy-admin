@@ -82,7 +82,7 @@ class LinkedinController extends Controller
     $company_id = Session::get('social_company_id');
 
     // DB::delete('delete from linkedin_accounts where id = ?', [$company_id]);
-    // LinkedinAccount::create(["company_id" => $company_id, "linkedin_access_token" => $access_token, "linkedin_id" => $linkedin_id]);
+    LinkedinAccount::create(["company_id" => $company_id, "linkedin_access_token" => $access_token, "linkedin_id" => $linkedin_id]);
 
     // return redirect(env("CLOSE_WINDOW_URL"));
     if (env("APP_ENV") == "development") {
