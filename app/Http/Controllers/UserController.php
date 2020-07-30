@@ -16,7 +16,7 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        Auth::loginUsingId(25);
+        Auth::loginUsingId(20);
         // $this->middleware('auth');
     }
 
