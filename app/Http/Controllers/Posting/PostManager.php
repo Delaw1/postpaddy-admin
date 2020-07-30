@@ -18,8 +18,8 @@ class PostManager extends Controller
 {
     public function __construct()
     {
-           $this->middleware('auth');
-        // Auth::loginUsingId(4);
+        //    $this->middleware('auth');
+        Auth::loginUsingId(20);
     }
 
     public function CreatePost(Request $request)

@@ -24,7 +24,7 @@ class CompanyManager extends Controller
 {
     public function __construct()
     {
-        Auth::loginUsingId(4);
+        Auth::loginUsingId(20);
         // $this->middleware( 'auth' );
     }
 
