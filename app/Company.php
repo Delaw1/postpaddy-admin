@@ -28,7 +28,7 @@ class Company extends Model
         $facebook = FacebookAccount::where("company_id", "=", $this->id)->where("accounts", "!=", '')->where("accounts", "!=", '[]')->first();
         $linkedin = LinkedinAccount::where("company_id", "=", $this->id)->where("accounts", "!=", '')->where("accounts", "!=", '[]')->first();
 
-        if($twitter){array_push($data, ["twitter" => $twitter->name]);}
+        if($twitter){array_push($data, ["twitter" => ["username" => $twitter->name]]);}
         if($facebook){array_push($data, ["facebook" => $facebook->accounts]);}
         if($linkedin){
             array_push($data, ["linkedin" => $linkedin->accounts]);
