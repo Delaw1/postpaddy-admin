@@ -195,7 +195,7 @@ class FacebookController extends Controller
 
       $data = ['status' => 'failure', 'error' => $validation->errors()->first()];
 
-      return response()->json($data, 404);
+      return response()->json($data);
     }
 
     $gs = Gs::first();
@@ -203,7 +203,7 @@ class FacebookController extends Controller
     // return $company->removed['linkedin'];
     if($company->removed['facebook'] >= $gs->remove_social_media) {
       
-      return response()->json(["error" => "You cant remove a social account more than ".$gs->remove_social_media." times on this plan"], 400);
+      return response()->json(['status' => 'failure', "error" => "You cant remove a social account more than ".$gs->remove_social_media." times on this plan"]);
     }
     
     $com = $company->removed;
@@ -214,6 +214,6 @@ class FacebookController extends Controller
     ]);
 
     FacebookAccount::where('company_id', $company_id)->delete();
-    return response()->json(['msg', 'Facebok account successfully deleted']);
+    return response()->json(['status' => 'success', 'msg', 'Facebok account successfully deleted']);
   }
 }

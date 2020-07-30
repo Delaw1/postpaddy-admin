@@ -13,9 +13,9 @@ class UpdateComapaniesTableAgain extends Migration
      */
     public function up()
     {
-        Schema::table('companies', function (Blueprint $table) {
-            $table->string("removed")->default('{"twitter" : 0, "linkedin" : 0, "facebook" : 0, "instagram" : 0, "pinterest" : 0}');
-        });
+        // Schema::table('companies', function (Blueprint $table) {
+        //     $table->integer("removed")->default(0);
+        // });
     }
 
     /**
@@ -25,6 +25,8 @@ class UpdateComapaniesTableAgain extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('companies', function (Blueprint $table) {
+            $table->dropColumn(['removed']);
+        });
     }
 }

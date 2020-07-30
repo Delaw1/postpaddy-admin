@@ -138,14 +138,14 @@ class TwitterController extends Controller
 
             $data = ['status' => 'failure', 'error' => $validation->errors()->first()];
 
-            return response()->json($data, 404);
+            return response()->json($data);
         }
 
         $gs = Gs::first();
         $company = Company::where('id', $company_id)->first();
         // return $company->removed['linkedin'];
         if ($company->removed['twitter'] >= $gs->remove_social_media) {
-            return response()->json(["error" => "You cant remove a social account more than ".$gs->remove_social_media." times on this plan"], 400);
+            return response()->json(['status' => 'failure', "error" => "You cant remove a social account more than ".$gs->remove_social_media." times on this plan"]);
         }
 
         $com = $company->removed;
@@ -156,6 +156,6 @@ class TwitterController extends Controller
         ]);
 
         TwitterAccount::where('company_id', $company_id)->delete();
-        return response()->json(['msg' => 'Twitter account successfully deleted']);
+        return response()->json(['status' => 'success', 'msg' => 'Twitter account successfully deleted']);
     }
 }

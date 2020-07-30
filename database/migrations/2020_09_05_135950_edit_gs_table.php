@@ -14,7 +14,7 @@ class EditGsTable extends Migration
     public function up()
     {
         Schema::table('gs', function(Blueprint $table) {
-            $table->integer('remove_social_media');
+            $table->integer('remove_social_media'); 
         });
     }
 
@@ -25,6 +25,8 @@ class EditGsTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('gs', function(Blueprint $table) {
+            $table->dropColumn('remove_social_media');
+        });
     }
 }
