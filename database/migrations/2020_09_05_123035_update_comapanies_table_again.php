@@ -13,12 +13,10 @@ class UpdateComapaniesTableAgain extends Migration
      */
     public function up()
     {
-        // Schema::table('companies', function (Blueprint $table) {
-        //     $table->integer("removed")->default(0);
-        // });
         Schema::table('companies', function (Blueprint $table) {
-            $table->dropColumn(['removed']);
+            $table->integer("removed")->default(0);
         });
+        
     }
 
     /**
