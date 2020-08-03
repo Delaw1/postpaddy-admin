@@ -201,9 +201,6 @@ class LinkedinController extends Controller
 
   public function test()
   {
-    // $access = "AQVtJWP2c2JOUb4qEh8L1x6CCzqP1oR-ZuV4LRhohFjNcic-jpQUEcK08XIkfZ6U2VVk_e-hp_EA0lnJ4ySl67u5KThC_K11guTnqH3mkFvMN3KJq3foMxhleBSRvHjVJZOVt6OlUpVYKJRlnxe_UvMGff_THzkn3OHTzgy-VDWZExdOeFltk0ryqc4nfFRkguFRDLq2fOZnau-PZzGYgMLqEpVeWnrPeJwh6x-ot6NtfQs0FTr1vv3rETIEOz87X-U1968-GFnRT97fLI672N41xDrKlYs1nDQEu_2rz4WjUkDPSlEahYScsidRIR5G8xzwsnukZ7ovhPwsERM-uoWLx7IhWg";
-    $access = "AQWEsFed9pklRM4pEClcWwNY5FVPAmxPBQU8AzzHC0KZknROs7Eo-lxUSugu3sDkMDjQtFdLdCb30Q7G5M941PHEfQlV3WoZaqBuAXr6wvcHu16tGa1dL0aWz2BDU2O148z7H_OGWfqZgTV8FIq7fhvCB_B4WU3X5QjJwBWyZRgrSDLcv1zdTawsAKQJWqMAQrYXMXaOUdwq2619X2c5AjTnleJ3_r2YdT_5Od8qQfWx3kvFxaRrPRgeQrUidmWH_4CLqCg8gVxHlr9JlRWPr7jEi1kgx0OH8VEPvW7A5vuii0boFhNjCfekrl_AEdWGjqzCiezcdJ1wPqQTiCnJD8n-hc2sJg";
-    $server_output = Utils::curlGetRequest('https://api.linkedin.com/v2/me', 'oauth2_access_token=' . $access, []);
-    return $server_output->id;
+    
   }
 }
