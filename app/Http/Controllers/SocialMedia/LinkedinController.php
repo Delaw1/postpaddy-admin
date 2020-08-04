@@ -13,6 +13,7 @@ use \App\Post;
 use \App\Utils;
 use Session;
 use DB;
+use GuzzleHttp\Client;
 
 
 class LinkedinController extends Controller
@@ -104,7 +105,11 @@ class LinkedinController extends Controller
 
     $uploadedContents = [];
 
+    // $id = $this->uploadMedia($personID, $linkedinAccount->linkedin_access_token, "15964606406173.png");
+    // $uploadedContents = [$id];
     if (!empty($media) && $media != "[]") {
+      // $id = $this->uploadMedia($personID, $linkedinAccount->linkedin_access_token, "15964606406173.png");
+        // array_push($uploadedContents, $id);
       foreach ($media as $m) {
         $id = $this->uploadMedia($personID, $linkedinAccount->linkedin_access_token, $m);
         array_push($uploadedContents, $id);
@@ -143,34 +148,63 @@ class LinkedinController extends Controller
     $uploadURL = $response->value->uploadMechanism->{"com.linkedin.digitalmedia.uploading.MediaUploadHttpRequest"}->uploadUrl;
     $assetID = $response->value->asset;
 
-    Utils::curlPostRequest($uploadURL, "&oauth2_access_token=$linkedin_access_token", File::get(public_path(Utils::UPLOADS_DIR . "/$fileID")), []);
-
+    // $res = Utils::curlPutRequest($uploadURL, File::get(public_path(Utils::UPLOADS_DIR . "/$fileID")), ['Authorization: Bearer '.$linkedin_access_token]);
+    
+    $client = new Client();
+    $res = $client->request('PUT', $uploadURL, [
+      'headers' => ['Authorization' => 'Bearer '.$linkedin_access_token],
+      'body' => fopen(public_path(Utils::UPLOADS_DIR . "/$fileID"), 'r'),
+      'verify' => true
+    ]);
+    
     return $assetID;
   }
 
   public function buildPost($personID, $text, $uploadedContents)
   {
-    $data = array(
-      'author' => "urn:li:person:$personID",
-      'lifecycleState' => 'PUBLISHED',
-      'specificContent' =>
-      array(
-        'com.linkedin.ugc.ShareContent' =>
+    if(!empty($uploadedContents)) {
+      $data = array(
+        'author' => "urn:li:person:$personID",
+        'lifecycleState' => 'PUBLISHED',
+        'specificContent' =>
         array(
-          'shareCommentary' =>
+          'com.linkedin.ugc.ShareContent' =>
           array(
-            'text' => $text,
+            'shareCommentary' =>
+            array(
+              'text' => $text,
+            ),
+            'shareMediaCategory' => 'IMAGE',
+            'media' => $this->buildMediaObjectArray($uploadedContents)
           ),
-          'shareMediaCategory' => !empty($uploadedContents) ? 'IMAGE' : 'NONE',
-          'media' =>
-          $this->buildMediaObjectArray($uploadedContents)
         ),
-      ),
-      'visibility' =>
-      array(
-        'com.linkedin.ugc.MemberNetworkVisibility' => 'PUBLIC',
-      )
-    );
+        'visibility' =>
+        array(
+          'com.linkedin.ugc.MemberNetworkVisibility' => 'PUBLIC',
+        )
+      );
+    } else {
+      $data = array(
+        'author' => "urn:li:person:$personID",
+        'lifecycleState' => 'PUBLISHED',
+        'specificContent' =>
+        array(
+          'com.linkedin.ugc.ShareContent' =>
+          array(
+            'shareCommentary' =>
+            array(
+              'text' => $text,
+            ),
+            'shareMediaCategory' => 'NONE'
+          ),
+        ),
+        'visibility' =>
+        array(
+          'com.linkedin.ugc.MemberNetworkVisibility' => 'PUBLIC',
+        )
+      );
+    }
+    
 
     return $data;
   }
@@ -182,15 +216,15 @@ class LinkedinController extends Controller
       $data =
         array(
           'status' => 'READY',
-          //   'description' => 
-          //   array (
-          //     'text' => 'Center stage!',
-          //   ),
+            'description' => 
+            array (
+              'text' => 'Center stage!',
+            ),
           'media' => $contentID,
-          //   'title' => 
-          //   array (
-          //     'text' => 'LinkedIn Talent Connect 2018',
-          //   ),
+            'title' => 
+            array (
+              'text' => 'LinkedIn Talent Connect 2018',
+            ),
         );
 
       array_push($contents, $data);
@@ -199,8 +233,9 @@ class LinkedinController extends Controller
     return $contents;
   }
 
-  public function test()
+  public function test($personID="64657", $linkedin_access_token="AQWEsFed9pklRM4pEClcWwNY5FVPAmxPBQU8AzzHC0KZknROs7Eo-lxUSugu3sDkMDjQtFdLdCb30Q7G5M941PHEfQlV3WoZaqBuAXr6wvcHu16tGa1dL0aWz2BDU2O148z7H_OGWfqZgTV8FIq7fhvCB_B4WU3X5QjJwBWyZRgrSDLcv1zdTawsAKQJWqMAQrYXMXaOUdwq2619X2c5AjTnleJ3_r2YdT_5Od8qQfWx3kvFxaRrPRgeQrUidmWH_4CLqCg8gVxHlr9JlRWPr7jEi1kgx0OH8VEPvW7A5vuii0boFhNjCfekrl_AEdWGjqzCiezcdJ1wPqQTiCnJD8n-hc2sJg",
+  $fileID="15964594253855.png")
   {
-    
+    return $this->uploadMedia($personID, $linkedin_access_token, $fileID);
   }
 }
