@@ -20,7 +20,7 @@ class LinkedinController extends Controller
 {
   public function __construct()
   {
-     $this->middleware('auth');
+    //  $this->middleware('auth');
     // Auth::loginUsingId(4);
   }
 
@@ -237,5 +237,10 @@ class LinkedinController extends Controller
   $fileID="15964594253855.png")
   {
     return $this->uploadMedia($personID, $linkedin_access_token, $fileID);
+  }
+
+  public function getCompaines($access="AQWEsFed9pklRM4pEClcWwNY5FVPAmxPBQU8AzzHC0KZknROs7Eo-lxUSugu3sDkMDjQtFdLdCb30Q7G5M941PHEfQlV3WoZaqBuAXr6wvcHu16tGa1dL0aWz2BDU2O148z7H_OGWfqZgTV8FIq7fhvCB_B4WU3X5QjJwBWyZRgrSDLcv1zdTawsAKQJWqMAQrYXMXaOUdwq2619X2c5AjTnleJ3_r2YdT_5Od8qQfWx3kvFxaRrPRgeQrUidmWH_4CLqCg8gVxHlr9JlRWPr7jEi1kgx0OH8VEPvW7A5vuii0boFhNjCfekrl_AEdWGjqzCiezcdJ1wPqQTiCnJD8n-hc2sJg") {
+    $response = Utils::curlGetRequest('https://api.linkedin.com/v2/organizationalEntityAcls', "q=roleAssignee&role=ADMINISTRATOR&state=APPROVED&oauth2_access_token=" . $access, []);
+    return response()->json($response);
   }
 }
