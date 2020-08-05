@@ -54,12 +54,12 @@ class RegisterController extends Controller
             
             $data = ['status' => 'failure']  + $data;
 
-            return response()->json($data);
+            return response()->json($data, 422);
         }
 
         $user = $this->create($input);
 
-        return response()->json(['status' => 'success', 'user'=>$user] );
+        return response()->json(['status' => 'success', 'user'=>$user], 200);
     }
 
     /**

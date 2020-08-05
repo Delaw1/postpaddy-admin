@@ -34,10 +34,11 @@ class LoginController extends Controller
                 {
                     $response['success'] = 'Successfully logged in';
                     $response["user_data"] = Auth::user();
+                    return response()->json([$response], 200);
                 }
         } else {
             $response['failure'] = 'Incorrect email or password';
         }
-        return response()->json([$response]);
+        return response()->json([$response], 400);
     }
 }
