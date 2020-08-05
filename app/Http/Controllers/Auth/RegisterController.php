@@ -54,7 +54,7 @@ class RegisterController extends Controller
             
             $data = ['status' => 'failure']  + $data;
 
-            return response()->json($data, 422);
+            return response()->json($data);
         }
 
         $user = $this->create($input);
