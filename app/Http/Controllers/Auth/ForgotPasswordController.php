@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use \App\User;
 use Illuminate\Support\Facades\Hash;
+use \Mailjet\Resources;
 
 class ForgotPasswordController extends Controller
 {
@@ -40,16 +41,48 @@ class ForgotPasswordController extends Controller
 
             return response()->json($data);
         }
+
+        $mj = new \Mailjet\Client(env('MAILJET_APIKEY'), env('MAILJET_APISECRET'),true,['version' => 'v3.1']);
         
         $token = base64_encode($input["email"]);
         $email = $input["email"];
-        $url = "https://digifigs.com/postslate-emails/password-reset-mail.php?token=".urlencode($token)."&email=".urlencode($email);
+        // $url = "https://digifigs.com/postslate-emails/password-reset-mail.php?token=".urlencode($token)."&email=".urlencode($email);
     
-        $response = file_get_contents($url);
+        // $response = file_get_contents($url);
+
+        $html = file_get_contents(resource_path('views/emails/passwordreset.blade.php'));
+        $html = str_replace(
+            ['{{TOKEN}}'],
+            [$token],
+            $html
+        ); 
+        $body = [
+            'Messages' => [
+              [
+                'From' => [
+                  'Email' => "info@digifigs.com",
+                  'Name' => "Postlate"
+                ],
+                'To' => [
+                  [
+                    'Email' => $email,
+                  ]
+                ],
+                'Subject' => "Postlate Password Reset",
+                'TextPart' => "Postlate Password Reset",
+                'HTMLPart' => $html,
+                'CustomID' => "AppGettingStartedTest"
+              ]
+            ]
+          ];
+        $response = $mj->post(Resources::$Email, ['body' => $body]);
+        $response->success() && var_dump($response->getData());
+        // return var_dump($response->getData());
+        // return 'yes'
 
         return response()->json( ['success'  => 'Password reset email sent'] );
     }
-
+ 
     public function setNow(Request $request)
     {
         $input = $request->all();

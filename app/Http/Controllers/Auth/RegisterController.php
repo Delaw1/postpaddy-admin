@@ -81,8 +81,7 @@ class RegisterController extends Controller
             ['{{NAME}}', '{{VERIFY_LINK}}'],
             [$data['name'], "https://postslate.com/api/VerifyEmail/".base64_encode($data['email'])],
             $html
-        );
-        // return $html2;
+        ); 
         $body = [
             'Messages' => [
               [
