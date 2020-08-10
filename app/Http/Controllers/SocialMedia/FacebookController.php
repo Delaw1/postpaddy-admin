@@ -79,7 +79,7 @@ class FacebookController extends Controller
     // return response()->json($fb);
     // $accessToken = $helper->getAccessToken();
     try {
-      $accessToken = $helper->getAccessToken("https://postslate.com/api/facebook_callback");
+      $accessToken = $helper->getAccessToken();
     } catch (Facebook\Exception\ResponseException $e) {
       // When Graph returns an error
       var_dump($helper->getError());
