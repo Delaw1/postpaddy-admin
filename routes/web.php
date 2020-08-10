@@ -56,12 +56,15 @@ Route::get('/add_twitter_account', 'SocialMedia\TwitterController@addAccount');
 Route::get('/twitter_callback', 'SocialMedia\TwitterController@saveAccessToken');
 
 Route::get('/add_facebook_account', 'SocialMedia\FacebookController@addAccount');
+Route::get('/facebook_callback', 'SocialMedia\FacebookController@saveAccessToken');
+
+// Route::get('/add_facebook_account', 'SocialMedia\FacebookController@addAccount');
 Route::get('/add_instagram_account', 'SocialMedia\TwitterController@addAccount');
 Route::get('/add_pinterest_account', 'SocialMedia\FacebookController@addAccount');
 
 Route::get('/get_remaining_social/{id}', 'CompanyManager@socialMedia');
 
-Route::get('/test', 'SocialMedia\FacebookController@postNow');
+Route::get('/test', 'SocialMedia\FacebookController@addAccount');
 Route::get('/sendmail', 'CompanyManager@sendMail');
 
 
