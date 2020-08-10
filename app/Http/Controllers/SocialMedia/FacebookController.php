@@ -36,8 +36,8 @@ class FacebookController extends Controller
     Session::put('social_company_id', $company_id);
 
     // $clientID = env("FACEBOOK_CLIENT_ID'");
-    $clientID = "493415521357024";
-    $clientSecret = "54c9846d87b01d7920e880fb1881cb99";
+    $clientID = "1484064975133443";
+    $clientSecret = "b3a2299aca447cb36c3a6b9584c84119";
     // $redirectURL = env("APP_CALLBACK_BASE_URL") . "/linkedin_callback";
     session_start();
     $fb = new Facebook([
@@ -64,8 +64,10 @@ class FacebookController extends Controller
   public function saveAccessToken(Request $request)
   {
     session_start();
-    $clientID = "493415521357024";
-    $clientSecret = "54c9846d87b01d7920e880fb1881cb99";
+    // $clientID = "493415521357024";
+    // $clientSecret = "54c9846d87b01d7920e880fb1881cb99";
+    $clientID = "1484064975133443";
+    $clientSecret = "b3a2299aca447cb36c3a6b9584c84119";
     $fb = new Facebook([
       'app_id' => $clientID,
       'app_secret' => $clientSecret,
@@ -77,7 +79,7 @@ class FacebookController extends Controller
     // return response()->json($fb);
     // $accessToken = $helper->getAccessToken();
     try {
-      $accessToken = $helper->getAccessToken();
+      $accessToken = $helper->getAccessToken("https://postslate.com/api/facebook_callback");
     } catch (Facebook\Exception\ResponseException $e) {
       // When Graph returns an error
       var_dump($helper->getError());
