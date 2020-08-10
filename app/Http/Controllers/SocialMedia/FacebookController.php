@@ -152,7 +152,7 @@ class FacebookController extends Controller
       exit;
     }
     $me = $response->getGraphUser();
-    echo $me;
+    echo $me->id;
   }
 
   public function postNow()
