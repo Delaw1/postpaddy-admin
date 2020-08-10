@@ -13,8 +13,8 @@ use Session;
 
 class FacebookController extends Controller
 {
-  
-  
+
+
   public function addAccount(Request $request)
   {
     $input = $request->all();
@@ -48,10 +48,10 @@ class FacebookController extends Controller
     ]);
 
     $helper = $fb->getRedirectLoginHelper();
-    
+
     if (isset($_GET['state'])) {
       $helper->getPersistentDataHandler()->set('state', $_GET['state']);
-  }
+    }
 
     $permissions = ['email']; // Optional permissions
     $loginUrl = $helper->getLoginUrl('https://postslate.com/api/facebook_callback', $permissions);
@@ -106,8 +106,8 @@ class FacebookController extends Controller
     }
 
     // Logged in
-    echo '<h3>Access Token</h3>';
-    var_dump($accessToken->getValue());
+    // echo '<h3>Access Token</h3>';
+    // var_dump($accessToken->getValue());
 
     // The OAuth 2.0 client handler helps us manage access tokens
     // $oAuth2Client = $fb->getOAuth2Client();
@@ -137,6 +137,22 @@ class FacebookController extends Controller
     // }
 
     $_SESSION['fb_access_token'] = (string) $accessToken;
+
+    try {
+      // Get the \Facebook\GraphNode\GraphUser object for the current user.
+      // If you provided a 'default_access_token', the '{access-token}' is optional.
+      $response = $fb->get('/me');
+    } catch (\Facebook\Exception\FacebookResponseException $e) {
+      // When Graph returns an error
+      echo 'Graph returned an error: ' . $e->getMessage();
+      exit;
+    } catch (\Facebook\Exception\FacebookSDKException $e) {
+      // When validation fails or other local issues
+      echo 'Facebook SDK returned an error: ' . $e->getMessage();
+      exit;
+    }
+    $me = $response->getGraphUser();
+    echo 'Logged in as ' . $me->getName();
   }
 
   public function postNow()
