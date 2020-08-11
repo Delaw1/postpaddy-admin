@@ -67,22 +67,22 @@ class LinkedinController extends Controller
     $linkedin_id = $get_id->id;
     $data = ['linkedin_id' => $linkedin_id];
 
-    $validation = Validator::make($data, [
-      'linkedin_id' => ['required', 'unique:linkedin_accounts']
-    ]);
+    // $validation = Validator::make($data, [
+    //   'linkedin_id' => ['required', 'unique:linkedin_accounts']
+    // ]);
 
-    if ($validation->fails()) {
-      if (env("APP_ENV") == "development") {
-        return redirect(env('APP_FRONTEND_URL_DEV') . "/dashboard/accounts/add-social-media-accounts?linkedin=existing");
-      }
-      return redirect(env('APP_FRONTEND_URL') . "/dashboard/accounts/add-social-media-accounts?linkedin=existing");
-    }
+    // if ($validation->fails()) {
+    //   if (env("APP_ENV") == "development") {
+    //     return redirect(env('APP_FRONTEND_URL_DEV') . "/dashboard/accounts/add-social-media-accounts?linkedin=existing");
+    //   }
+    //   return redirect(env('APP_FRONTEND_URL') . "/dashboard/accounts/add-social-media-accounts?linkedin=existing");
+    // }
 
 
     $company_id = Session::get('social_company_id');
 
     // DB::delete('delete from linkedin_accounts where id = ?', [$company_id]);
-    LinkedinAccount::create(["company_id" => $company_id, "linkedin_access_token" => $access_token, "linkedin_id" => $linkedin_id]);
+    // LinkedinAccount::create(["company_id" => $company_id, "linkedin_access_token" => $access_token, "linkedin_id" => $linkedin_id]);
 
     // return redirect(env("CLOSE_WINDOW_URL"));
     if (env("APP_ENV") == "development") {
