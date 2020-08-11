@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class FacebookAccount extends Model
 {
     protected $fillable = [
-        'company_id', 'oauth_token', 'facebook_id', 'oauth_token_secret'
+        'company_id', 'oauth_token', 'facebook_id'
     ];
 
     protected $hidden = [
