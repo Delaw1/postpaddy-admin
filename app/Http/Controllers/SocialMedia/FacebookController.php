@@ -130,9 +130,9 @@ class FacebookController extends Controller
 
     if ($validation->fails()) {
       if (env("APP_ENV") == "development") {
-        return redirect(env('APP_FRONTEND_URL_DEV') . "/dashboard/accounts/add-social-media-accounts?linkedin=existing");
+        return redirect(env('APP_FRONTEND_URL_DEV') . "/dashboard/accounts/add-social-media-accounts?facebook=existing");
       }
-      return redirect(env('APP_FRONTEND_URL') . "/dashboard/accounts/add-social-media-accounts?linkedin=existing");
+      return redirect(env('APP_FRONTEND_URL') . "/dashboard/accounts/add-social-media-accounts?facebook=existing");
     }
 
     $company_id = Session::get('social_company_id');
