@@ -32,6 +32,6 @@ class MyMail extends Mailable
      */
     public function build()
     {
-        return $this->subject($this->subject)->view($this->view);
+        return $this->subject($this->subject)->view($this->view)->from('info@digifigs.com');
     }
 }

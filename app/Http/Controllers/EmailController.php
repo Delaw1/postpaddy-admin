@@ -13,6 +13,7 @@ class EmailController extends Controller
         $subject = "Geonel";
         $view = 'emails.geonel';
         $email =  $request->input('email_to');
+        $email_from = $request->input('email_tofrom');
         $mailBody = new MyMail($subject, $request->all(), $view);
         $mail = Mail::to($email)->send($mailBody);
 
