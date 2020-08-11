@@ -136,7 +136,7 @@ class FacebookController extends Controller
     }
 
     $company_id = Session::get('social_company_id');
-    FacebookAccount::create(["company_id" => $company_id, "oauth_token" => $access_token, "facebook_id" => $id, "oauth_token_secret" => null]);
+    FacebookAccount::create(["company_id" => $company_id, "oauth_token" => $access_token, "facebook_id" => $id, "oauth_token_secret" => '']);
    
     if (env("APP_ENV") == "development") {
       return redirect(env('APP_FRONTEND_URL_DEV') . "/dashboard/accounts/add-social-media-accounts?facebook=true");
