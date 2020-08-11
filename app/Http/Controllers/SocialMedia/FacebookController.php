@@ -57,15 +57,11 @@ class FacebookController extends Controller
     $loginUrl = $helper->getLoginUrl('https://postslate.com/api/facebook_callback', $permissions);
 
     return redirect($loginUrl);
-    // echo '<a href="' . $loginUrl . '">Log in with Facebook!</a>';
-    // return $clientID;
   }
 
   public function saveAccessToken(Request $request)
   {
     session_start();
-    // $clientID = "493415521357024";
-    // $clientSecret = "54c9846d87b01d7920e880fb1881cb99";
     $clientID = "493415521357024";
     $clientSecret = "54c9846d87b01d7920e880fb1881cb99";
     $fb = new Facebook([
@@ -75,84 +71,77 @@ class FacebookController extends Controller
       //'default_access_token' => '{access-token}', // optional
     ]);
     $helper = $fb->getRedirectLoginHelper();
-    // var_dump($helper->getAccessToken());
-    // return response()->json($fb);
-    // $accessToken = $helper->getAccessToken();
     try {
       $accessToken = $helper->getAccessToken("https://postslate.com/api/facebook_callback");
     } catch (Facebook\Exception\ResponseException $e) {
       // When Graph returns an error
-      var_dump($helper->getError());
-      echo 'Graph returned an error: ' . $e->getMessage();
-      exit;
+      // var_dump($helper->getError());
+      // echo 'Graph returned an error: ' . $e->getMessage();
+      return response()->json(['status' => 'failure', 'error' => $e->getMessage()]);
+      // exit;
     } catch (Facebook\Exception\SDKException $e) {
       // When validation fails or other local issues
-      echo 'Facebook SDK returned an error: ' . $e->getMessage();
-      exit;
+      // echo 'Facebook SDK returned an error: ' . $e->getMessage();
+      return response()->json(['status' => 'failure', 'error' => $e->getMessage()]);
+      // exit;
     }
 
     if (!isset($accessToken)) {
       if ($helper->getError()) {
         header('HTTP/1.0 401 Unauthorized');
-        echo "Error: " . $helper->getError() . "\n";
-        echo "Error Code: " . $helper->getErrorCode() . "\n";
-        echo "Error Reason: " . $helper->getErrorReason() . "\n";
-        echo "Error Description: " . $helper->getErrorDescription() . "\n";
+        // echo "Error: " . $helper->getError() . "\n";
+        // echo "Error Code: " . $helper->getErrorCode() . "\n";
+        // echo "Error Reason: " . $helper->getErrorReason() . "\n";
+        // echo "Error Description: " . $helper->getErrorDescription() . "\n";
+        return response()->json(['status' => 'failure', 'error' => $e->getError()]);
       } else {
         header('HTTP/1.0 400 Bad Request');
-        echo 'Bad request';
+        return response()->json(['status' => 'failure', 'error' => 'Bad request']);
+        // echo 'Bad request';
       }
-      exit;
     }
 
-    // Logged in
-    // echo '<h3>Access Token</h3>';
-    // var_dump($accessToken->getValue());
-
-    // The OAuth 2.0 client handler helps us manage access tokens
-    // $oAuth2Client = $fb->getOAuth2Client();
-
-    // // Get the access token metadata from /debug_token
-    // $tokenMetadata = $oAuth2Client->debugToken($accessToken);
-    // echo '<h3>Metadata</h3>';
-    // var_dump($tokenMetadata);
-
-    // // Validation (these will throw FacebookSDKException's when they fail)
-    // $tokenMetadata->validateAppId($config['app_id']);
-    // // If you know the user ID this access token belongs to, you can validate it here
-    // //$tokenMetadata->validateUserId('123');
-    // $tokenMetadata->validateExpiration();
-
-    // if (! $accessToken->isLongLived()) {
-    //   // Exchanges a short-lived access token for a long-lived one
-    //   try {
-    //     $accessToken = $oAuth2Client->getLongLivedAccessToken($accessToken);
-    //   } catch (Facebook\Exception\SDKException $e) {
-    //     echo "<p>Error getting long-lived access token: " . $e->getMessage() . "</p>\n\n";
-    //     exit;
-    //   }
-
-    //   echo '<h3>Long-lived</h3>';
-    //   var_dump($accessToken->getValue());
-    // }
-
     $_SESSION['fb_access_token'] = (string) $accessToken;
+    $access_token = (string) $accessToken;
 
     try {
       // Get the \Facebook\GraphNode\GraphUser object for the current user.
       // If you provided a 'default_access_token', the '{access-token}' is optional.
-      $response = $fb->get('/me', $_SESSION['fb_access_token'] );
+      $response = $fb->get('/me', $access_token);
     } catch (\Facebook\Exception\FacebookResponseException $e) {
       // When Graph returns an error
-      echo 'Graph returned an error: ' . $e->getMessage();
-      exit;
+      // echo 'Graph returned an error: ' . $e->getMessage();
+      return response()->json(['status' => 'failure', 'error' => $e->getMessage()]);
+      // exit;
     } catch (\Facebook\Exception\FacebookSDKException $e) {
       // When validation fails or other local issues
-      echo 'Facebook SDK returned an error: ' . $e->getMessage();
-      exit;
+      // echo 'Facebook SDK returned an error: ' . $e->getMessage();
+      return response()->json(['status' => 'failure', 'error' => $e->getMessage()]);
+      // exit;
     }
     $me = $response->getGraphUser();
-    echo $me['id'];
+    $id = $me['id'];
+
+    $data = ['facebook_id' => $id];
+
+    $validation = Validator::make($data, [
+      'facebook_id' => ['required', 'unique:facebook_accounts']
+    ]);
+
+    if ($validation->fails()) {
+      if (env("APP_ENV") == "development") {
+        return redirect(env('APP_FRONTEND_URL_DEV') . "/dashboard/accounts/add-social-media-accounts?linkedin=existing");
+      }
+      return redirect(env('APP_FRONTEND_URL') . "/dashboard/accounts/add-social-media-accounts?linkedin=existing");
+    }
+
+    $company_id = Session::get('social_company_id');
+    FacebookAccount::create(["company_id" => $company_id, "oauth_token" => $access_token, "facebook_id" => $id]);
+   
+    if (env("APP_ENV") == "development") {
+      return redirect(env('APP_FRONTEND_URL_DEV') . "/dashboard/accounts/add-social-media-accounts?facebook=true");
+    }
+    return redirect(env('APP_FRONTEND_URL') . "/dashboard/accounts/add-social-media-accounts?facebook=true");
   }
 
   public function postNow()
