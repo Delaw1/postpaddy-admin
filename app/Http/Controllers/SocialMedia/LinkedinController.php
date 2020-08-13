@@ -47,7 +47,7 @@ class LinkedinController extends Controller
     $clientID = env("LINKEDIN_CLIENT_ID");
     $redirectURL = env("APP_CALLBACK_BASE_URL") . "/linkedin_callback";
 
-    return redirect("https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=$clientID&redirect_uri=$redirectURL&state=987654321&scope=r_liteprofile,w_member_social,w_organization_social,rw_organization");
+    return redirect("https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=$clientID&redirect_uri=$redirectURL&state=987654321&scope=r_liteprofile,w_member_social,w_organization_social");
   }
 
   public function saveAccessToken(Request $request)
