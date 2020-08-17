@@ -8,6 +8,7 @@ use App\Post;
 use \App\Http\Controllers\Posting\PostManager;
 use \App\Http\Controllers\SocialMedia\LinkedinController;
 use \App\Http\Controllers\SocialMedia\TwitterController;
+use Illuminate\Console\Command;
 
 class Kernel extends ConsoleKernel
 {
@@ -17,7 +18,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        Commands\schedulePost::class,
     ];
 
     /**
@@ -30,32 +31,8 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         
-        $schedule->call('App\Http\Controllers\PostManager@scheduler')->everyMinute();
-        // $schedule->call(function () {
-        //     // (new PostManager())->scheduler();
-        //     // Post::where('id', 35)->delete();
-        //     $date = \Carbon\Carbon::now();
-        //     $date->setTimezone("Africa/Lagos");
-
-        //     $posts = Post::where('schedule_date', '<=', $date->timestamp)->where('is_posted', '!=', true)->get();
-
-        //     foreach ($posts as $post) {
-        //         foreach ($post->platforms as $platform) {
-        //             switch ($platform) {
-        //                 case "linkedin":
-        //                     (new LinkedinController())->postNow($post);
-        //                     print("posted to linkedin");
-        //                     break;
-        //                 case "twitter":
-        //                     (new TwitterController())->postNow($post);
-        //                     print("posted to twitter");
-        //                     break;
-        //             }
-        //         }
-
-        //         $post->update(["is_posted" => true]);
-        //     }
-        // })->everyMinute();
+        // $schedule->call('App\Http\Controllers\PostManager@scheduler')->everyMinute();
+        $schedule->command('schedule:post')->everyMinute();
     }
 
     /**
