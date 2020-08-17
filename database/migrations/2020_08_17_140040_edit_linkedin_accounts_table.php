@@ -14,7 +14,7 @@ class EditLinkedinAccountsTable extends Migration
     public function up()
     {
         Schema::table('linkedin_accounts', function (Blueprint $table) {
-            $table->longText("accounts")->default('[]');
+            $table->json("accounts");
         });
     }
 
