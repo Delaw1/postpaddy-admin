@@ -18,6 +18,10 @@ class LinkedinAccount extends Model
         'accounts' => 'array'
     ];
 
+    protected $attributes = [
+        'accounts' => "[]"
+    ];
+
     public function company(){
         return $this->hasOne("App\Company", "id", "company_id");
     }

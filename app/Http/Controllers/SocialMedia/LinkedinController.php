@@ -128,7 +128,7 @@ class LinkedinController extends Controller
     $validation = Validator::make($input, [
       'id' => ['required', 'exists:companies'],
       'company_id' => ['required', 'exists:linkedin_accounts'],
-      'accounts' => ['required', 'array']
+      'accounts' => ['required']
     ]);
 
     if ($validation->fails()) {
@@ -288,4 +288,12 @@ class LinkedinController extends Controller
 
     return $contents;
   }
+
+  public function test() {
+  //   LinkedinAccount::create([
+  //     'company_id' => 4,
+  //     'linkedin_access_token' => 'jhhfh',
+  //     'linkedin_id' => 3
+  //   ]);
+  // }
 }

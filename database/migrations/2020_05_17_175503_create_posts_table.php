@@ -19,7 +19,7 @@ class CreatePostsTable extends Migration
             $table->integer("user_id");
             $table->integer("company_id");
             $table->text("content");
-            $table->json("media");
+            $table->json("media"); 
             $table->json("platforms");
             $table->string("schedule_date")->default("");
         });
