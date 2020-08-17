@@ -58,25 +58,22 @@ class LinkedinController extends Controller
 
     $code = $request->input('code');
 
-    $server_output = Utils::curlPostRequest("https://www.linkedin.com/oauth/v2/accessToken", "grant_type=authorization_code&code=".$code."&redirect_uri=$redirectURL&client_id=$clientID&client_secret=$clientSecrete", NULL, []);
+    $server_output = Utils::curlPostRequest("https://www.linkedin.com/oauth/v2/accessToken", "grant_type=authorization_code&code=" . $code . "&redirect_uri=$redirectURL&client_id=$clientID&client_secret=$clientSecrete", NULL, []);
     $access_token = $server_output->access_token;
-    // $access_token = "AQWEsFed9pklRM4pEClcWwNY5FVPAmxPBQU8AzzHC0KZknROs7Eo-lxUSugu3sDkMDjQtFdLdCb30Q7G5M941PHEfQlV3WoZaqBuAXr6wvcHu16tGa1dL0aWz2BDU2O148z7H_OGWfqZgTV8FIq7fhvCB_B4WU3X5QjJwBWyZRgrSDLcv1zdTawsAKQJWqMAQrYXMXaOUdwq2619X2c5AjTnleJ3_r2YdT_5Od8qQfWx3kvFxaRrPRgeQrUidmWH_4CLqCg8gVxHlr9JlRWPr7jEi1kgx0OH8VEPvW7A5vuii0boFhNjCfekrl_AEdWGjqzCiezcdJ1wPqQTiCnJD8n-hc2sJg";
-
-    $get_id = Utils::curlGetRequest('https://api.linkedin.com/v2/me', 'oauth2_access_token=' . $access_token, []);
-
-    $linkedin_id = $get_id->id;
+    $get_me = Utils::curlGetRequest('https://api.linkedin.com/v2/me', 'oauth2_access_token=' . $access_token, []);
+    $linkedin_id = $get_me->id;
     $data = ['linkedin_id' => $linkedin_id];
 
-    // $validation = Validator::make($data, [
-    //   'linkedin_id' => ['required', 'unique:linkedin_accounts']
-    // ]);
+    $validation = Validator::make($data, [
+      'linkedin_id' => ['required', 'unique:linkedin_accounts']
+    ]);
 
-    // if ($validation->fails()) {
-    //   if (env("APP_ENV") == "development") {
-    //     return redirect(env('APP_FRONTEND_URL_DEV') . "/dashboard/accounts/add-social-media-accounts?linkedin=existing");
-    //   }
-    //   return redirect(env('APP_FRONTEND_URL') . "/dashboard/accounts/add-social-media-accounts?linkedin=existing");
-    // }
+    if ($validation->fails()) {
+      if (env("APP_ENV") == "development") {
+        return redirect(env('APP_FRONTEND_URL_DEV') . "/dashboard/accounts/add-social-media-accounts?linkedin=existing");
+      }
+      return redirect(env('APP_FRONTEND_URL') . "/dashboard/accounts/add-social-media-accounts?linkedin=existing");
+    }
 
 
     $company_id = Session::get('social_company_id');
@@ -84,16 +81,75 @@ class LinkedinController extends Controller
     // DB::delete('delete from linkedin_accounts where id = ?', [$company_id]);
     LinkedinAccount::create(["company_id" => $company_id, "linkedin_access_token" => $access_token, "linkedin_id" => $linkedin_id]);
 
-    // return redirect(env("CLOSE_WINDOW_URL"));
     if (env("APP_ENV") == "development") {
       return redirect(env('APP_FRONTEND_URL_DEV') . "/dashboard/accounts/add-social-media-accounts?linkedin=true");
     }
     return redirect(env('APP_FRONTEND_URL') . "/dashboard/accounts/add-social-media-accounts?linkedin=true");
   }
 
+  public function selectAccount(Request $request)
+  {
+    $input = $request->all();
+    $input["id"] = $request->input("company_id");
+
+    $validation = Validator::make($input, [
+      'id' => ['required', 'exists:companies'],
+      'company_id' => ['required', 'exists:linkedin_accounts']
+    ]);
+
+    if ($validation->fails()) {
+      $data = json_decode($validation->errors(), true);
+
+      $data = ['status' => 'failure']  + $data;
+
+      return response()->json($data);
+    }
+    $linkedin = LinkedinAccount::where('company_id', $input["id"])->first();
+    $access_token = $linkedin->linkedin_access_token;
+
+    $org_data = [];
+
+    $get_me = Utils::curlGetRequest('https://api.linkedin.com/v2/me', 'oauth2_access_token=' . $access_token, []);
+    array_push($org_data, array("name" => $get_me->localizedFirstName . ' ' . $get_me->localizedLastName, "id" => $get_me->id, "category" => "personal"));
+
+    $res = Utils::curlGetRequest('https://api.linkedin.com/v2/organizationAcls', 'q=roleAssignee&role=ADMINISTRATOR&state=APPROVED&oauth2_access_token=' . $access_token . '&projection=(elements*(*,organization~(localizedName)))', []);
+    foreach ($res->elements as $elem) {
+      $id = explode(":", $elem->organization)[3];
+      array_push($org_data, array("name" => $elem->{'organization~'}->localizedName, "id" => $id, "category" => "company"));
+    }
+    return response()->json($org_data);
+  }
+
+  public function saveAccount(Request $request)
+  {
+    $input = $request->all();
+    $input["id"] = $request->input("company_id");
+
+    $validation = Validator::make($input, [
+      'id' => ['required', 'exists:companies'],
+      'company_id' => ['required', 'exists:linkedin_accounts'],
+      'accounts' => ['required', 'array']
+    ]);
+
+    if ($validation->fails()) {
+      $data = json_decode($validation->errors(), true);
+
+      $data = ['status' => 'failure']  + $data;
+
+      return response()->json($data);
+    }
+    $update = LinkedinAccount::where('company_id', $input["id"])->update([
+      'accounts' => $request->accounts
+    ]);
+    if ($update) {
+      return response()->json(['status' => 'success']);
+    }
+    return response()->json(['status' => 'failure', 'msg' => 'Network error']);
+  }
+
   public function postNow($post)
   {
-    $text = $post->content."\r\n\n".$post->hashtag;
+    $text = $post->content . "\r\n\n" . $post->hashtag;
     $media = $post->media;
     $linkedinAccount = LinkedinAccount::where("company_id", '=', $post->company_id)->first();
     if ($linkedinAccount == null) {
@@ -109,7 +165,7 @@ class LinkedinController extends Controller
     // $uploadedContents = [$id];
     if (!empty($media) && $media != "[]") {
       // $id = $this->uploadMedia($personID, $linkedinAccount->linkedin_access_token, "15964606406173.png");
-        // array_push($uploadedContents, $id);
+      // array_push($uploadedContents, $id);
       foreach ($media as $m) {
         $id = $this->uploadMedia($personID, $linkedinAccount->linkedin_access_token, $m);
         array_push($uploadedContents, $id);
@@ -149,20 +205,20 @@ class LinkedinController extends Controller
     $assetID = $response->value->asset;
 
     // $res = Utils::curlPutRequest($uploadURL, File::get(public_path(Utils::UPLOADS_DIR . "/$fileID")), ['Authorization: Bearer '.$linkedin_access_token]);
-    
+
     $client = new Client();
     $res = $client->request('PUT', $uploadURL, [
-      'headers' => ['Authorization' => 'Bearer '.$linkedin_access_token],
+      'headers' => ['Authorization' => 'Bearer ' . $linkedin_access_token],
       'body' => fopen(public_path(Utils::UPLOADS_DIR . "/$fileID"), 'r'),
       'verify' => true
     ]);
-    
+
     return $assetID;
   }
 
   public function buildPost($personID, $text, $uploadedContents)
   {
-    if(!empty($uploadedContents)) {
+    if (!empty($uploadedContents)) {
       $data = array(
         'author' => "urn:li:person:$personID",
         'lifecycleState' => 'PUBLISHED',
@@ -204,7 +260,7 @@ class LinkedinController extends Controller
         )
       );
     }
-    
+
 
     return $data;
   }
@@ -216,31 +272,20 @@ class LinkedinController extends Controller
       $data =
         array(
           'status' => 'READY',
-            'description' => 
-            array (
-              'text' => 'Center stage!',
-            ),
+          'description' =>
+          array(
+            'text' => 'Center stage!',
+          ),
           'media' => $contentID,
-            'title' => 
-            array (
-              'text' => 'LinkedIn Talent Connect 2018',
-            ),
+          'title' =>
+          array(
+            'text' => 'LinkedIn Talent Connect 2018',
+          ),
         );
 
       array_push($contents, $data);
     }
 
     return $contents;
-  }
-
-  public function test($personID="64657", $linkedin_access_token="AQWEsFed9pklRM4pEClcWwNY5FVPAmxPBQU8AzzHC0KZknROs7Eo-lxUSugu3sDkMDjQtFdLdCb30Q7G5M941PHEfQlV3WoZaqBuAXr6wvcHu16tGa1dL0aWz2BDU2O148z7H_OGWfqZgTV8FIq7fhvCB_B4WU3X5QjJwBWyZRgrSDLcv1zdTawsAKQJWqMAQrYXMXaOUdwq2619X2c5AjTnleJ3_r2YdT_5Od8qQfWx3kvFxaRrPRgeQrUidmWH_4CLqCg8gVxHlr9JlRWPr7jEi1kgx0OH8VEPvW7A5vuii0boFhNjCfekrl_AEdWGjqzCiezcdJ1wPqQTiCnJD8n-hc2sJg",
-  $fileID="15964594253855.png")
-  {
-    return $this->uploadMedia($personID, $linkedin_access_token, $fileID);
-  }
-
-  public function getCompaines($access="AQWEsFed9pklRM4pEClcWwNY5FVPAmxPBQU8AzzHC0KZknROs7Eo-lxUSugu3sDkMDjQtFdLdCb30Q7G5M941PHEfQlV3WoZaqBuAXr6wvcHu16tGa1dL0aWz2BDU2O148z7H_OGWfqZgTV8FIq7fhvCB_B4WU3X5QjJwBWyZRgrSDLcv1zdTawsAKQJWqMAQrYXMXaOUdwq2619X2c5AjTnleJ3_r2YdT_5Od8qQfWx3kvFxaRrPRgeQrUidmWH_4CLqCg8gVxHlr9JlRWPr7jEi1kgx0OH8VEPvW7A5vuii0boFhNjCfekrl_AEdWGjqzCiezcdJ1wPqQTiCnJD8n-hc2sJg") {
-    $response = Utils::curlGetRequest('https://api.linkedin.com/v2/organizationalEntityAcls', "q=roleAssignee&role=ADMINISTRATOR&state=APPROVED&oauth2_access_token=" . $access, []);
-    return response()->json($response);
   }
 }
