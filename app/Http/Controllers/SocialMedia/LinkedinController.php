@@ -295,5 +295,5 @@ class LinkedinController extends Controller
   //     'linkedin_access_token' => 'jhhfh',
   //     'linkedin_id' => 3
   //   ]);
-  // }
+  }
 }
