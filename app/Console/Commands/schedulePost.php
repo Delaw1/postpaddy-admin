@@ -59,7 +59,7 @@ class schedulePost extends Command
                         break;
                 }
             }
-            // $post->update(["is_posted" => true]);
+            $post->update(["is_posted" => true]);
         }
         $this->info("Scheduled post sent");
     }
