@@ -110,6 +110,6 @@ class TwitterController extends Controller
         }
 
         $statusUpdate = $connection->post("statuses/update", $data);
-        print($statusUpdate->text);
+        print_r($statusUpdate);
     }
 }
