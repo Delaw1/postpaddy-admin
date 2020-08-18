@@ -97,7 +97,7 @@ class TwitterController extends Controller
         $twitterAccount = TwitterAccount::where("company_id", '=', $post->company_id)->first();
         if($twitterAccount == null){return NULL;}
         print_r(env('TWITTER_CONSUMER_KEY', 'not found'));
-        $connection = new TwitterOAuth(env('TWITTER_CONSUMER_KEY'), env('TWITTER_CONSUMER_SECRET'), $twitterAccount->oauth_token, $twitterAccount->oauth_token_secret);
+        $connection = new TwitterOAuth(env('TWITTER_CONSUMER_KEY', 'A2G9X2smq1BQFYcfrjKeNqDjV'), env('TWITTER_CONSUMER_SECRET', 'nt7hTe24iy7P6FaaJ1Hq6NSOtzDeWPHJsjH9BEG76CqNrPkwm5'), $twitterAccount->oauth_token, $twitterAccount->oauth_token_secret);
         
         $data = array("status" => $text);
 
