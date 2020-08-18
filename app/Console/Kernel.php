@@ -31,8 +31,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         
-        // $schedule->call('App\Http\Controllers\PostManager@scheduler')->everyMinute();
-        // $schedule->command('schedule:post')->everyMinute();
+        $schedule->command('schedule:post')->everyMinute();
     }
 
     /**

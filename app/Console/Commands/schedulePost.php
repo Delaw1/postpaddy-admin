@@ -55,11 +55,11 @@ class schedulePost extends Command
                         break;
                     case "twitter":
                         (new TwitterController())->postNow($post);
-                        
+                        print("posted to twitter");
                         break;
                 }
             }
-            // $post->update(["is_posted" => true]);
+            $post->update(["is_posted" => true]);
         }
         $this->info("Scheduled post sent");
     }
