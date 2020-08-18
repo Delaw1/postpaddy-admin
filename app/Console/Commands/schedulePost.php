@@ -55,7 +55,7 @@ class schedulePost extends Command
                         break;
                     case "twitter":
                         (new TwitterController())->postNow($post);
-                        print("posted to twitter");
+                        
                         break;
                 }
             }

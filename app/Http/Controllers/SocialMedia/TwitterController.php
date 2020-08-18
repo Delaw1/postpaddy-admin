@@ -110,5 +110,6 @@ class TwitterController extends Controller
         }
 
         $statusUpdate = $connection->post("statuses/update", $data);
+        print("posted to twitter");
     }
 }

@@ -177,6 +177,7 @@ class LinkedinController extends Controller
     $body = json_encode($data);
     /*var_dump*/
     (Utils::curlPostRequest('https://api.linkedin.com/v2/ugcPosts', 'oauth2_access_token=' . $linkedinAccount->linkedin_access_token, $body, ['Content-Type: application/json']));
+  
   }
 
   public function uploadMedia($personID, $linkedin_access_token, $fileID)
