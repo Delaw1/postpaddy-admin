@@ -92,24 +92,25 @@ class TwitterController extends Controller
     }
 
     public function postNow($post){
-        $text = $post->content."\r\n\n".$post->hashtag;
-        $media = $post->media;
-        $twitterAccount = TwitterAccount::where("company_id", '=', $post->company_id)->first();
-        if($twitterAccount == null){return NULL;}
         print_r(env('TWITTER_CONSUMER_KEY', 'not found'));
-        $connection = new TwitterOAuth(env('TWITTER_CONSUMER_KEY', 'A2G9X2smq1BQFYcfrjKeNqDjV'), env('TWITTER_CONSUMER_SECRET', 'nt7hTe24iy7P6FaaJ1Hq6NSOtzDeWPHJsjH9BEG76CqNrPkwm5'), $twitterAccount->oauth_token, $twitterAccount->oauth_token_secret);
+        // $text = $post->content."\r\n\n".$post->hashtag;
+        // $media = $post->media;
+        // $twitterAccount = TwitterAccount::where("company_id", '=', $post->company_id)->first();
+        // if($twitterAccount == null){return NULL;}
         
-        $data = array("status" => $text);
+        // $connection = new TwitterOAuth(env('TWITTER_CONSUMER_KEY', 'A2G9X2smq1BQFYcfrjKeNqDjV'), env('TWITTER_CONSUMER_SECRET', 'nt7hTe24iy7P6FaaJ1Hq6NSOtzDeWPHJsjH9BEG76CqNrPkwm5'), $twitterAccount->oauth_token, $twitterAccount->oauth_token_secret);
+        
+        // $data = array("status" => $text);
 
-        if(!empty($media) && $media != "[]"){
-            $data["media_ids"] = '';
-            foreach($media as $m){
-                $upload = $connection->upload('media/upload', ['media' => public_path(Utils::UPLOADS_DIR."/$m")]);
-                $data["media_ids"] .= $upload->media_id_string.",";
-            }
-        }
+        // if(!empty($media) && $media != "[]"){
+        //     $data["media_ids"] = '';
+        //     foreach($media as $m){
+        //         $upload = $connection->upload('media/upload', ['media' => public_path(Utils::UPLOADS_DIR."/$m")]);
+        //         $data["media_ids"] .= $upload->media_id_string.",";
+        //     }
+        // }
 
-        $statusUpdate = $connection->post("statuses/update", $data);
-        print_r($statusUpdate);
+        // $statusUpdate = $connection->post("statuses/update", $data);
+        // print_r($statusUpdate);
     }
 }
