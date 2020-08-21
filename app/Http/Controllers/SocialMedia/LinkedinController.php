@@ -82,9 +82,9 @@ class LinkedinController extends Controller
     LinkedinAccount::create(["company_id" => $company_id, "linkedin_access_token" => $access_token, "linkedin_id" => $linkedin_id]);
 
     if (env("APP_ENV") == "development") {
-      return redirect(env('APP_FRONTEND_URL_DEV') . "/dashboard/accounts/add-social-media-accounts?linkedin=true");
+      return redirect(env('APP_FRONTEND_URL_DEV') . "/dashboard/linkedin_select_account");
     }
-    return redirect(env('APP_FRONTEND_URL') . "/dashboard/accounts/add-social-media-accounts?linkedin=true");
+    return redirect(env('APP_FRONTEND_URL') . "/dashboard/linkedin_select_account");
   }
 
   public function selectAccount(Request $request)
