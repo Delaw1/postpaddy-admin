@@ -16,7 +16,7 @@ class PostManager extends Controller
 {
     public function __construct()
     {
-           $this->middleware('auth');
+        //    $this->middleware('auth');
         // Auth::loginUsingId(4);
     }
 
@@ -64,6 +64,31 @@ class PostManager extends Controller
         }
 
         return response()->json(['status' => 'success', 'post' => $post], 201);
+    }
+
+    public function test()
+    {
+        $platforms = [
+            'linkedin' => [
+                ["id" => "UPYyMf_0T8", "name" => "Lawrence Ajayi", "category" => "personal"],
+                ["id" => "28845472", "name" => "Launchi Software Academy", "category" => "company"]
+            ],
+            'twitter' => [],
+            'facebook' => []
+        ];
+        // [{"id": "UPYyMf_0T8", "name": "Lawrence Ajayi", "category": "personal"}, {"id": "28845472", "name": "Launchi Software Academy", "category": "company"}, {"id": "68737226", "name": "Testing232", "category": "company"}, {"id": "11325574", "name": "Digital Figures", "category": "company"}]
+        $newplatform = array();
+        foreach (array_keys($platforms) as $platform) {
+
+            switch ($platform) {
+                case "linkedin":
+                    array_push($newplatform, 'new linkein');
+                    break;
+                case "twitter":
+                    break;
+            }
+        }
+        return response()->json($newplatform);
     }
 
     public function GetPosts(Request $request)

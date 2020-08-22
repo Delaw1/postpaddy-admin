@@ -15,7 +15,7 @@ class LoginController extends Controller
         //$this->middleware('guest')->except('logout');
     }
 
-    public function login(Request $request){
+    public function login(Request $request){ 
         $response;
         $conditions = array(
             'email' => $request->input('email'),

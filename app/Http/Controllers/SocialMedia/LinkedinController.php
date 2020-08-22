@@ -156,31 +156,42 @@ class LinkedinController extends Controller
       return NULL;
     }
 
-    $response = Utils::curlGetRequest('https://api.linkedin.com/v2/me', "oauth2_access_token=" . $linkedinAccount->linkedin_access_token, []);
-    $personID = $response->id;
+    foreach ($post['platforms']['linkedin'] as $account) {
+      if ($account['category'] == 'personal') {
+        $response = Utils::curlGetRequest('https://api.linkedin.com/v2/me', "oauth2_access_token=" . $linkedinAccount->linkedin_access_token, []);
+        $personID = $response->id;
 
-    $uploadedContents = [];
+        $uploadedContents = [];
 
-    // $id = $this->uploadMedia($personID, $linkedinAccount->linkedin_access_token, "15964606406173.png");
-    // $uploadedContents = [$id];
-    if (!empty($media) && $media != "[]") {
-      // $id = $this->uploadMedia($personID, $linkedinAccount->linkedin_access_token, "15964606406173.png");
-      // array_push($uploadedContents, $id);
-      foreach ($media as $m) {
-        $id = $this->uploadMedia($personID, $linkedinAccount->linkedin_access_token, $m);
-        array_push($uploadedContents, $id);
+        if (!empty($media) && $media != "[]") {
+          foreach ($media as $m) {
+            $id = $this->uploadMedia($personID, 'person', $linkedinAccount->linkedin_access_token, $m);
+            array_push($uploadedContents, $id);
+          }
+        }
+
+        $data = $this->buildPost($personID, $text, $uploadedContents);
+
+        $body = json_encode($data);
+        /*var_dump*/
+        (Utils::curlPostRequest('https://api.linkedin.com/v2/ugcPosts', 'oauth2_access_token=' . $linkedinAccount->linkedin_access_token, $body, ['Content-Type: application/json']));
+      } else {
+        $uploadedContents = [];
+
+        if (!empty($media) && $media != "[]") {
+          foreach ($media as $m) {
+            $id = $this->uploadMedia($account['id'], 'organization', $linkedinAccount->linkedin_access_token, $m);
+            array_push($uploadedContents, $id);
+          }
+        }
+        $data = $this->buildOrgPost($account['id'], $text, $uploadedContents);
+        $body = json_encode($data);
+        (Utils::curlPostRequest('https://api.linkedin.com/v2/shares', 'oauth2_access_token=' . $linkedinAccount->linkedin_access_token, $body, ['Content-Type: application/json']));
       }
     }
-
-    $data = $this->buildPost($personID, $text, $uploadedContents);
-
-    $body = json_encode($data);
-    /*var_dump*/
-    (Utils::curlPostRequest('https://api.linkedin.com/v2/ugcPosts', 'oauth2_access_token=' . $linkedinAccount->linkedin_access_token, $body, ['Content-Type: application/json']));
-  
   }
 
-  public function uploadMedia($personID, $linkedin_access_token, $fileID)
+  public function uploadMedia($ID, $type, $linkedin_access_token, $fileID)
   {
     $data = array(
       'registerUploadRequest' =>
@@ -189,7 +200,7 @@ class LinkedinController extends Controller
         array(
           'urn:li:digitalmediaRecipe:feedshare-image',
         ),
-        'owner' => 'urn:li:person:' . $personID,
+        'owner' => "urn:li:$type:$ID",
         'serviceRelationships' =>
         array(
           array(
@@ -266,6 +277,40 @@ class LinkedinController extends Controller
     return $data;
   }
 
+  public function buildOrgPost($orgID, $text, $uploadedContents)
+  {
+    if (empty($uploadedContents)) {
+      $data = [
+        "distribution" => [
+          "linkedInDistributionTarget" => []
+        ],
+        "owner" => "urn:li:organization:$orgID",
+        "text" => [
+          "text" =>  $text
+        ]
+      ];
+    } else {
+      $data = [
+        "content" => [
+          "contentEntities" => [
+            [
+              "entity" => $uploadedContents
+            ]
+          ] 
+        ],
+        "distribution" => [
+          "linkedInDistributionTarget" => []
+        ],
+        "owner" => "urn:li:organization:$orgID",
+        "text" => [
+          "text" =>  $text
+        ]
+      ];
+    }
+
+    return $data;
+  }
+
   public function buildMediaObjectArray($uploadedContents)
   {
     $contents = array();
@@ -288,13 +333,5 @@ class LinkedinController extends Controller
     }
 
     return $contents;
-  }
-
-  public function test() {
-  //   LinkedinAccount::create([
-  //     'company_id' => 4,
-  //     'linkedin_access_token' => 'jhhfh',
-  //     'linkedin_id' => 3
-  //   ]);
   }
 }
