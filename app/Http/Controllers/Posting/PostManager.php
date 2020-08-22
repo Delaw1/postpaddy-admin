@@ -31,7 +31,6 @@ class PostManager extends Controller
             'media' => ['array'],
             'media.*' => ['required', 'string'],
             'platforms' => ['required', 'array'],
-            'platforms.*' => ['required', 'string'],
             'schedule_date' => ['integer']
         ]);
 
@@ -71,10 +70,9 @@ class PostManager extends Controller
         $platforms = [
             'linkedin' => [
                 ["id" => "UPYyMf_0T8", "name" => "Lawrence Ajayi", "category" => "personal"],
-                ["id" => "28845472", "name" => "Launchi Software Academy", "category" => "company"]
+                ["id" => "68737226", "name" => "Launchi Software Academy", "category" => "company"]
             ],
-            'twitter' => [],
-            'facebook' => []
+            'twitter' => []
         ];
         // [{"id": "UPYyMf_0T8", "name": "Lawrence Ajayi", "category": "personal"}, {"id": "28845472", "name": "Launchi Software Academy", "category": "company"}, {"id": "68737226", "name": "Testing232", "category": "company"}, {"id": "11325574", "name": "Digital Figures", "category": "company"}]
         $newplatform = array();
