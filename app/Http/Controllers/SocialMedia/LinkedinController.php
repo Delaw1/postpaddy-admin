@@ -152,15 +152,15 @@ class LinkedinController extends Controller
     $text = $post->content . "\r\n\n" . $post->hashtag;
     $media = $post->media;
     $linkedinAccount = LinkedinAccount::where("company_id", '=', $post->company_id)->first();
-    // return $linkedinAccount;
+    
     if ($linkedinAccount == null) {
       return NULL;
     }
 
     foreach ($post['platforms']['linkedin'] as $account) {
       if ($account['category'] == 'personal') {
-        $response = Utils::curlGetRequest('https://api.linkedin.com/v2/me', "oauth2_access_token=" . $linkedinAccount->linkedin_access_token, []);
-        $personID = $response->id;
+        // $response = Utils::curlGetRequest('https://api.linkedin.com/v2/me', "oauth2_access_token=" . $linkedinAccount->linkedin_access_token, []);
+        $personID = $account['id'];
 
         $uploadedContents = [];
 
@@ -186,10 +186,9 @@ class LinkedinController extends Controller
           }
         }
         $data = $this->buildOrgPost($account['id'], $text, $uploadedContents);
-        $body = json_encode($data);
-        // return $body;
-        $out = (Utils::curlPostRequest('https://api.linkedin.com/v2/shares', 'oauth2_access_token=' . $linkedinAccount->linkedin_access_token, $body, ['Content-Type: application/json']));
-       return response()->json($out);
+        $body = json_encode($data, JSON_FORCE_OBJECT);
+        (Utils::curlPostRequest('https://api.linkedin.com/v2/shares', 'oauth2_access_token=' . $linkedinAccount->linkedin_access_token, $body, ['Content-Type: application/json']));
+        
       }
     }
   }
@@ -282,55 +281,35 @@ class LinkedinController extends Controller
 
   public function buildOrgPost($orgID, $text, $uploadedContents)
   {
-    $data = array(
-      "distribution" => array(
-        "linkedInDistributionTarget" => array()
-      ),
-      "owner" => "urn:li:organization:68737226",
-      "subject" => 'tset',
-      "text" => array(
-        "text" =>  $text
-      )
-    );
-    // if (empty($uploadedContents)) {
-    //   $data = array(
-    //     "distribution" => array(
-    //       "linkedInDistributionTarget" => array()
-    //     ),
-    //     "owner" => "urn:li:organization:68737226",
-    //     "text" => array(
-    //       "text" =>  $text
-    //     )
-    //   );
-    //   $data = [
-    //     "distribution" => [
-    //       "linkedInDistributionTarget" => []
-    //     ],
-    //     "owner" => "urn:li:organization:$orgID",
-    //     "text" => [
-    //       "text" =>  $text
-    //     ]
-    //   ];
-    // } else {
-      
-    //   $data = [
-    //     "content" => [
-    //       "contentEntities" => [
-    //         [
-    //           "entity" => $uploadedContents
-    //         ]
-    //       ] 
-    //     ],
-    //     "distribution" => [
-    //       "linkedInDistributionTarget" => []
-    //     ],
-    //     "owner" => "urn:li:organization:$orgID",
-    //     "subject"=> "Test Share Subject",
-    //     "text" => [
-    //       "text" =>  $text
-    //     ]
-    //   ];
-    // }
+
+    if (empty($uploadedContents)) {
+      $data = array(
+        "distribution" => array(
+          "linkedInDistributionTarget" => array()
+        ),
+        "owner" => "urn:li:organization:$orgID",
+        "text" => array(
+          "text" =>  $text
+        )
+      );
+    } else {
+      $data = array(
+        "content" => array(
+          "contentEntities" => array(
+            array(
+              "entity" => $uploadedContents
+            )
+          )
+        ),
+        "distribution" => array(
+          "linkedInDistributionTarget" => array()
+        ),
+        "owner" => "urn:li:organization:$orgID",
+        "text" => array(
+          "text" =>  $text
+        )
+      );
+    }
 
     return $data;
   }

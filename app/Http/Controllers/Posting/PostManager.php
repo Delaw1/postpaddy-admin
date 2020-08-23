@@ -47,22 +47,19 @@ class PostManager extends Controller
         }
         // $post = $input;
         $post = Post::create($input);
-$newArray = [];
+        
         if (!isset($input["schedule_date"]) || $input["schedule_date"] == NULL) {
             foreach (array_keys($input["platforms"]) as $platform) {
                 switch ($platform) {
                     case "linkedin":
-                        $val = (new LinkedinController())->postNow($post);
-                        return $val;
-                        // array_push($newArray, 'link');
+                        (new LinkedinController())->postNow($post);
                         break;
                     case "twitter":
                         (new TwitterController())->postNow($post);
-                        // array_push($newArray, 'tweet');
                         break;
                 }
             }
-            // $post->update(["is_posted" => true]);
+            $post->update(["is_posted" => true]);
         }
 
         return response()->json(['status' => 'success', 'post' => $post], 201);
@@ -70,26 +67,7 @@ $newArray = [];
 
     public function test()
     {
-        $platforms = [
-            'linkedin' => [
-                ["id" => "UPYyMf_0T8", "name" => "Lawrence Ajayi", "category" => "personal"],
-                ["id" => "68737226", "name" => "Launchi Software Academy", "category" => "company"]
-            ],
-            'twitter' => []
-        ];
-        // [{"id": "UPYyMf_0T8", "name": "Lawrence Ajayi", "category": "personal"}, {"id": "28845472", "name": "Launchi Software Academy", "category": "company"}, {"id": "68737226", "name": "Testing232", "category": "company"}, {"id": "11325574", "name": "Digital Figures", "category": "company"}]
-        $newplatform = array();
-        foreach (array_keys($platforms) as $platform) {
-
-            switch ($platform) {
-                case "linkedin":
-                    array_push($newplatform, 'new linkein');
-                    break;
-                case "twitter":
-                    break;
-            }
-        }
-        return response()->json($newplatform);
+        
     }
 
     public function GetPosts(Request $request)
