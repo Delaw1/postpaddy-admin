@@ -16,7 +16,7 @@ class PostManager extends Controller
 {
     public function __construct()
     {
-           $this->middleware('auth');
+        //    $this->middleware('auth');
         // Auth::loginUsingId(4);
     }
 
@@ -47,19 +47,22 @@ class PostManager extends Controller
         }
         // $post = $input;
         $post = Post::create($input);
-
+$newArray = [];
         if (!isset($input["schedule_date"]) || $input["schedule_date"] == NULL) {
-            foreach ($input["platforms"] as $platform) {
+            foreach (array_keys($input["platforms"]) as $platform) {
                 switch ($platform) {
                     case "linkedin":
-                        (new LinkedinController())->postNow($post);
+                        $val = (new LinkedinController())->postNow($post);
+                        return $val;
+                        // array_push($newArray, 'link');
                         break;
                     case "twitter":
                         (new TwitterController())->postNow($post);
+                        // array_push($newArray, 'tweet');
                         break;
                 }
             }
-            $post->update(["is_posted" => true]);
+            // $post->update(["is_posted" => true]);
         }
 
         return response()->json(['status' => 'success', 'post' => $post], 201);
