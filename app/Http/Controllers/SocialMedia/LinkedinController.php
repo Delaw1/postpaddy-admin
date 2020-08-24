@@ -97,6 +97,8 @@ class LinkedinController extends Controller
       'company_id' => ['required', 'exists:linkedin_accounts']
     ]);
 
+
+
     if ($validation->fails()) {
       $data = json_decode($validation->errors(), true);
 
@@ -105,6 +107,9 @@ class LinkedinController extends Controller
       return response()->json($data);
     }
     $linkedin = LinkedinAccount::where('company_id', $input["id"])->first();
+    if(!empty($linkedin->accounts)) {
+      return response()->json(['error' => 'Account already selected'], 409);
+    }
     $access_token = $linkedin->linkedin_access_token;
 
     $org_data = [];
@@ -145,6 +150,26 @@ class LinkedinController extends Controller
       return response()->json(['status' => 'success']);
     }
     return response()->json(['status' => 'failure', 'msg' => 'Network error']);
+  }
+
+  public function getAccount(Request $request) {
+    $id = $request->input("company_id");
+    $validation = Validator::make($request->all(), [
+      'company_id' => ['required', 'exists:linkedin_accounts']
+    ]);
+
+    if ($validation->fails()) {
+      $data = json_decode($validation->errors(), true);
+
+      $data = ['status' => 'failure']  + $data;
+
+      return response()->json($data, 400);
+    }
+    $accounts = LinkedinAccount::where('company_id', $id)->first();
+    if($accounts) {
+      return response()->json($accounts->accounts);
+    }
+    return null;
   }
 
   public function postNow($post)

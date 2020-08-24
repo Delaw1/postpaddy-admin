@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use \App\TwitterAccount;
 use \App\LinkedinAccount;
+use \App\FacebookAccount;
 
 class Company extends Model
 {
@@ -21,10 +22,14 @@ class Company extends Model
         $data = [];
 
         $twitter = TwitterAccount::where("company_id", "=", $this->id)->count() > 0;
-        $linkedin = LinkedinAccount::where("company_id", "=", $this->id)->count() > 0;
+        $facebook = FacebookAccount::where("company_id", "=", $this->id)->count() > 0;
+        $linkedin = LinkedinAccount::where("company_id", "=", $this->id)->where("accounts", "!=", '')->where("accounts", "!=", '[]')->first();
 
-        if($twitter){array_push($data, "twitter");}
-        if($linkedin){array_push($data, "linkedin");}
+        if($twitter){array_push($data, ["twitter" => []]);}
+        if($facebook){array_push($data, ["facebook" => []]);}
+        if($linkedin){
+            array_push($data, ["linkedin" => $linkedin->accounts]);
+        }
         
         return $data;
     }
