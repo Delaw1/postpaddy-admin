@@ -68,16 +68,16 @@ class TwitterController extends Controller
 
         $data = ['twitter_id' => $twitter_id];
 
-        $validation = Validator::make($data, [
-          'twitter_id' => ['required', 'unique:twitter_accounts']
-        ]);
+        // $validation = Validator::make($data, [
+        //   'twitter_id' => ['required', 'unique:twitter_accounts']
+        // ]);
     
-        if ($validation->fails()) {
-          if (env("APP_ENV") == "development") {
-            return redirect(env('APP_FRONTEND_URL_DEV') . "/dashboard/accounts/add-social-media-accounts?twitter=existing");
-          }
-          return redirect(env('APP_FRONTEND_URL') . "/dashboard/accounts/add-social-media-accounts?twitter=existing");
-        }
+        // if ($validation->fails()) {
+        //   if (env("APP_ENV") == "development") {
+        //     return redirect(env('APP_FRONTEND_URL_DEV') . "/dashboard/accounts/add-social-media-accounts?twitter=existing");
+        //   }
+        //   return redirect(env('APP_FRONTEND_URL') . "/dashboard/accounts/add-social-media-accounts?twitter=existing");
+        // }
 
         $company_id = Session::get('social_company_id');
 
