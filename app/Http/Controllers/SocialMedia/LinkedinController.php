@@ -20,7 +20,7 @@ class LinkedinController extends Controller
 {
   public function __construct()
   {
-     $this->middleware('auth');
+    $this->middleware('auth');
     // Auth::loginUsingId(4);
   }
 
@@ -107,7 +107,7 @@ class LinkedinController extends Controller
       return response()->json($data);
     }
     $linkedin = LinkedinAccount::where('company_id', $input["id"])->first();
-    if(!empty($linkedin->accounts)) {
+    if (!empty($linkedin->accounts)) {
       return response()->json(['error' => 'Account already selected'], 409);
     }
     $access_token = $linkedin->linkedin_access_token;
@@ -152,7 +152,8 @@ class LinkedinController extends Controller
     return response()->json(['status' => 'failure', 'msg' => 'Network error']);
   }
 
-  public function getAccount(Request $request) {
+  public function getAccount(Request $request)
+  {
     $id = $request->input("company_id");
     $validation = Validator::make($request->all(), [
       'company_id' => ['required', 'exists:linkedin_accounts']
@@ -166,7 +167,7 @@ class LinkedinController extends Controller
       return response()->json($data, 400);
     }
     $accounts = LinkedinAccount::where('company_id', $id)->first();
-    if($accounts) {
+    if ($accounts) {
       return response()->json($accounts->accounts);
     }
     return null;
@@ -177,7 +178,7 @@ class LinkedinController extends Controller
     $text = $post->content . "\r\n\n" . $post->hashtag;
     $media = $post->media;
     $linkedinAccount = LinkedinAccount::where("company_id", '=', $post->company_id)->first();
-    
+
     if ($linkedinAccount == null) {
       return NULL;
     }
@@ -213,7 +214,6 @@ class LinkedinController extends Controller
         $data = $this->buildOrgPost($account['id'], $text, $uploadedContents);
         $body = json_encode($data, JSON_FORCE_OBJECT);
         (Utils::curlPostRequest('https://api.linkedin.com/v2/shares', 'oauth2_access_token=' . $linkedinAccount->linkedin_access_token, $body, ['Content-Type: application/json']));
-        
       }
     }
   }
@@ -324,7 +324,8 @@ class LinkedinController extends Controller
             array(
               "entity" => $uploadedContents
             )
-          )
+          ),
+          "title" => "test"
         ),
         "distribution" => array(
           "linkedInDistributionTarget" => array()
