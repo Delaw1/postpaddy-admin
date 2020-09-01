@@ -59,6 +59,10 @@ class TwitterController extends Controller
 
     public function saveAccessToken(Request $request)
     {
+        if($request->session()->has('user_id')) {
+            Auth::loginUsingId(Session::get('user_id'));
+        }
+
         $connection = new TwitterOAuth(env('TWITTER_CONSUMER_KEY'), env('TWITTER_CONSUMER_SECRET'), env('TWITTER_ACCESS_TOKEN'), env('TWITTER_ACCESS_TOKEN_SECRET'));
         $oauth_token = $request->input("oauth_token");
         $oauth_verifier = $request->input("oauth_verifier");
@@ -89,9 +93,7 @@ class TwitterController extends Controller
         TwitterAccount::create(["company_id" => $company_id, "oauth_token" => $oauth_token, "oauth_token_secret" => $oauth_token_secret, "twitter_id" => $twitter_id]);
 
         // return redirect(env("CLOSE_WINDOW_URL"));
-        if($request->session()->has('user_id')) {
-            Auth::loginUsingId(Session::get('user_id'));
-        }
+        
         if(env("APP_ENV")=="development") {
             return redirect(env('APP_FRONTEND_URL_DEV')."/dashboard/accounts/add-social-media-accounts?twitter=true");
           }
