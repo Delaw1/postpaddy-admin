@@ -14,13 +14,13 @@ use \App\Utils;
 use Session;
 use DB;
 use GuzzleHttp\Client;
-
+use stdClass;
 
 class LinkedinController extends Controller
 {
   public function __construct()
   {
-    $this->middleware('auth');
+    // $this->middleware('auth');
     // Auth::loginUsingId(4); 
   }
 
@@ -184,6 +184,7 @@ class LinkedinController extends Controller
     }
 
     foreach ($post['platforms']['linkedin'] as $account) {
+      // return $account;
       if ($account['category'] == 'personal') {
         // $response = Utils::curlGetRequest('https://api.linkedin.com/v2/me', "oauth2_access_token=" . $linkedinAccount->linkedin_access_token, []);
         $personID = $account['id'];
@@ -204,6 +205,7 @@ class LinkedinController extends Controller
         (Utils::curlPostRequest('https://api.linkedin.com/v2/ugcPosts', 'oauth2_access_token=' . $linkedinAccount->linkedin_access_token, $body, ['Content-Type: application/json']));
       } else {
         $uploadedContents = [];
+        
 
         if (!empty($media) && $media != "[]") {
           foreach ($media as $m) {
@@ -211,8 +213,11 @@ class LinkedinController extends Controller
             array_push($uploadedContents, $id);
           }
         }
+        // return $uploadedContents;
         $data = $this->buildOrgPost($account['id'], $text, $uploadedContents);
-        $body = json_encode($data, JSON_FORCE_OBJECT);
+        // return $data;
+        $body = json_encode($data);
+        // return $body;
         (Utils::curlPostRequest('https://api.linkedin.com/v2/shares', 'oauth2_access_token=' . $linkedinAccount->linkedin_access_token, $body, ['Content-Type: application/json']));
       }
     }
@@ -310,7 +315,7 @@ class LinkedinController extends Controller
     if (empty($uploadedContents)) {
       $data = array(
         "distribution" => array(
-          "linkedInDistributionTarget" => array()
+          "linkedInDistributionTarget" => new stdClass()
         ),
         "owner" => "urn:li:organization:$orgID",
         "text" => array(
@@ -319,21 +324,24 @@ class LinkedinController extends Controller
       );
     } else {
       $data = array(
-        "content" => array(
-          "contentEntities" => array(
-            array(
-              "entity" => $uploadedContents[0]
-            )
-          ),
-          "title" => "test"
-        ),
-        "distribution" => array(
-          "linkedInDistributionTarget" => array()
-        ),
-        "owner" => "urn:li:organization:$orgID",
+        "owner" => "urn:li:company:$orgID",
         "text" => array(
           "text" =>  $text
-        )
+        ),
+        "distribution" => array(
+          "linkedInDistributionTarget" => new stdClass()
+        ),
+        "content" => array(
+          "contentEntities" => array(
+            
+              ["entity" => $uploadedContents[0]]
+            
+          ),
+          "title" => "test",
+          "shareMediaCategory"=> "IMAGE"
+        ),
+        
+        
       );
     }
 

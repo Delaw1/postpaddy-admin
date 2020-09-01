@@ -53,6 +53,7 @@ Route::get('/add_linkedin_account', 'SocialMedia\LinkedinController@addAccount')
 Route::get('/linkedin_callback', 'SocialMedia\LinkedinController@saveAccessToken');
 Route::get('/linkedin_selectaccount', 'SocialMedia\LinkedinController@selectAccount');
 Route::post('/linkedin_saveaccount', 'SocialMedia\LinkedinController@saveAccount');
+Route::post('/CreatePostLin', 'SocialMedia\LinkedinController@postNow');
 
 Route::get('/add_twitter_account', 'SocialMedia\TwitterController@addAccount');
 Route::get('/twitter_callback', 'SocialMedia\TwitterController@saveAccessToken');

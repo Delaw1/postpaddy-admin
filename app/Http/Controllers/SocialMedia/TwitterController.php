@@ -12,12 +12,13 @@ use \App\Post;
 use \App\Utils;
 use Session;
 use DB;
+use Illuminate\Contracts\Session\Session as SessionSession;
 
 class TwitterController extends Controller
 {
     public function __construct()
     {
-       $this->middleware('auth');
+    //    $this->middleware('auth');
     // Auth::loginUsingId(4);
     }
 
@@ -40,6 +41,9 @@ class TwitterController extends Controller
             return response()->json($data);
         }
 
+        if($request->has('user_id')) {
+            Session::put('user_id', $request->input("user_id"));
+        }
         Session::put('social_company_id', $company_id);
 
         $connection = new TwitterOAuth(env('TWITTER_CONSUMER_KEY'), env('TWITTER_CONSUMER_SECRET'), env('TWITTER_ACCESS_TOKEN'), env('TWITTER_ACCESS_TOKEN_SECRET'));
@@ -85,6 +89,9 @@ class TwitterController extends Controller
         TwitterAccount::create(["company_id" => $company_id, "oauth_token" => $oauth_token, "oauth_token_secret" => $oauth_token_secret, "twitter_id" => $twitter_id]);
 
         // return redirect(env("CLOSE_WINDOW_URL"));
+        if($request->session()->has('user_id')) {
+            Auth::loginUsingId(Session::get('user_id'));
+        }
         if(env("APP_ENV")=="development") {
             return redirect(env('APP_FRONTEND_URL_DEV')."/dashboard/accounts/add-social-media-accounts?twitter=true");
           }

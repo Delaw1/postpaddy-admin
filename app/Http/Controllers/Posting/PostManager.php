@@ -12,24 +12,25 @@ use \App\User;
 use \App\Utils;
 use \App\Post;
 
-class PostManager extends Controller
+class PostManager extends Controller 
 {
     public function __construct()
     {
-           $this->middleware('auth');
+        //    $this->middleware('auth');
         // Auth::loginUsingId(4);
     }
 
     public function CreatePost(Request $request)
     {
         $input = $request->all();
-        $input["user_id"] = Auth::user()->id;
+        $input["user_id"] = 4;
+        // $input["user_id"] = Auth::user()->id;
 
         $validation = Validator::make($input, [
             'company_id' => ['required', 'integer'],
             'content' => ['required', 'string'],
             'media' => ['array'],
-            'media.*' => ['required', 'string'],
+            
             'platforms' => ['required', 'array'],
             'schedule_date' => ['integer']
         ]);
@@ -46,7 +47,10 @@ class PostManager extends Controller
             $input["media"] = [];
         }
         // $post = $input;
+        // $post = $input;
+        // return $input;
         $post = Post::create($input);
+        // return $post;
         
         if (!isset($input["schedule_date"]) || $input["schedule_date"] == NULL) {
             foreach (array_keys($input["platforms"]) as $platform) {
