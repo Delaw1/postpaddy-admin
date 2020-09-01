@@ -332,11 +332,7 @@ class LinkedinController extends Controller
           "linkedInDistributionTarget" => new stdClass()
         ),
         "content" => array(
-          "contentEntities" => array(
-            
-              ["entity" => $uploadedContents[0]]
-            
-          ),
+          "contentEntities" => $this->buildOrgMediaObjectArray($uploadedContents),
           "title" => "test",
           "shareMediaCategory"=> "IMAGE"
         ),
@@ -346,6 +342,14 @@ class LinkedinController extends Controller
     }
 
     return $data;
+  }
+
+  public function buildOrgMediaObjectArray($uploadedContents) {
+    $contents = array();
+    foreach ($uploadedContents as $contentID) {
+      array_push($contents, ["entity" => $contentID]);
+    }
+    return $contents;
   }
 
   public function buildMediaObjectArray($uploadedContents)
