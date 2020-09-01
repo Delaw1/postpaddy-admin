@@ -21,7 +21,7 @@ class LinkedinController extends Controller
   public function __construct()
   {
     $this->middleware('auth');
-    // Auth::loginUsingId(4);
+    // Auth::loginUsingId(4); 
   }
 
   public function addAccount(Request $request)
@@ -322,7 +322,7 @@ class LinkedinController extends Controller
         "content" => array(
           "contentEntities" => array(
             array(
-              "entity" => $uploadedContents
+              "entity" => $uploadedContents[0]
             )
           ),
           "title" => "test"

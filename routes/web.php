@@ -49,7 +49,7 @@ Route::post('/UpdatePost', 'Posting\PostManager@UpdatePost');
 Route::get('/scheduler', 'Posting\PostManager@scheduler');
 
 //SOCIALS
-Route::get('/add_linkedin_account', 'SocialMedia\LinkedinController@addAccount');
+Route::get('/add_linkedin_account', 'SocialMedia\LinkedinController@addAccount'); 
 Route::get('/linkedin_callback', 'SocialMedia\LinkedinController@saveAccessToken');
 Route::get('/linkedin_selectaccount', 'SocialMedia\LinkedinController@selectAccount');
 Route::post('/linkedin_saveaccount', 'SocialMedia\LinkedinController@saveAccount');
