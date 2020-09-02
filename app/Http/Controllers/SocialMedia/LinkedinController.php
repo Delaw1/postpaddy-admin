@@ -42,6 +42,10 @@ class LinkedinController extends Controller
       return response()->json($data);
     }
 
+    if ($request->has('user_id')) {
+      Session::put('user_id', $request->input("user_id"));
+    }
+
     Session::put('social_company_id', $company_id);
 
     $clientID = env("LINKEDIN_CLIENT_ID");
@@ -52,6 +56,10 @@ class LinkedinController extends Controller
 
   public function saveAccessToken(Request $request)
   {
+    if ($request->session()->has('user_id')) {
+      Auth::loginUsingId(Session::get('user_id'));
+    }
+    
     $clientID = env("LINKEDIN_CLIENT_ID");
     $clientSecrete = env("LINKEDIN_CLIENT_SECRETE");
     $redirectURL = env("APP_CALLBACK_BASE_URL") . "/linkedin_callback";
@@ -205,7 +213,7 @@ class LinkedinController extends Controller
         (Utils::curlPostRequest('https://api.linkedin.com/v2/ugcPosts', 'oauth2_access_token=' . $linkedinAccount->linkedin_access_token, $body, ['Content-Type: application/json']));
       } else {
         $uploadedContents = [];
-        
+
 
         if (!empty($media) && $media != "[]") {
           foreach ($media as $m) {
@@ -334,17 +342,18 @@ class LinkedinController extends Controller
         "content" => array(
           "contentEntities" => $this->buildOrgMediaObjectArray($uploadedContents),
           "title" => "test",
-          "shareMediaCategory"=> "IMAGE"
+          "shareMediaCategory" => "IMAGE"
         ),
-        
-        
+
+
       );
     }
 
     return $data;
   }
 
-  public function buildOrgMediaObjectArray($uploadedContents) {
+  public function buildOrgMediaObjectArray($uploadedContents)
+  {
     $contents = array();
     foreach ($uploadedContents as $contentID) {
       array_push($contents, ["entity" => $contentID]);
