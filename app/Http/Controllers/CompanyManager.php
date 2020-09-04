@@ -37,11 +37,11 @@ class CompanyManager extends Controller
 
             return response()->json($data);
         }
-        $baseClient = Gs::first()->clients;
-        $userClient = Company::where("user_id", Auth::user()->id)->count();
-        if($userClient >= $baseClient) {
-            return response()->json(['status' => 'failure', 'message' => 'Minimum number of client exceeded, Upgrade you account']);
-        }
+        // $baseClient = Gs::first()->clients;
+        // $userClient = Company::where("user_id", Auth::user()->id)->count();
+        // if($userClient >= $baseClient) {
+        //     return response()->json(['status' => 'failure', 'message' => 'Minimum number of client exceeded, Upgrade you account']);
+        // }
 
         $company = Company::create($input);
 
