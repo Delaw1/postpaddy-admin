@@ -32,6 +32,7 @@ Route::post('/Register', 'Auth\RegisterController@register');
 Route::get('/VerifyEmail/{emailb64}', 'Auth\RegisterController@verifyEmail');
 Route::post('/PasswordReset/Request', 'Auth\ForgotPasswordController@forgot');
 Route::post('/PasswordReset/SetNow', 'Auth\ForgotPasswordController@setNow');
+Route::get('/logout', 'Auth\LoginController@logout');
 // Check if a user is logged in
 Route::get('/isLoggedIn', 'Auth\LoginController@isLoggedIn');
 

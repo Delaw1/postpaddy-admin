@@ -65,4 +65,12 @@ class LoginController extends Controller
         }
         return response()->json(["status" => false, "msg" => "User not logged in"]);
     }
+
+    public function logout() {
+        if(Auth::check()) {
+            Auth::logout();
+            return response()->json(["msg" => "Logout successful"]);
+        }
+        return response()->json(["msg" => "User already logged out"]);
+    }
 }
