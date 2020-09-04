@@ -32,6 +32,8 @@ Route::post('/Register', 'Auth\RegisterController@register');
 Route::get('/VerifyEmail/{emailb64}', 'Auth\RegisterController@verifyEmail');
 Route::post('/PasswordReset/Request', 'Auth\ForgotPasswordController@forgot');
 Route::post('/PasswordReset/SetNow', 'Auth\ForgotPasswordController@setNow');
+// Check if a user is logged in
+Route::get('/isLoggedIn', 'Auth\LoginController@isLoggedIn');
 
 //Company APIs
 Route::post('/CreateCompany', 'CompanyManager@CreateCompany');
@@ -66,6 +68,8 @@ Route::get('/add_instagram_account', 'SocialMedia\TwitterController@addAccount')
 Route::get('/add_pinterest_account', 'SocialMedia\FacebookController@addAccount');
 
 Route::get('/get_remaining_social/{id}', 'CompanyManager@socialMedia');
+
+
 
 Route::get('/test', 'SocialMedia\LinkedinController@postNow');
 Route::get('/sendmail', 'EmailController@sendMail');
