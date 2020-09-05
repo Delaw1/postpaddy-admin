@@ -52,7 +52,7 @@ class ForgotPasswordController extends Controller
 
         $html = file_get_contents(resource_path('views/emails/passwordreset.blade.php'));
         $html = str_replace(
-            ['{{TOKEN}}'],
+            ['{{TOKEN}}'], 
             [$token],
             $html
         ); 

@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\FacebookAccount;
 use Session;
+use App\Gs;
+use App\Company;
 
 // require('./vendor/facebook/graph-sdk/src/Facebook/autoload.php');
 
@@ -195,6 +197,21 @@ class FacebookController extends Controller
 
       return response()->json($data, 404);
     }
+
+    $gs = Gs::first();
+    $company = Company::where('id', $company_id)->first();
+    // return $company->removed['linkedin'];
+    if($company->removed['facebook'] >= $gs->remove_social_media) {
+      
+      return response()->json(["error" => "You cant remove a social account more than ".$gs->remove_social_media." times on this plan"], 400);
+    }
+    
+    $com = $company->removed;
+    $com['facebook'] += 1;
+    
+    $company = Company::where('id', $company_id)->update([
+      "removed" => $com
+    ]);
 
     FacebookAccount::where('company_id', $company_id)->delete();
     return response()->json(['msg', 'Facebok account successfully deleted']);

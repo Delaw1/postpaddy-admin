@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Abraham\TwitterOAuth\Request;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\ResetsPasswords;
@@ -26,5 +27,9 @@ class ResetPasswordController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    // protected $redirectTo = RouteServiceProvider::HOME;
+
+    public function ChangePassword(Request $request) {
+        
+    }
 }

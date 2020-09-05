@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\SocialMedia;
 
+use App\Company;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use \App\Http\Controllers\Controller;
@@ -15,6 +16,7 @@ use Session;
 use DB;
 use GuzzleHttp\Client;
 use stdClass;
+use \App\Gs;
 
 class LinkedinController extends Controller
 {
@@ -400,7 +402,34 @@ class LinkedinController extends Controller
       return response()->json($data, 404);
     }
 
+    $gs = Gs::first();
+    $company = Company::where('id', $company_id)->first();
+    // return $company->removed['linkedin'];
+    if($company->removed['linkedin'] >= $gs->remove_social_media) {
+      return response()->json(["error" => "You cant remove a social account more than ".$gs->remove_social_media." times on this plan"], 400);
+    }
+    
+    $com = $company->removed;
+    $com['linkedin'] += 1;
+    
+    $company = Company::where('id', $company_id)->update([
+      "removed" => $com
+    ]);
+
     LinkedinAccount::where('company_id', $company_id)->delete();
+    
     return response()->json(['msg' => 'Linkedin account successfully deleted']);
+  }
+
+  public function test() {
+    $gs = Gs::create([
+      'remove_social_media' => 2,
+      'days' => 14,
+      'clients' => 10
+    ]);
+    if($gs) {
+      return 'yes';
+    }
+    return 'no';
   }
 }

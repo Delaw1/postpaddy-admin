@@ -35,6 +35,7 @@ Route::post('/PasswordReset/SetNow', 'Auth\ForgotPasswordController@setNow');
 Route::get('/logout', 'Auth\LoginController@logout');
 // Check if a user is logged in
 Route::get('/isLoggedIn', 'Auth\LoginController@isLoggedIn');
+Route::post('/ChangePassword'. 'Auth\ResetPasswordController@ChangePassword');
 
 //Company APIs
 Route::post('/CreateCompany', 'CompanyManager@CreateCompany');
@@ -73,7 +74,7 @@ Route::get('/get_remaining_social/{id}', 'CompanyManager@socialMedia');
 
 
 
-Route::get('/test', 'SocialMedia\LinkedinController@postNow');
+Route::get('/test', 'SocialMedia\LinkedinController@test');
 Route::get('/sendmail', 'EmailController@sendMail');
 
 
