@@ -46,6 +46,10 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'category' => 'required',
+            'employees' => 'required|integer',
+            'phone' => 'required',
+            'business_name' => 'required'
         ]); 
 
         if($validation->fails())
@@ -102,14 +106,19 @@ class RegisterController extends Controller
               ]
             ]
           ];
-        $response = $mj->post(Resources::$Email, ['body' => $body]);
-        // $response->success() && var_dump($response->getData());
+        // $response = $mj->post(Resources::$Email, ['body' => $body]);
+
+        $response->success() && var_dump($response->getData());
         // return var_dump($response->getData());
         // return 'yes';
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'category' => $data['category'],
+            'phone' => $data['phone'],
+            'employees' => $data['employees'],
+            'business_name' => $data['business_name'],
         ]);
     }
 

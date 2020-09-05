@@ -12,7 +12,7 @@ class Company extends Model
     protected $appends = ['platformList'];
 
     protected $fillable = [
-        'user_id', 'name', 'email_address' 
+        'user_id', 'name', 'email_address', 'category', 'image'
     ];
 
     protected $casts = [
@@ -34,6 +34,14 @@ class Company extends Model
         }
         
         return $data;
+    }
+
+    public function getImageAttribute($value)
+    {
+        if($value !== NULL) {
+            return "/profile/".$value;
+        }
+        return $value;
     }
 
     public function getPlatformListAttribute() {

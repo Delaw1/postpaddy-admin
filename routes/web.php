@@ -41,6 +41,7 @@ Route::post('/CreateCompany', 'CompanyManager@CreateCompany');
 Route::get('/GetCompanies', 'CompanyManager@GetCompanies');
 Route::get('/DeleteCompany/{id}', 'CompanyManager@DeleteCompany');
 Route::post('/UpdateCompany', 'CompanyManager@UpdateCompany');
+Route::post('/RemoveSocialMedia', 'CompanyManager@RemoveSocialMedia');
 
 //Posts
 Route::get('/GetPosts', 'Posting\PostManager@GetPosts');

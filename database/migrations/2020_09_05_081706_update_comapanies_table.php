@@ -2,9 +2,9 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema; 
+use Illuminate\Support\Facades\Schema;
 
-class EditUserTable extends Migration
+class UpdateComapaniesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,9 @@ class EditUserTable extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->boolean('status')->default(true);
+        Schema::table('companies', function (Blueprint $table) {
+            $table->string('image')->nullable();
             $table->string('category');
-            $table->string('business_name');
-            $table->bigInteger('employees');
-            $table->string('phone');
         });
     }
 

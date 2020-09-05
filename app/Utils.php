@@ -1,10 +1,11 @@
 <?php
 
-namespace App;
+namespace App; 
 
 class Utils
 {
     public const UPLOADS_DIR = 'uploads';
+    public const PROFILE_IMG_DIR = 'profile';
 
     public static function curlPostRequest($url, $params, $body, $headers)
     {

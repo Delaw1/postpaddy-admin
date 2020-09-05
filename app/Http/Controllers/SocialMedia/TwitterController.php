@@ -120,4 +120,23 @@ class TwitterController extends Controller
 
         $statusUpdate = $connection->post("statuses/update", $data);
     }
+
+    public function remove($company_id) {
+        $input["id"] = $company_id;
+    
+        $validation = Validator::make($input, [
+          'id' => ['required', 'exists:twitter_accounts,company_id']
+        ]);
+    
+        if ($validation->fails()) {
+          $data = json_decode($validation->errors(), true);
+    
+          $data = ['status' => 'failure', 'error' => $validation->errors()->first()];
+    
+          return response()->json($data, 404);
+        }
+    
+        TwitterAccount::where('company_id', $company_id)->delete();
+        return response()->json(['msg' =>'Twitter account successfully deleted']);
+      }
 }

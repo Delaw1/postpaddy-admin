@@ -384,4 +384,23 @@ class LinkedinController extends Controller
 
     return $contents;
   }
+
+  public function remove($company_id) {
+    $input["id"] = $company_id;
+
+    $validation = Validator::make($input, [
+      'id' => ['required', 'exists:linkedin_accounts,company_id']
+    ]);
+
+    if ($validation->fails()) {
+      $data = json_decode($validation->errors(), true);
+
+      $data = ['status' => 'failure', 'error' => $validation->errors()->first()];
+
+      return response()->json($data, 404);
+    }
+
+    LinkedinAccount::where('company_id', $company_id)->delete();
+    return response()->json(['msg' => 'Linkedin account successfully deleted']);
+  }
 }
