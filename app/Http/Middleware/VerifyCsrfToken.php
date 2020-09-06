@@ -15,7 +15,6 @@ class VerifyCsrfToken extends Middleware
         '/Register',
         '/Login',
         '/add-linkedin-account',
-        '/ChangePassword',
         '*'
     ];
 }

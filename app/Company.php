@@ -42,7 +42,7 @@ class Company extends Model
         if($value !== NULL) {
             return "/profile/".$value;
         }
-        return $value;
+        return "/profile/user_profile.png";
     }
 
     public function getPlatformListAttribute() {
