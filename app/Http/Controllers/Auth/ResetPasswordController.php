@@ -6,6 +6,9 @@ use Abraham\TwitterOAuth\Request;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\ResetsPasswords;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+use Validator;
 
 class ResetPasswordController extends Controller
 {
@@ -29,7 +32,25 @@ class ResetPasswordController extends Controller
      */
     // protected $redirectTo = RouteServiceProvider::HOME;
 
-    public function ChangePassword(Request $request) {
-        
+    public function ChangePassword(Request $request) { 
+        if (!(Hash::check($request->current_password, Auth::User()->password))) {
+            return response()->json(['error' => 'Your current password is incorrect'], 400);
+        }
+        if (strcmp($request->current_password, $request->new_password) == 0) {
+            return response()->json(['error' => 'Your current password is incorrect'], 400);
+        }
+        $rules = [
+            'current_password' => 'required',
+            'new_password' => 'required|string|min:6|confirmed'
+        ];
+        $validate = Validator::make($request->all(), $rules);
+        if ($validate->fails()) {
+            // return $validate->errors()->first();
+            return response()->json(['error' => $validate->errors()->first()], 400);
+        }
+        $user = Auth::user();
+        $user->password = bcrypt($request->new_password);
+        $user->save();
+        return redirect()->back()->with('success', 'Password changed successfully');
     }
 }
