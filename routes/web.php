@@ -35,7 +35,7 @@ Route::post('/PasswordReset/SetNow', 'Auth\ForgotPasswordController@setNow');
 Route::get('/logout', 'Auth\LoginController@logout');
 // Check if a user is logged in
 Route::get('/isLoggedIn', 'Auth\LoginController@isLoggedIn');
-Route::post('/ChangePassword'. 'Auth\ResetPasswordController@ChangePassword');
+Route::post('/ChangePassword', 'Auth\ResetPasswordController@ChangePassword');
 
 //Company APIs
 Route::post('/CreateCompany', 'CompanyManager@CreateCompany');

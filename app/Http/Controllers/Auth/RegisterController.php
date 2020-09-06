@@ -108,7 +108,8 @@ class RegisterController extends Controller
           ];
         $response = $mj->post(Resources::$Email, ['body' => $body]);
 
-        $response->success() && var_dump($response->getData());
+        // $response->success() && var_dump($response->getData());
+        
         // return var_dump($response->getData());
         // return 'yes';
         return User::create([

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
-use Abraham\TwitterOAuth\Request;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\ResetsPasswords;
@@ -23,7 +23,7 @@ class ResetPasswordController extends Controller
     |
     */
 
-    use ResetsPasswords;
+    // use ResetsPasswords;
 
     /**
      * Where to redirect users after resetting their password.
@@ -31,26 +31,37 @@ class ResetPasswordController extends Controller
      * @var string
      */
     // protected $redirectTo = RouteServiceProvider::HOME;
+    public function __construct()
+  {
+    $this->middleware('auth');
+    // Auth::loginUsingId(4); 
+  }
+
 
     public function ChangePassword(Request $request) { 
-        if (!(Hash::check($request->current_password, Auth::User()->password))) {
-            return response()->json(['error' => 'Your current password is incorrect'], 400);
-        }
-        if (strcmp($request->current_password, $request->new_password) == 0) {
-            return response()->json(['error' => 'Your current password is incorrect'], 400);
-        }
         $rules = [
             'current_password' => 'required',
             'new_password' => 'required|string|min:6|confirmed'
         ];
         $validate = Validator::make($request->all(), $rules);
         if ($validate->fails()) {
-            // return $validate->errors()->first();
             return response()->json(['error' => $validate->errors()->first()], 400);
         }
-        $user = Auth::user();
-        $user->password = bcrypt($request->new_password);
-        $user->save();
-        return redirect()->back()->with('success', 'Password changed successfully');
+        // return (Hash::check($request->current_password, Auth::User()->password));
+        
+        if (Hash::check($request->current_password, Auth::User()->password)) {
+            if (strcmp($request->current_password, $request->new_password) == 0) {
+                return response()->json(['error' => 'New password cant be the same as current passowrd'], 400);
+            }
+            $user = Auth::user();
+            $user->password = bcrypt($request->new_password);
+            $user->save();
+            return response()->json(['error' => 'Password changed successfully']);
+        } else {
+            return response()->json(['error' => 'Your current password is incorrect'], 400);
+        }
+        
+        
+       
     }
 }
