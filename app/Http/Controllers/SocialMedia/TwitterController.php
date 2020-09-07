@@ -68,7 +68,7 @@ class TwitterController extends Controller
         $oauth_token = $request->input("oauth_token");
         $oauth_verifier = $request->input("oauth_verifier");
         $response = $connection->oauth("oauth/access_token", ["oauth_token" => $oauth_token, "oauth_verifier" => $oauth_verifier]);
-
+        return response()->json($response);
         $oauth_token = $response["oauth_token"];
         $oauth_token_secret = $response["oauth_token_secret"];
 
