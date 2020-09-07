@@ -73,6 +73,7 @@ class TwitterController extends Controller
         $oauth_token_secret = $response["oauth_token_secret"];
 
         $get_id = $connection->get('account/verify_credentials');
+        return response()->json($get_id);
         $twitter_id = strval($get_id->id);
 
         $data = ['twitter_id' => $twitter_id];

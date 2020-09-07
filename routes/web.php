@@ -38,7 +38,7 @@ Route::post('/ChangePassword', 'Auth\ResetPasswordController@ChangePassword');
 Route::get('/isLoggedIn', 'Auth\LoginController@isLoggedIn');
 
 // User
-Route::post('EditProfile', 'UserController@EditProfile');
+Route::post('/EditProfile', 'UserController@EditProfile');
 
 //Company APIs
 Route::post('/CreateCompany', 'CompanyManager@CreateCompany');

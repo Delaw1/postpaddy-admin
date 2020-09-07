@@ -56,7 +56,7 @@ class ResetPasswordController extends Controller
             $user = Auth::user();
             $user->password = bcrypt($request->new_password);
             $user->save();
-            return response()->json(['error' => 'Password changed successfully']);
+            return response()->json(['success' => 'Password changed successfully']);
         } else {
             return response()->json(['error' => 'Your current password is incorrect'], 400);
         }
