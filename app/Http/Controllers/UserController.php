@@ -38,4 +38,8 @@ class UserController extends Controller
         }
         return response()->json(['status' => 'failure', 'error' => 'Network Error']);
     }
+
+    public function GetUser() {
+        return response()->json(Auth::User());
+    }
 }

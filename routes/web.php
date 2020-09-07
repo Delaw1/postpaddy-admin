@@ -39,6 +39,7 @@ Route::get('/isLoggedIn', 'Auth\LoginController@isLoggedIn');
 
 // User
 Route::post('/EditProfile', 'UserController@EditProfile');
+Route::get('/GetUser', 'UserController@GetUser');
 
 //Company APIs
 Route::post('/CreateCompany', 'CompanyManager@CreateCompany');
