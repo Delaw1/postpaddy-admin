@@ -33,13 +33,17 @@ Route::get('/VerifyEmail/{emailb64}', 'Auth\RegisterController@verifyEmail');
 Route::post('/PasswordReset/Request', 'Auth\ForgotPasswordController@forgot');
 Route::post('/PasswordReset/SetNow', 'Auth\ForgotPasswordController@setNow');
 Route::get('/logout', 'Auth\LoginController@logout');
+Route::post('/ChangePassword', 'Auth\ResetPasswordController@ChangePassword');
 // Check if a user is logged in
 Route::get('/isLoggedIn', 'Auth\LoginController@isLoggedIn');
-Route::post('/ChangePassword', 'Auth\ResetPasswordController@ChangePassword');
+
+// User
+Route::post('EditProfile', 'UserController@EditProfile');
 
 //Company APIs
 Route::post('/CreateCompany', 'CompanyManager@CreateCompany');
 Route::get('/GetCompanies', 'CompanyManager@GetCompanies');
+Route::get('/GetCompany/{id}', 'CompanyManager@GetCompany');
 Route::get('/DeleteCompany/{id}', 'CompanyManager@DeleteCompany');
 Route::post('/UpdateCompany', 'CompanyManager@UpdateCompany');
 Route::post('/RemoveSocialMedia', 'CompanyManager@RemoveSocialMedia');
@@ -66,7 +70,6 @@ Route::get('/twitter_callback', 'SocialMedia\TwitterController@saveAccessToken')
 Route::get('/add_facebook_account', 'SocialMedia\FacebookController@addAccount');
 Route::get('/facebook_callback', 'SocialMedia\FacebookController@saveAccessToken');
 
-// Route::get('/add_facebook_account', 'SocialMedia\FacebookController@addAccount');
 Route::get('/add_instagram_account', 'SocialMedia\TwitterController@addAccount');
 Route::get('/add_pinterest_account', 'SocialMedia\FacebookController@addAccount');
 

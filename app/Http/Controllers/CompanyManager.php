@@ -70,6 +70,17 @@ class CompanyManager extends Controller
         return response()->json(['status' => 'success', 'companies' => $companies]);
     }
 
+    public function GetCompany($id)
+    {
+        $company = Company::find($id);
+
+        if ($company == NULL) {
+            return response()->json(['status' => 'failure', 'message' => 'company does not exist']);
+        }
+
+        return response()->json(['status' => 'success', 'companies' => $company]);
+    }
+
     public function DeleteCompany($id)
     {
         $company = Company::find($id);
@@ -82,6 +93,7 @@ class CompanyManager extends Controller
 
         return response()->json(['success' => 'Company deleted']);
     }
+
 
     public function UpdateCompany(Request $request)
     {
