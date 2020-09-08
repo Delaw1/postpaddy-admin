@@ -201,16 +201,13 @@ class FacebookController extends Controller
     $gs = Gs::first();
     $company = Company::where('id', $company_id)->first();
     // return $company->removed['linkedin'];
-    if($company->removed['facebook'] >= $gs->remove_social_media) {
+    if($company->removed >= $gs->remove_social_media) {
       
       return response()->json(['status' => 'failure', "error" => "You cant remove a social account more than ".$gs->remove_social_media." times on this plan"]);
     }
     
-    $com = $company->removed;
-    $com['facebook'] += 1;
-    
     $company = Company::where('id', $company_id)->update([
-      "removed" => $com
+      "removed" => $company->removed + 1
     ]);
 
     FacebookAccount::where('company_id', $company_id)->delete();
