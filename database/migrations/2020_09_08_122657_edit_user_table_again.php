@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class EditTwitterAccountsTable extends Migration
+class EditUserTableAgain extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class EditTwitterAccountsTable extends Migration
      */
     public function up()
     {
-        Schema::table('twitter_accounts', function(Blueprint $table) {
-            // $table->string("name");
+        Schema::table('users', function (Blueprint $table) {
+            $table->bigInteger('employees')->nullable()->change();
         });
     }
 
