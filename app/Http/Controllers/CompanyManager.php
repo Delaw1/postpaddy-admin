@@ -20,8 +20,8 @@ class CompanyManager extends Controller
 {
     public function __construct()
     {
-        Auth::loginUsingId(4);
-        // $this->middleware( 'auth' );
+        // Auth::loginUsingId(4);
+        $this->middleware( 'auth' );
     }
 
     public function CreateCompany(Request $request)
@@ -30,11 +30,15 @@ class CompanyManager extends Controller
         $input['user_id'] = Auth::user()->id;
 
         $validation = Validator::make($input, [
-            'name' => ['required', 'string', 'unique:companies'],
+            'name' => ['required', 'string'],
             'email_address' => ['required', 'string', 'email', 'unique:companies'],
             'profile_img' => 'image|mimes:jpeg,png,jpg,gif,sng|max:2048',
             'category' => 'required|string'
         ]);
+
+        if(Company::where(['user_id' => Auth::user()->id, 'name' => $input['name']])->count() > 0) {
+            return response()->json(['status' => 'failure', 'error' => "Client name already exist"]); 
+        }
 
         if ($validation->fails()) {
             $data = json_decode($validation->errors(), true);
