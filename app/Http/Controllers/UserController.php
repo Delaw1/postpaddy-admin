@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use App\User;
+use \App\Utils;
 
 class UserController extends Controller
 {
@@ -15,13 +17,11 @@ class UserController extends Controller
     }
 
     public function EditProfile(Request $request) {
-        $validation = Validator::make($request->all(), [
+        $input = $request->all();
+
+        $validation = Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'category' => 'required',
-            'employees' => 'required|integer',
-            'phone' => 'required',
-            'business_name' => 'required'
+            
         ]); 
 
         if($validation->fails())
@@ -33,7 +33,21 @@ class UserController extends Controller
             return response()->json(['status' => 'failure', 'error' => $validation->errors()->first()], 400);
         }
 
-        $user = User::where('id', Auth::User()->id)->update($request->all());
+        
+
+        if ($request->hasFile('profile_img')) {
+            $name = time() . mt_rand(1, 9999) . '.' . $request->file('profile_img')->getClientOriginalExtension();
+            $destinationPath = public_path(Utils::PROFILE_IMG_DIR);
+            $request->file('profile_img')->move($destinationPath, $name);
+            $input['image'] = $name;
+        }
+        
+        if($request->has('profile_img') && $request->profile_img == null) {
+            $input['image'] = null;
+        }
+
+        $user = User::find(Auth::User()->id)->update($input);
+        
         if($user) {
             return response()->json(['status' => 'success', 'msg' => 'Profile successfully updated']);
         }
