@@ -121,10 +121,14 @@ class CompanyManager extends Controller
             $name = time() . mt_rand(1, 9999) . '.' . $request->file('profile_img')->getClientOriginalExtension();
             $destinationPath = public_path(Utils::PROFILE_IMG_DIR);
             $request->file('profile_img')->move($destinationPath, $name);
-            $request['image'] = $name;
+            $input['image'] = $name;
+        }
+        
+        if($request->has('profile_img') && $request->profile_img == null) {
+            $input['image'] = null;
         }
 
-        $company->update($request->all());
+        $company->update($input);
 
         return response()->json(['success' => 'Company updated']);
     }
