@@ -12,8 +12,8 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        // Auth::loginUsingId(4);
-        $this->middleware('auth');
+        Auth::loginUsingId(4);
+        // $this->middleware('auth');
     }
 
     public function EditProfile(Request $request) {
@@ -56,5 +56,14 @@ class UserController extends Controller
 
     public function GetUser() {
         return response()->json(Auth::User());
+    }
+
+    public function changeNotification() {
+        $user = User::where('id', Auth::User()->id)->update([
+            'notification' => !Auth::User()->notification
+        ]);
+        if($user) {
+            return response()->json(['message' => 'Notification settings successfully changed']);
+        }
     }
 }
