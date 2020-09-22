@@ -17,6 +17,7 @@ use DB;
 use GuzzleHttp\Client;
 use stdClass;
 use \App\Gs;
+use App\Plan;
 
 class LinkedinController extends Controller
 {
@@ -419,14 +420,37 @@ class LinkedinController extends Controller
   }
 
   public function test() {
-    $gs = Gs::create([
-      'remove_social_media' => 2,
-      'days' => 14,
-      'clients' => 10
+    $gs = Plan::create([
+      'name' => 'Freemium',
+      'clients' => 5,
+      'posts' => 20,
+      'accounts' => 3
     ]);
-    if($gs) {
-      return 'yes';
-    }
-    return 'no';
+    Plan::create([
+      'name' => 'Oyo',
+      'clients' => 7,
+      'posts' => 40,
+      'accounts' => 3
+    ]);
+    Plan::create([
+      'name' => 'Eko',
+      'clients' => 15,
+      'posts' => 60,
+      'accounts' => 5
+    ]);
+    Plan::create([
+      'name' => 'Bere',
+      'clients' => 16,
+      'posts' => 80,
+      'accounts' => 6
+    ]);
+    Plan::create([
+      'name' => 'Mokola',
+      'clients' => 20,
+      'posts' => 100,
+      'accounts' => 7
+    ]);
+    
+    return 'yes';
   }
 }
