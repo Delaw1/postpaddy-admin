@@ -15,6 +15,7 @@ use \App\Utils;
 use \App\Http\Controllers\SocialMedia\LinkedinController;
 use \App\Http\Controllers\SocialMedia\TwitterController;
 use \App\Http\Controllers\SocialMedia\FacebookController;
+use App\Post; 
 
 class CompanyManager extends Controller
 {
@@ -94,6 +95,7 @@ class CompanyManager extends Controller
         }
 
         Company::destroy($id);
+        Post::where('company_id', $id)->delete();
 
         return response()->json(['success' => 'Company deleted']);
     }
