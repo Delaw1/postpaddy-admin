@@ -135,13 +135,16 @@ class PostManager extends Controller
         $input = $request->all();
         // $input["user_id"] = Auth::user()->id;
 
+        // 'media.*' => ['required', 'string'],
+        // 'platforms.*' => ['required', 'string'],
+
         $validation = Validator::make($input, [
             'company_id' => ['required', 'integer'],
             'content' => ['required', 'string'],
             'media' => ['array'],
-            'media.*' => ['required', 'string'],
+            
             'platforms' => ['required', 'array'],
-            'platforms.*' => ['required', 'string'],
+            
             'schedule_date' => ['integer']
         ]);
 
@@ -161,7 +164,7 @@ class PostManager extends Controller
         $post->update($input);
         // return $post["hashtag"];
         if ($post["schedule_date"] == 0 || $post["schedule_date"] == NULL) {
-            foreach ($post["platforms"] as $platform) {
+            foreach (array_keys($post["platforms"]) as $platform) {
                 switch ($platform) {
                     case "linkedin":
                         (new LinkedinController())->postNow($post);

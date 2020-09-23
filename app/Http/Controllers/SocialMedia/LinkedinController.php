@@ -18,6 +18,8 @@ use GuzzleHttp\Client;
 use stdClass;
 use \App\Gs;
 use App\Plan;
+use DateTime;
+use Carbon\Carbon;
 
 class LinkedinController extends Controller
 {
@@ -420,37 +422,39 @@ class LinkedinController extends Controller
   }
 
   public function test() {
-    $gs = Plan::create([
-      'name' => 'Freemium',
-      'clients' => 5,
-      'posts' => 20,
-      'accounts' => 3
-    ]);
-    Plan::create([
-      'name' => 'Oyo',
-      'clients' => 7,
-      'posts' => 40,
-      'accounts' => 3
-    ]);
-    Plan::create([
-      'name' => 'Eko',
-      'clients' => 15,
-      'posts' => 60,
-      'accounts' => 5
-    ]);
-    Plan::create([
-      'name' => 'Bere',
-      'clients' => 16,
-      'posts' => 80,
-      'accounts' => 6
-    ]);
-    Plan::create([
-      'name' => 'Mokola',
-      'clients' => 20,
-      'posts' => 100,
-      'accounts' => 7
-    ]);
-    
-    return 'yes';
+    // $gs = Plan::create([
+    //   'name' => 'Freemium',
+    //   'clients' => 5,
+    //   'posts' => 20,
+    //   'accounts' => 3
+    // ]);
+    // Plan::create([
+    //   'name' => 'Oyo',
+    //   'clients' => 7,
+    //   'posts' => 40,
+    //   'accounts' => 3
+    // ]);
+    // Plan::create([
+    //   'name' => 'Eko',
+    //   'clients' => 15,
+    //   'posts' => 60,
+    //   'accounts' => 5
+    // ]);
+    // Plan::create([
+    //   'name' => 'Bere',
+    //   'clients' => 16,
+    //   'posts' => 80,
+    //   'accounts' => 6
+    // ]);
+    // Plan::create([
+    //   'name' => 'Mokola',
+    //   'clients' => 20,
+    //   'posts' => 100,
+    //   'accounts' => 7
+    // ]);
+    $date = new DateTime();
+    $date2 = Carbon::now();
+    $date3 = Carbon::now()->addDays(30);
+    return response()->json(['date1' => $date2, 'date2' => $date3,]);
   }
 }

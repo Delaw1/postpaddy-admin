@@ -19,18 +19,5 @@ class Post extends Model
 
     public function getPlatformListAttribute() {
         return array_keys($this->platforms);
-        // $data = [];
-
-        // $twitter = TwitterAccount::where("company_id", "=", $this->id)->count() > 0;
-        // $facebook = FacebookAccount::where("company_id", "=", $this->id)->count() > 0;
-        // $linkedin = LinkedinAccount::where("company_id", "=", $this->id)->where("accounts", "!=", '')->where("accounts", "!=", '[]')->count() > 0;
-
-        // if($twitter){array_push($data, "twitter");}
-        // if($facebook){array_push($data, "facebook");}
-        // if($linkedin){
-        //     array_push($data, "linkedin");
-        // }
-        
-        // return $data;
     }
 }

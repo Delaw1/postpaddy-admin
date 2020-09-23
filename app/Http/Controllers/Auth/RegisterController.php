@@ -12,7 +12,7 @@ use \Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Mail\MyMail;
-
+use DateTime;
 use \Mailjet\Resources;
 
 
@@ -120,6 +120,9 @@ class RegisterController extends Controller
             'phone' => $data['phone'],
             'employees' => $data['employees'],
             'business_name' => $data['business_name'],
+            'plan_id' => 1,
+            'started_at' => new DateTime(),
+            'ended_at' => new DateTime()
         ]);
     }
 
