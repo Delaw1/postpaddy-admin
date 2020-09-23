@@ -46,11 +46,8 @@ class PostManager extends Controller
         if (empty($input["media"])) {
             $input["media"] = [];
         }
-        // $post = $input;
-        // $post = $input;
-        // return $input;
+
         $post = Post::create($input);
-        // return $post;
         
         if (!isset($input["schedule_date"]) || $input["schedule_date"] == NULL) {
             foreach (array_keys($input["platforms"]) as $platform) {
@@ -79,6 +76,10 @@ class PostManager extends Controller
         $user = Auth::user();
 
         $posts = Post::where("user_id", $user->id)->where('is_posted', '=', true)->get();
+        foreach($posts as $post) {
+            unset($post['company_id']);
+            $post['company'] = $post->Company;
+        }
 
         return response()->json(['status' => 'success', 'posts' => $posts]);
     }
@@ -89,6 +90,11 @@ class PostManager extends Controller
 
         $posts = Post::where("user_id", $user->id)->where('schedule_date', '!=', '')->where('is_posted', '!=', true)->get();
 
+        foreach($posts as $post) {
+            unset($post['company_id']);
+            $post['company'] = $post->Company;
+        }
+        
         return response()->json(['status' => 'success', 'posts' => $posts]);
     }
 

@@ -20,4 +20,8 @@ class Post extends Model
     public function getPlatformListAttribute() {
         return array_keys($this->platforms);
     }
+
+    public function Company() {
+        return $this->belongsTo('App\Company');
+    }
 }
