@@ -77,8 +77,8 @@ class PostManager extends Controller
 
         $posts = Post::where("user_id", $user->id)->where('is_posted', '=', true)->get();
         foreach($posts as $post) {
-            unset($post['company_id']);
             $post['company'] = $post->Company;
+            unset($post['company_id']);
         }
 
         return response()->json(['status' => 'success', 'posts' => $posts]);
@@ -91,10 +91,10 @@ class PostManager extends Controller
         $posts = Post::where("user_id", $user->id)->where('schedule_date', '!=', '')->where('is_posted', '!=', true)->get();
 
         foreach($posts as $post) {
-            unset($post['company_id']);
             $post['company'] = $post->Company;
+            unset($post['company_id']);
         }
-        
+
         return response()->json(['status' => 'success', 'posts' => $posts]);
     }
 
