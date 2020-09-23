@@ -422,8 +422,8 @@ class LinkedinController extends Controller
   }
 
   public function test() {
-    $post = Post::where('company_id', 11)->orWhere('company_id', 27)->orWhere('company_id', 16)->orWhere('company_id', 15)->delete();
-    return $post;
+    $post = Post::where('company_id', 11)->orWhere('company_id', 27)->orWhere('company_id', 16)->orWhere('company_id', 15)->first();
+    return response()->json($post);
 
     // $gs = Plan::create([
     //   'name' => 'Freemium',
