@@ -422,6 +422,9 @@ class LinkedinController extends Controller
   }
 
   public function test() {
+    $post = Post::where('company_id', 11)->orWhere('company_id', 27)->orWhere('company_id', 16)->orWhere('company_id', 15)->delete();
+    return $post;
+
     // $gs = Plan::create([
     //   'name' => 'Freemium',
     //   'clients' => 5,
@@ -452,9 +455,9 @@ class LinkedinController extends Controller
     //   'posts' => 100,
     //   'accounts' => 7
     // ]);
-    $date = new DateTime();
-    $date2 = Carbon::now();
-    $date3 = Carbon::now()->addDays(30);
-    return response()->json(['date1' => $date2, 'date2' => $date3,]);
+    // $date = new DateTime();
+    // $date2 = Carbon::now();
+    // $date3 = Carbon::now()->addDays(30);
+    // return response()->json(['date1' => $date2, 'date2' => $date3,]);
   }
 }
