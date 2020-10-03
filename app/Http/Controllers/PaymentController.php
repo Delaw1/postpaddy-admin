@@ -37,27 +37,27 @@ class PaymentController extends Controller
     {
         $plan = Plan::where('id', $request->input('plan_id'))->first();
 
-        $total_price = $plan->price;
-
-        // $r = [
-        //     'email' => Auth()->User()->email,
-        //     'amount' => $total_price,
-        //     'quantity' => 1,
-        //     'currency' => 'NGN',
-        //     'reference' => Paystack::genTranxRef(),
-        //     'orderID' => Auth()->User()->id,
-        //     'metadata' => json_encode($plan->id)
-        // ];
+        $total_price = $plan->price*100;
 
         $r = [
-            'email' => 'lawrenceajayi481@gmail.com',
+            'email' => Auth()->User()->email,
             'amount' => $total_price,
             'quantity' => 1,
             'currency' => 'NGN',
             'reference' => Paystack::genTranxRef(),
-            'orderID' => 345,
+            'orderID' => Auth()->User()->id,
             'metadata' => json_encode($plan->id)
         ];
+
+        // $r = [
+        //     'email' => 'lawrenceajayi481@gmail.com',
+        //     'amount' => $total_price,
+        //     'quantity' => 1,
+        //     'currency' => 'NGN',
+        //     'reference' => Paystack::genTranxRef(),
+        //     'orderID' => 345,
+        //     'metadata' => json_encode($plan->id)
+        // ];
 
         return redirect()->action(
             'PaymentController@redirectToGateway',
