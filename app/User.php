@@ -6,6 +6,9 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Carbon\Carbon;
+use DateTime;
+use App\Plan;
 // use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
@@ -21,6 +24,8 @@ class User extends Authenticatable
     protected $fillable = [
         'name', 'email', 'password', 'status', 'category', 'business_name', 'phone', 'employees', 'image', 'plan_id', 'started_at', 'ended_at'
     ];
+
+    protected $appends = ['daysLeft', 'plan'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -42,9 +47,28 @@ class User extends Authenticatable
 
     public function getImageAttribute($value)
     {
-        if($value !== NULL) {
-            return "/profile/".$value;
+        if ($value !== NULL) {
+            return "/profile/" . $value;
         }
         return "/profile/user_profile.png";
+    }
+
+    public function getDaysLeftAttribute()
+    {
+        $start_date = Carbon::createFromFormat('Y-m-d H:i:s', Carbon::now());
+        $end_date = Carbon::createFromFormat('Y-m-d H:i:s', $this->ended_at);
+        $different_days = $start_date->diffInDays($end_date);
+
+        $now = strtotime(Carbon::now());
+        $end = strtotime($this->ended_at);
+        if($end >= $now) {
+            return $different_days;
+        }
+        return 0;
+    }
+
+    public function getPlanAttribute() {
+        $plan = Plan::find($this->plan_id);
+        return $plan;
     }
 }

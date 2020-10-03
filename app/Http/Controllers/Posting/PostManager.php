@@ -11,20 +11,32 @@ use Illuminate\Http\Request;
 use \App\User;
 use \App\Utils;
 use \App\Post;
+use App\Subscription;
+use \App\Http\Controllers\UserController;
 
 class PostManager extends Controller 
 {
     public function __construct()
     {
-        //    $this->middleware('auth');
-        Auth::loginUsingId(4);
+           $this->middleware('auth');
+        // Auth::loginUsingId(4);
     }
 
     public function CreatePost(Request $request)
     {
+        $sub = (new UserController())->checkSubcription();
+        // Check active subscription
+        if(!$sub) {
+            return response()->json(['status' => 'failure', 'error' => 'Subscription expired, upgrade your plan']);
+        }
+
+        if($sub->posts <= 0) {
+            return response()->json(['status' => 'failure', 'error' => 'Minimum number of allowed post exceeded, Upgrade you account']);
+        }
+
         $input = $request->all();
-        $input["user_id"] = 4;
-        // $input["user_id"] = Auth::user()->id;
+        // $input["user_id"] = 4;
+        $input["user_id"] = Auth::user()->id;
 
         $validation = Validator::make($input, [
             'company_id' => ['required', 'integer'],
@@ -48,6 +60,9 @@ class PostManager extends Controller
         }
 
         $post = Post::create($input);
+
+        $sub->posts -= 1;
+        $sub->save();
         
         if (!isset($input["schedule_date"]) || $input["schedule_date"] == NULL) {
             foreach (array_keys($input["platforms"]) as $platform) {
@@ -74,14 +89,13 @@ class PostManager extends Controller
     public function GetPosts(Request $request)
     {
         $user = Auth::user();
-
+        
         $posts = Post::where("user_id", $user->id)->where('is_posted', '=', true)->get();
         foreach($posts as $post) {
             $post['company'] = $post->Company;
             // unset($post['company_id']);
         }
-
-        return response()->json(['status' => 'success', 'posts' => $posts]);
+       return response()->json(['status' => 'success', 'posts' => $posts]);
     }
 
     public function GetScheduledPosts(Request $request)

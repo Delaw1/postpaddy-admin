@@ -175,6 +175,8 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        // Paystack
+        Unicodeveloper\Paystack\PaystackServiceProvider::class,
     ],
 
     /*
@@ -227,6 +229,8 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
+        // Paystack
+        'Paystack' => Unicodeveloper\Paystack\Facades\Paystack::class,
     ],
 
 ];

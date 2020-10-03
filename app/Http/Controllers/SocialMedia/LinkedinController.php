@@ -20,6 +20,8 @@ use \App\Gs;
 use App\Plan;
 use DateTime;
 use Carbon\Carbon;
+use App\Subscription;
+use \App\Http\Controllers\UserController;
 
 class LinkedinController extends Controller
 {
@@ -64,7 +66,7 @@ class LinkedinController extends Controller
     if ($request->session()->has('user_id')) {
       Auth::loginUsingId(Session::get('user_id'));
     }
-    
+
     $clientID = env("LINKEDIN_CLIENT_ID");
     $clientSecrete = env("LINKEDIN_CLIENT_SECRETE");
     $redirectURL = env("APP_CALLBACK_BASE_URL") . "/linkedin_callback";
@@ -390,7 +392,8 @@ class LinkedinController extends Controller
     return $contents;
   }
 
-  public function remove($company_id) {
+  public function remove($company_id)
+  {
     $input["id"] = $company_id;
 
     $validation = Validator::make($input, [
@@ -405,59 +408,91 @@ class LinkedinController extends Controller
       return response()->json($data);
     }
 
-    $gs = Gs::first();
-    $company = Company::where('id', $company_id)->first();
-    // return $company->removed['linkedin'];
-    if($company->removed >= $gs->remove_social_media) {
-      return response()->json(['status' => 'failure', "error" => "You cant remove a social account more than ".$gs->remove_social_media." times on this plan"]);
+    $sub = (new UserController())->checkSubcription();
+    // Check active subscription
+    if (!$sub) {
+      return response()->json(['status' => 'failure', 'error' => 'Subcription expired, upgrade your plan']);
     }
-    
-    $company = Company::where('id', $company_id)->update([
-      "removed" => $company->removed + 1
-    ]);
+
+    if ($sub->remove_social <= 0) {
+      return response()->json(['status' => 'failure', 'error' => "You've exceeded your limit, Upgrade you account"]);
+    }
+
+    // $gs = Gs::first();
+    // $company = Company::where('id', $company_id)->first();
+    // // return $company->removed['linkedin'];
+    // if ($company->removed >= $gs->remove_social_media) {
+    //   return response()->json(['status' => 'failure', "error" => "You cant remove a social account more than " . $gs->remove_social_media . " times on this plan"]);
+    // }
+
+    // $company = Company::where('id', $company_id)->update([
+    //   "removed" => $company->removed + 1
+    // ]);
 
     LinkedinAccount::where('company_id', $company_id)->delete();
-    
+
+    $sub->remove_social -= 1;
+    $sub->save();
+
     return response()->json(['status' => 'success', 'msg' => 'Linkedin account successfully deleted']);
   }
 
-  public function test() {
-    // $post = Post::where('company_id', 18)->orWhere('company_id', 27)->orWhere('company_id', 16)->orWhere('company_id', 15)->delete();
-    // return response()->json($post);
+  public function test()
+  {
+    $gs = Plan::create([
+      'name' => 'Freemium',
+      'clients' => 5,
+      'posts' => 20,
+      'accounts' => 3,
+      'days' => 14,
+      'price' => 0,
+      'remove_social' => 2
+    ]);
+    Plan::create([
+      'name' => 'Oyo',
+      'clients' => 7,
+      'posts' => 40,
+      'accounts' => 3,
+      'days' => 30,
+      'price' => 2000,
+      'remove_social' => 3
+    ]);
+    Plan::create([
+      'name' => 'Eko',
+      'clients' => 15,
+      'posts' => 60,
+      'accounts' => 5,
+      'days' => 14,
+      'price' => 3000,
+      'remove_social' => 4
+    ]);
+    Plan::create([
+      'name' => 'Bere',
+      'clients' => 16,
+      'posts' => 80,
+      'accounts' => 6,
+      'days' => 30,
+      'price' => 4000,
+      'remove_social' => 5
+    ]);
+    Plan::create([
+      'name' => 'Mokola',
+      'clients' => 20,
+      'posts' => 100,
+      'accounts' => 7,
+      'days' => 30,
+      'price' => 5000,
+      'remove_social' => 6
+    ]);
+    return 'yes';
+    // // $user = User::where('id', 2)->first();
+    // $user = User::find(2);
+    // // return response()->json($user->started_at);
+    // // dd($user);
+    // $start_date = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', Carbon::now());
+    // $end_date = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $user->ended_at);
+    // $different_days = $start_date->diffInDays($end_date);
 
-    // $gs = Plan::create([
-    //   'name' => 'Freemium',
-    //   'clients' => 5,
-    //   'posts' => 20,
-    //   'accounts' => 3
-    // ]);
-    // Plan::create([
-    //   'name' => 'Oyo',
-    //   'clients' => 7,
-    //   'posts' => 40,
-    //   'accounts' => 3
-    // ]);
-    // Plan::create([
-    //   'name' => 'Eko',
-    //   'clients' => 15,
-    //   'posts' => 60,
-    //   'accounts' => 5
-    // ]);
-    // Plan::create([
-    //   'name' => 'Bere',
-    //   'clients' => 16,
-    //   'posts' => 80,
-    //   'accounts' => 6
-    // ]);
-    // Plan::create([
-    //   'name' => 'Mokola',
-    //   'clients' => 20,
-    //   'posts' => 100,
-    //   'accounts' => 7
-    // ]);
-    // $date = new DateTime();
-    // $date2 = Carbon::now();
-    // $date3 = Carbon::now()->addDays(30);
-    // return response()->json(['date1' => $date2, 'date2' => $date3,]);
+    // dd($different_days);
   }
 }

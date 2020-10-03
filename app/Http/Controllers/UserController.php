@@ -7,13 +7,17 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\User;
 use \App\Utils;
+use App\Plan;
+use Carbon\Carbon;
+use App\Subscription;
+use App\Notification;
 
 class UserController extends Controller
 {
     public function __construct()
     {
-        Auth::loginUsingId(4);
-        // $this->middleware('auth');
+        // Auth::loginUsingId(4);
+        $this->middleware('auth');
     }
 
     public function EditProfile(Request $request) {
@@ -65,5 +69,46 @@ class UserController extends Controller
         if($user) {
             return response()->json(['message' => 'Notification settings successfully changed']);
         }
+    }
+
+    // Commercialization
+    public function checkSubcription() {
+        $sub = Subscription::where('user_id', Auth::user()->id)->latest()->first();
+        $now = strtotime(Carbon::now());
+        $end = strtotime($sub->ended_at);
+        if($end >= $now) {
+            return $sub;
+        }
+        return false;
+    }
+
+    public function prevSubcription() {
+        $sub = Subscription::where('user_id', Auth::user()->id)->get();
+        return response()->json(['status' => 'success', 'sub' => $sub]);
+    }
+
+    public function currentSubcription() {
+        $sub = Subscription::where('user_id', Auth::user()->id)->latest()->first();
+        $now = strtotime(Carbon::now());
+        $end = strtotime($sub->ended_at);
+        if($end >= $now) {
+            return response()->json(['status' => 'success', 'sub' => $sub]);
+        }
+        return response()->json(['status' => 'failure', 'message' => 'No active subscription']);
+    }
+
+    public function getLatestNotifications() {
+        $notification = Notification::where('user_id', Auth::User()->id)->where('read', 0)->first();
+        if($notification) {
+            $notification->read = 1;
+            $notification->save();
+            // return response()->json(['status' => 'success', 'notification' => $notification]);
+        }
+        return response()->json(['status' => 'success', 'notification' => $notification]);
+    }
+
+    public function getNotifications() {
+        $notifications = Notification::where('user_id', Auth::User()->id)->get();
+        return response()->json(['status' => 'success', 'notification' => $notifications]);
     }
 }

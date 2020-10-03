@@ -19,7 +19,8 @@
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.0",
         "mailjet/mailjet-apiv3-php": "^1.4",
-        "sendgrid/sendgrid": "~7"
+        "sendgrid/sendgrid": "~7",
+        "unicodeveloper/laravel-paystack": "^1.0"
     },
     "require-dev": {
         "facade/ignition": "^2.0",

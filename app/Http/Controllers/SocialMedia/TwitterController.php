@@ -15,6 +15,7 @@ use DB;
 use Illuminate\Contracts\Session\Session as SessionSession;
 use App\Gs;
 use App\Company;
+use \App\Http\Controllers\UserController;
 
 class TwitterController extends Controller
 {
@@ -71,7 +72,7 @@ class TwitterController extends Controller
         // return response()->json($response);
         $oauth_token = $response["oauth_token"];
         $oauth_token_secret = $response["oauth_token_secret"];
-       
+
         $twitter_id = $response["user_id"];
         $twitter_name = $response["screen_name"];
 
@@ -141,21 +142,21 @@ class TwitterController extends Controller
             return response()->json($data);
         }
 
-        $gs = Gs::first();
-        $company = Company::where('id', $company_id)->first();
-        // return $company->removed['linkedin'];
-        if ($company->removed >= $gs->remove_social_media) {
-            return response()->json(['status' => 'failure', "error" => "You cant remove a social account more than ".$gs->remove_social_media." times on this plan"]);
+        $sub = (new UserController())->checkSubcription();
+        // Check active subscription
+        if (!$sub) {
+            return response()->json(['status' => 'failure', 'error' => 'Subcription expired, upgrade your plan']);
         }
 
-        // $com = $company->removed;
-        // $com['twitter'] += 1;
-
-        $company = Company::where('id', $company_id)->update([
-            "removed" => $company->removed + 1
-        ]);
+        if ($sub->remove_social <= 0) {
+            return response()->json(['status' => 'failure', 'error' => "You've exceeded your limit, Upgrade you account"]);
+        }
 
         TwitterAccount::where('company_id', $company_id)->delete();
+
+        $sub->remove_social -= 1;
+        $sub->save();
+
         return response()->json(['status' => 'success', 'msg' => 'Twitter account successfully deleted']);
     }
 }

@@ -16,17 +16,40 @@ use \App\Http\Controllers\SocialMedia\LinkedinController;
 use \App\Http\Controllers\SocialMedia\TwitterController;
 use \App\Http\Controllers\SocialMedia\FacebookController;
 use App\Post; 
+use App\Plan;
+use App\Subscription;
+use \App\Http\Controllers\UserController;
 
 class CompanyManager extends Controller
 {
     public function __construct()
     {
-        Auth::loginUsingId(4);
-        // $this->middleware( 'auth' );
+        // Auth::loginUsingId(4);
+        $this->middleware( 'auth' );
     }
 
     public function CreateCompany(Request $request)
     {
+        $sub = (new UserController())->checkSubcription();
+        if(!$sub) {
+            return response()->json(['status' => 'failure', 'error' => 'Subcription expired, upgrade your plan']);
+        }
+        // Check active subscription
+        // if(Auth::User()->daysLeft == 0) {
+        //     return response()->json(['status' => 'failure', 'error' => 'Subcription expired, upgrade your plan']);
+        // }
+
+        if($sub->clients <= 0) {
+            return response()->json(['status' => 'failure', 'error' => 'Minimum number of client exceeded, Upgrade you account']);
+        }
+        // Check subscription limit
+        // $baseClient = Plan::find(Auth::User()->plan_id)->clients;
+        // $userClient = Company::where("user_id", Auth::user()->id)->count();
+        // if($userClient >= $baseClient) {
+        //     return response()->json(['status' => 'failure', 'error' => 'Minimum number of client exceeded, Upgrade you account']);
+        // }
+        
+        // Validate
         $input = $request->all();
         $input['user_id'] = Auth::user()->id;
 
@@ -48,12 +71,7 @@ class CompanyManager extends Controller
 
             return response()->json($data);
         }
-        // $baseClient = Gs::first()->clients;
-        // $userClient = Company::where("user_id", Auth::user()->id)->count();
-        // if($userClient >= $baseClient) {
-        //     return response()->json(['status' => 'failure', 'message' => 'Minimum number of client exceeded, Upgrade you account']);
-        // }
-
+        
         if ($request->hasFile('profile_img')) {
             $name = time() . mt_rand(1, 9999) . '.' . $request->file('profile_img')->getClientOriginalExtension();
             $destinationPath = public_path(Utils::PROFILE_IMG_DIR);
@@ -62,6 +80,8 @@ class CompanyManager extends Controller
         }
 
         $company = Company::create($input);
+        $sub->clients -= 1;
+        $sub->save();
 
         return response()->json(['status' => 'success', 'company' => $company]);
     }

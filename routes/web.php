@@ -80,8 +80,24 @@ Route::get('/get_remaining_social/{id}', 'CompanyManager@socialMedia');
 // Notification
 Route::get('/changeNotificationSettings', 'UserController@changeNotification');
 
+// Payment controller
+Route::get('/pay', 'PaymentController@redirectToGateway')->name('pay');
+Route::get('/paynow', 'PaymentController@redirectToPay');
+Route::get('/payment/callback', 'PaymentController@handleGatewayCallback');
+
+// Subscription
+Route::get('/subscriptions', 'UserController@prevSubcription');
+Route::get('/currentSubscription', 'UserController@currentSubcription');
+
+// Notification
+Route::get('/getAllNotification', 'UserController@getNotifications');
+Route::get('/getLatestNotification', 'UserController@getLatestNotifications');
+
+// Cron Jobs
+Route::get('/sendSubscriptionReminder', 'CronJobController@subscriptionReminder');
 
 Route::get('/test', 'SocialMedia\LinkedinController@test');
+Route::get('/test2', 'UserController@checkSubcription');
 Route::get('/sendmail', 'EmailController@sendMail');
 
 

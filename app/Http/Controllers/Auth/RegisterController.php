@@ -14,7 +14,8 @@ use Illuminate\Support\Facades\Validator;
 use App\Mail\MyMail;
 use DateTime;
 use \Mailjet\Resources;
-
+use App\Plan;
+use App\Subscription;
 
 class RegisterController extends Controller
 {
@@ -110,9 +111,8 @@ class RegisterController extends Controller
 
         // $response->success() && var_dump($response->getData());
         
-        // return var_dump($response->getData());
-        // return 'yes';
-        return User::create([
+        $plan = Plan::where('name', 'Freemium')->first();
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
@@ -120,10 +120,22 @@ class RegisterController extends Controller
             'phone' => $data['phone'],
             'employees' => $data['employees'],
             'business_name' => $data['business_name'],
-            'plan_id' => 1,
-            'started_at' => new DateTime(),
-            'ended_at' => new DateTime()
+            'plan_id' => $plan->id,
+            'started_at' => Carbon::now(),
+            'ended_at' => Carbon::now()->addDays($plan->days)
         ]);
+        
+        Subscription::create([
+          'user_id' => $user->id,
+          'plan_id' => $plan->id,
+          'clients' => $plan->clients,
+          'posts' => $plan->posts,
+          'accounts' => $plan->accounts,
+          'remove_social' => $plan->remove_social,
+          'started_at' => $user->started_at,
+          'ended_at' => $user->ended_at
+        ]);
+        return $user;
     }
 
     public function verifyEmail($emailb64)

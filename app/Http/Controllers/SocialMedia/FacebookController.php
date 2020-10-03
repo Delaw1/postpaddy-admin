@@ -10,7 +10,7 @@ use App\FacebookAccount;
 use Session;
 use App\Gs;
 use App\Company;
-
+use \App\Http\Controllers\UserController;
 // require('./vendor/facebook/graph-sdk/src/Facebook/autoload.php');
 
 class FacebookController extends Controller
@@ -198,19 +198,21 @@ class FacebookController extends Controller
       return response()->json($data);
     }
 
-    $gs = Gs::first();
-    $company = Company::where('id', $company_id)->first();
-    // return $company->removed['linkedin'];
-    if($company->removed >= $gs->remove_social_media) {
-      
-      return response()->json(['status' => 'failure', "error" => "You cant remove a social account more than ".$gs->remove_social_media." times on this plan"]);
+    $sub = (new UserController())->checkSubcription();
+    // Check active subscription
+    if (!$sub) {
+      return response()->json(['status' => 'failure', 'error' => 'Subcription expired, upgrade your plan']);
     }
-    
-    $company = Company::where('id', $company_id)->update([
-      "removed" => $company->removed + 1
-    ]);
+
+    if ($sub->remove_social <= 0) {
+      return response()->json(['status' => 'failure', 'error' => "You've exceeded your limit, Upgrade you account"]);
+    }
 
     FacebookAccount::where('company_id', $company_id)->delete();
+
+    $sub->remove_social -= 1;
+    $sub->save();
+
     return response()->json(['status' => 'success', 'msg', 'Facebok account successfully deleted']);
   }
 }
