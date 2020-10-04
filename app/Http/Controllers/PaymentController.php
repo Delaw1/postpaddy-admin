@@ -140,9 +140,10 @@ class PaymentController extends Controller
                 ]
             ];
             $response = $mj->post(Resources::$Email, ['body' => $body]);
-
-            return response()->json(['msg' => 'User account successfully upgraded']);
+            $data = ['msg' => 'User account successfully upgraded'];
+            return redirect('/payment?success=true');
         }
-        return response()->json(['error' => 'Payment failed, pls try again']);
+        $data = ['error' => 'Payment failed, pls try again'];
+        return redirect('/payment?success=false');
     }
 }
