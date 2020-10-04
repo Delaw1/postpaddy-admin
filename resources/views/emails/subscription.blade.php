@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,7 +20,7 @@
     <!-- Then of course you would replace Israel with the user's name. -->
 
     <div style="width: 100%; height: 100%; display: flex; justify-content: center; background-color: #f5f5f5; padding: 4rem 0;">
-        <div style="max-width: 500px; padding-bottom: 5rem; background-color: #ffffff; font-family: 'Poppins', sans-serif; font-weight: 300;">
+        <div style="max-width: 500px; margin: auto; padding-bottom: 5rem; background-color: #ffffff; font-family: 'Poppins', sans-serif; font-weight: 300;">
             <div style="width: 100%; height: 1rem; background-color: #042250; "></div>
             <div style="width: 100%;">
                 <div style="width: 40%; margin: 2.5rem auto;">

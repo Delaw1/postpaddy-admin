@@ -1,150 +1,46 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-        }
-        h1,h2,h3,h4,h5,h6,p {
-            margin: 0px;
-        }
-        a {
-            text-decoration: none;
-            color: #354052;
-        }
-        a:hover {
-            text-decoration: none;
-        }
-        body {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #354052;
-        }
-        .mb {
-            display: none;
-        }
-        .wrapper {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 2rem 0;
-            width: 100%;
-            background-color: #F5F5F5;
-        }
-        .inner {
-            background-color: #FFF;
-            height: auto;
-            max-width: 30rem;
-            margin-top: 2rem;
-            margin-bottom: 2rem;
-        }
-        .logo {
-            width: 30%;
-            margin-top: 2rem;
-            margin-left: 3rem;
-            margin-bottom: 1rem;
-        }
-        .greeting {
-            font-size: 1.5rem;
-            line-height: 2rem;
-            margin-bottom: 2rem;
-            margin-left: 3rem;
-        }
-        .description {
-            width: 70%;
-            font-size: 1rem;
-            line-height: 1.5rem;
-            margin-left: 3rem;
-        }
-        .verify {
-            box-shadow: none;
-            border: none;
-            border-radius: 5px;
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #FFF;
-            background-color: #01A3FA;
-            width: 15rem;
-            height: 3rem;
-            margin-left: 3rem;
-            margin-top: 4rem;
-            margin-bottom: 5rem;
-            cursor: pointer;
-        }
-        .feedback-prompt {
-            font-size: 1.7rem;
-            line-height: 3rem;
-        }
-        .text-with-link {
-            font-size: 0.7rem;
-            text-align: center;
-        }
-        .bottom {
-            font-size: 0.7rem;
-            line-height: 22px;
-        }
-        .social-icon-wrapper {
-            margin: 30px 0px;
-        }
-        .social-icon {
-            margin: 5px;
-            height: 24.7px;
-        }
-        @media (max-width: 768px) {
-            .mb {
-                display: block;
-            }
-            .lg {
-                display: none;
-            }
-            .wrapper {
-                background-color: transparent;
-                height: 420px;
-            }
-            .inner {
-                margin-top: 0px;
-                margin-bottom: 0px;
-                width: 100%;
-            }
-            .logo {
-                height: 43px;
-                width: auto;
-                margin-left: 28px;
-            }
-            .key {
-                height: 34.19px;
-                margin-left: 28px;
-            }
-            .greeting {
-                font-size: 25px;
-                line-height: 35px;
-                margin-left: 28px;
-            }
-            .description {
-                font-size: 16px;
-                line-height: 25px;
-                margin-left: 28px;
-                width: 320px;
-            }
-            .verify {
-                width: 308px;
-                height: 48px;
-                font-size: 17px;
-                line-height: 15px;
-                margin-left: 28px;
-            }
+        button:focus {
+            outline: none;
         }
     </style>
 </head>
 <body>
-    <div class="wrapper">
-        <div class="inner">
-            <img src="https://postslate.com/api/images/Postslate_Full_Logo@4x.png" alt="Postslate" class="logo" >
-            <p class="greeting">Hey {{NAME}},<br>Your Subscription to {{PLAN}} wil expire in the next {{DAYS}} day(s)</p>
+
+    <!-- Note the texts wrapped with the <b> tag. -->
+    <!-- You'll replace them with the appropriate ones.  -->
+    <!-- For example, you would replace basic with whatever plan the user is on  -->
+    <!-- Then of course you would replace Israel with the user's name. -->
+
+    <div style="width: 100%; height: 100%; display: flex; justify-content: center; background-color: #f5f5f5; padding: 4rem 0;">
+        <div style="max-width: 500px; margin: auto; padding-bottom: 5rem; background-color: #ffffff; font-family: 'Poppins', sans-serif; font-weight: 300;">
+            <div style="width: 100%; height: 1rem; background-color: #042250; "></div>
+            <div style="width: 100%;">
+                <div style="width: 40%; margin: 2.5rem auto;">
+                    <img style="width: 100%; height: auto;" src="https://postslate.com/api/images/Postslate_Full_Logo@4x.png" alt="Postslate" />
+                </div>
+                <div style="width: 90%; margin: auto;">
+                    <p>Hey <b>{{NAME}}</b>,</p>
+                    <p>Your subscription to the <b>{{PLAN}}</b> will expire soon, which means your access to the <b>{{PLAN}}</b> features would be cancelled soon. Only <b>{{DAYS}} days</b> left.</p>
+                    <p>Please click the button below to renew your subscription. To enjoy more features, click <a href="#" style="color: #01a3fa;">here</a> to upgrade your plan.</p>
+                    <br>
+                    <a href="#">
+                        <button style="padding: 0.5rem 1.5rem; background-color: #01a3fa; color: #ffffff; border: none; border-radius: 0.3rem;">Renew subscription</button>
+                    </a>
+                    
+                    <br>
+                    <br>
+                    <p>Happy Posting!<br />Postslate Team</p>
+                </div>
+            </div>
         </div>
     </div>
 </body>
