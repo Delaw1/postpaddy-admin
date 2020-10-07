@@ -50,11 +50,11 @@ class schedulePost extends Command
             foreach ($post->platforms as $platform) {
                 switch ($platform) {
                     case "linkedin":
-                        (new LinkedinController())->postNow($post);
+                        // (new LinkedinController())->postNow($post);
                         print("posted to linkedin");
                         break;
                     case "twitter":
-                        (new TwitterController())->postNow($post);
+                        // (new TwitterController())->postNow($post);
                         print("posted to twitter");
                         break;
                 }
