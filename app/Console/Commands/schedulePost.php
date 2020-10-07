@@ -47,7 +47,7 @@ class schedulePost extends Command
         $posts = Post::where('schedule_date', '!=', '')->where('schedule_date', '<=', $date->timestamp)->where('is_posted', '!=', true)->get();
 
         foreach ($posts as $post) {
-            foreach ($post->platforms as $platform) {
+            foreach (array_keys($post->platforms) as $platform) {
                 switch ($platform) {
                     case "linkedin":
                         (new LinkedinController())->postNow($post);
