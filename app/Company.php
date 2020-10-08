@@ -40,9 +40,9 @@ class Company extends Model
     public function getImageAttribute($value)
     {
         if($value !== NULL) {
-            return "/profile/".$value;
+            return "https://postslate.com/api/profile/".$value;
         }
-        return "/profile/user_profile.png";
+        return "https://postslate.com/api/profile/user_profile.png";
     }
 
     public function getPlatformListAttribute() {
