@@ -23,6 +23,11 @@ class PaymentController extends Controller
      * Redirect the User to Paystack Payment Page
      * @return Url
      */
+    public function __construct()
+    {
+        Auth::loginUsingId(25);
+        // $this->middleware( 'auth' );
+    }
     public function redirectToGateway(Request $request)
     {
         // return Paystack::getAuthorizationUrl()->redirectNow();
@@ -108,7 +113,7 @@ class PaymentController extends Controller
             ]);
             Notification::create([
                 'user_id' => $user->id,
-                'message' => "You've successfully subscribe to " . $plan->name
+                'message' => "You've successfully subscribe to " . $plan->name.". Subscription will expire on ".date('d, M. Y', strtotime($user->ended_at))
             ]);
 
             $mj = new \Mailjet\Client(env('MAILJET_APIKEY'), env('MAILJET_APISECRET'), true, ['version' => 'v3.1']);

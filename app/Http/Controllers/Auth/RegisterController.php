@@ -16,6 +16,7 @@ use DateTime;
 use \Mailjet\Resources;
 use App\Plan;
 use App\Subscription;
+use App\Notification;
 
 class RegisterController extends Controller
 {
@@ -36,7 +37,7 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+        // $this->middleware('guest');
     }
 
     protected function register(Request $request)
@@ -135,6 +136,38 @@ class RegisterController extends Controller
           'started_at' => $user->started_at,
           'ended_at' => $user->ended_at
         ]);
+        Notification::create([
+          'user_id' => $user->id,
+          'message' => "You've successfully subscribe to " . $plan->name.". Subscription will expire on ".date('d, M. Y', strtotime($user->ended_at))
+      ]);
+
+      $html = file_get_contents(resource_path('views/emails/subscription.blade.php'));
+            $html = str_replace(
+                ['{{NAME}}', '{{PLAN}}'],
+                [$user->name, $plan->name],
+                $html
+            );
+            $body = [
+                'Messages' => [
+                    [
+                        'From' => [
+                            'Email' => "info@digifigs.com",
+                            'Name' => "Postlate"
+                        ],
+                        'To' => [
+                            [
+                                'Email' => $user->email,
+                                'Name' => $user->name
+                            ]
+                        ],
+                        'Subject' => "Subscription successfully",
+                        'TextPart' => "Subscription successfully",
+                        'HTMLPart' => $html,
+                        'CustomID' => "AppGettingStartedTest"
+                    ]
+                ]
+            ];
+            $response = $mj->post(Resources::$Email, ['body' => $body]);
         return $user;
     }
 

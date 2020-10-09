@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,19 +29,16 @@
             display: none;
         }
         .wrapper {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 2rem 0;
+            padding: 3rem 0;
             width: 100%;
             background-color: #F5F5F5;
         }
         .inner {
             background-color: #FFF;
             height: auto;
-            max-width: 30rem;
-            margin-top: 2rem;
-            margin-bottom: 2rem;
+            width: 60%;
+            margin: auto;
+            padding-bottom: 2rem;
         }
         .logo {
             width: 30%;
@@ -148,15 +146,22 @@
             <p class="description">We are glad you decided to use our product. Before we get started, we’ll need to verify your email.</p>
             <a href="{{VERIFY_LINK}}"><button class="verify">Verify your email</button></a>
         </div>
-        <!-- <h2 class="feedback-prompt lg">We'd love to hear from you!</h2>
-        <p class="text-with-link lg">Help us improve by sharing your feedback in this short <u><a href="#">survey</a></u></p>
-        <div class="social-icon-wrapper lg">
-            <img src="../images/facebook-2@2x.png" alt="" class="social-icon" >
-            <img src="../images/twitter@2x.png" alt="" class="social-icon" >
-            <img src="../images/instagram-glyph-1@2x.png" alt="" class="social-icon" >
+        <div style="width: 100%;">
+            <div style="width: fit-content; margin: auto; margin-bottom: 1rem;">
+                <a>
+                    <img src='https://postslate.com/api/images/facebook_light.svg' alt='' style="margin-right: 1.5rem;" />
+                </a>
+                <a>
+                    <img src='https://postslate.com/api/images/instagram_light.svg' alt='' style="margin-right: 1.5rem;" />
+                </a>
+                <a>
+                    <img src='https://postslate.com/api/images/twitter_light.svg' alt='' />
+                </a>
+            </div>
+            <p style="text-align: center; width: 80%; margin: auto; font-size: 70%; line-height: 150%; color: #B1AFAF">
+                If you need any help, please contact us <a href="mailto:info@postslate.com" style="color: #01a3fa;">info@postslate.com</a><br>Ikolaba street, Ibadan, Oyo state
+            </p>
         </div>
-        <p class="bottom lg">Copyright © 2020 <a href="#"><b>Postslate</b></a> All Rights Reserved. </p>
-        <p class="bottom lg"><a href="mailto:help@Postslate.com"><b>help@Postslate.com</b></a> | +234 90 1908 9009</p> -->
     </div>
 </body>
 </html>
