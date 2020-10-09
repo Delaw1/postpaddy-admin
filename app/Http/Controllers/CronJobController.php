@@ -15,7 +15,7 @@ class CronJobController extends Controller
         $users = User::all();
         // $day7 = array();
         foreach ($users as $user) {
-            if ($user->daysLeft == 7 || $user->daysLeft == 3 || $user->daysLeft == 1) {
+            if ($user->daysLeft == 7 || $user->daysLeft == 13 || $user->daysLeft == 1) {
                 // array_push($day7, $user);
                 Notification::create([
                     'user_id' => $user->id,
@@ -23,7 +23,7 @@ class CronJobController extends Controller
 
                 ]);
 
-                $html = file_get_contents(resource_path('views/emails/subscription.blade.php'));
+                $html = file_get_contents(resource_path('views/emails/reminder.blade.php'));
                 $html = str_replace(
                     ['{{NAME}}', '{{PLAN}}', '{{DAYS}}'],
                     [$user->name, $user->plan->name, $user->daysLeft],
@@ -51,7 +51,8 @@ class CronJobController extends Controller
                 ];
                 $response = $mj->post(Resources::$Email, ['body' => $body]);
             }
-            if ($user->daysLeft == 0 && $user->expired == 0) {
+            // return response()->json($day7);
+            if ($user->daysLeft <= 0 && $user->expired == 0) {
                 if ($user->plan_id == 1) {
                     Notification::create([
                         'user_id' => $user->id,
@@ -78,8 +79,8 @@ class CronJobController extends Controller
                                         'Name' => $user->name
                                     ]
                                 ],
-                                'Subject' => "Subscription Reminder",
-                                'TextPart' => "Subscription Reminder",
+                                'Subject' => "Subscription Expired",
+                                'TextPart' => "Subscription Expired",
                                 'HTMLPart' => $html,
                                 'CustomID' => "AppGettingStartedTest"
                             ]

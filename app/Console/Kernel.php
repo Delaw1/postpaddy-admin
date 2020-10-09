@@ -31,7 +31,8 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         
-        $schedule->command('schedule:post')->everyMinute();
+        $schedule->command('schedule:post')->everyMinute()->withoutOverlapping();
+        $schedule->command('reminder:post')->dailyAt('13:00')->withoutOverlapping();
     }
 
     /**
