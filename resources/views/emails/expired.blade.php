@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,15 +22,15 @@
                     <img style="width: 3rem; height: auto;" src="https://postslate.com/api/images/logo.svg" alt="Postslate" />
                 </div>
                 <div style="width: fit-content; margin: 2rem auto;">
-                    <img style="width: 15rem; height: auto;" src="https://postslate.com/api/images/congrats.svg" alt="Postslate" />
+                    <img style="width: 15rem; height: auto;" src="https://postslate.com/api/images/oops.svg" alt="Postslate" />
                 </div>
                 <div style="width: 90%; margin: auto;">
-                    <p style="text-align: center; font-weight: 600; font-size: 150%;">Congratulations!</p>
-                    <p style="text-align: center; width: 80%; margin: auto;">Hi {{NAME}}, you have just subscribed to the {{PLAN}} plan. Your account is now active and you can access a full range of all our services.</p>
+                    <p style="text-align: center; font-weight: 600; font-size: 150%;">Ooops!</p>
+                    <p style="text-align: center; width: 80%; margin: auto;">Hi {{NAME}}, your subscription to {{PLAN}} has expired. But good news! You can still get access to a full range of our products and services. Here’s your chance to upgrade to a our value-priced plans starting at just N2999/month.</p>
                     <br>
                     <div style="width: 100%;">
                         <a href="#" style="display: block; width: fit-content; margin: auto;">
-                            <button style="padding: 0.7rem 2.5rem; font-size: 1.3rem; background-color: #01a3fa; color: #ffffff; border: none; border-radius: 0.3rem; margin-bottom: 2rem; cursor: pointer;">Get Started</button>
+                            <button style="padding: 0.7rem 2.5rem; font-size: 1.3rem; background-color: #01a3fa; color: #ffffff; border: none; border-radius: 0.3rem; margin-bottom: 2rem; cursor: pointer;">Upgrade</button>
                         </a>
                     </div>
                     <div style="height: 0.05rem; background-color: #B1AFAF; width: 55%; margin: auto; margin-bottom: 0.5rem;"></div>

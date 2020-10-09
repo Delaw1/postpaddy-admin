@@ -48,9 +48,9 @@ class User extends Authenticatable
     public function getImageAttribute($value)
     {
         if ($value !== NULL) {
-            return "/profile/" . $value;
+            return "https://postslate.com/api/profile/" . $value;
         }
-        return "/profile/user_profile.png";
+        return "https://postslate.com/api/profile/user_profile.png";
     }
 
     public function getDaysLeftAttribute()
@@ -64,7 +64,12 @@ class User extends Authenticatable
         if($end >= $now) {
             return $different_days;
         }
-        return 0;
+        if($different_days === 0) {
+            return $different_days;
+        } else {
+            return -1 * $different_days;
+        }
+        // return 0;
     }
 
     public function getPlanAttribute() {
