@@ -140,6 +140,8 @@ class FacebookController extends Controller
       // exit;
     }
     // dd($response);
+    $data = $response["data"];
+    return response()->json($data);
     $pages = array();
     foreach($response["data"] as $fb_page) {
       array_push($pages, ["access_token" => $fb_page["access_token"], "name" => $fb_page["name"], "id" => $fb_page["id"]]);
