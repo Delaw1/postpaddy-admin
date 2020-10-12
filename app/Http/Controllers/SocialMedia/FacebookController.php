@@ -173,41 +173,63 @@ class FacebookController extends Controller
     return redirect(env('APP_FRONTEND_URL') . "/dashboard/accounts/add-social-media-accounts?facebook=true");
   }
 
-  public function postNow()
+  public function postNow($post)
   {
+    $text = $post->content . "\r\n\n" . $post->hashtag;
+    $media = $post->media;
+
+    $facebookAccount = FacebookAccount::where("company_id", '=', $post->company_id)->first();
+    if ($facebookAccount == null) {
+        return NULL;
+    }
+
+    $clientID = "493415521357024";
+    $clientSecret = "54c9846d87b01d7920e880fb1881cb99";
     $fb = new Facebook([
-      'app_id' => env('FACEBOOK_CLIENT_ID'),
-      'app_secret' => env('FACEBOOK_CLIENT_SECRET'),
+      'app_id' => $clientID,
+      'app_secret' => $clientSecret,
       'default_graph_version' => 'v2.10',
       //'default_access_token' => '{access-token}', // optional
     ]);
-    // return 'yes';
-
-    // $facebookAccount = FacebookAccount::where("company_id", '=', $post->company_id)->first();
-    // if ($facebookAccount == null) {
-    //     return NULL;
-    // }
-    // $text = $post->content . "\r\n\n" . $post->hashtag;
 
     $linkData = [
-      'link' => 'http://www.example.com',
-      'message' => 'Testing PAI',
+      'message' => $text
     ];
-
-    try {
-      // Returns a `Facebook\FacebookResponse` object
-      $response = $fb->post('/me/feed', $linkData, 'EAAHAwkDgjOABAMPJwmbZAzzrZA0nK2qqFILZAnUYtHHNk8SkXrU4yIgXtT3ZCPE0KEkYgB18MFsbqAMYOsLIAxYv3POlL2yzOKDlROMNlqhzba1NemKveiH9l8R6eX2dH5GlBdefcbcz8IPelJVFifuJRejEi5OnF83XGCJthnjKGUU1pnBaiCNostg1XfCmY9B7iEvHGgWO3Lp7VSiyym6VDdjQ3hZAFdcRD0Q1fOAZDZD');
-    } catch (Facebook\Exceptions\FacebookResponseException $e) {
-      echo 'Graph returned an error: ' . $e->getMessage();
-      exit;
-    } catch (Facebook\Exceptions\FacebookSDKException $e) {
-      echo 'Facebook SDK returned an error: ' . $e->getMessage();
-      exit;
+    foreach ($post['platforms']['linkedin'] as $account) {
+      if ($account['category'] == 'personal') {
+       
+        try {
+          // Returns a `Facebook\FacebookResponse` object
+          $response = $fb->post('/me/feed', $linkData, $facebookAccount->access_token);
+        } catch (Facebook\Exceptions\FacebookResponseException $e) {
+          echo 'Graph returned an error: ' . $e->getMessage();
+          exit;
+        } catch (Facebook\Exceptions\FacebookSDKException $e) {
+          echo 'Facebook SDK returned an error: ' . $e->getMessage();
+          exit;
+        }
+        $graphNode = $response->getGraphNode();
+      } else {
+        try {
+          // Returns a `Facebook\FacebookResponse` object
+          $response = $fb->post('/'.$account['id'].'/feed', $linkData, $account['access_token']);
+        } catch (Facebook\Exceptions\FacebookResponseException $e) {
+          echo 'Graph returned an error: ' . $e->getMessage();
+          exit;
+        } catch (Facebook\Exceptions\FacebookSDKException $e) {
+          echo 'Facebook SDK returned an error: ' . $e->getMessage();
+          exit;
+        }
+      }
     }
 
-    $graphNode = $response->getGraphNode();
+    
 
-    echo 'Posted with id: ' . $graphNode['id'];
+    
+
+    
+
+    // echo 'Posted with id: ' . $graphNode['id'];
   }
 
   public function remove($company_id)

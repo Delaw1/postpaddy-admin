@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Posting;
 
 use \App\Http\Controllers\SocialMedia\LinkedinController;
 use \App\Http\Controllers\SocialMedia\TwitterController;
+use \App\Http\Controllers\SocialMedia\FacebookController;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use \App\Http\Controllers\Controller;
@@ -14,11 +15,11 @@ use \App\Post;
 use App\Subscription;
 use \App\Http\Controllers\UserController;
 
-class PostManager extends Controller 
+class PostManager extends Controller
 {
     public function __construct()
     {
-           $this->middleware('auth');
+        $this->middleware('auth');
         // Auth::loginUsingId(20);
     }
 
@@ -26,11 +27,11 @@ class PostManager extends Controller
     {
         $sub = (new UserController())->checkSubcription();
         // Check active subscription
-        if(!$sub) {
+        if (!$sub) {
             return response()->json(['status' => 'failure', 'error' => 'Subscription expired, upgrade your plan']);
         }
 
-        if($sub->posts <= 0) {
+        if ($sub->posts <= 0) {
             return response()->json(['status' => 'failure', 'error' => 'Minimum number of allowed post exceeded, Upgrade you account']);
         }
 
@@ -42,7 +43,7 @@ class PostManager extends Controller
             'company_id' => ['required', 'integer'],
             'content' => ['required', 'string'],
             'media' => ['array'],
-            
+
             'platforms' => ['required', 'array'],
             'schedule_date' => ['integer']
         ]);
@@ -63,7 +64,7 @@ class PostManager extends Controller
 
         $sub->posts -= 1;
         $sub->save();
-        
+
         if (!isset($input["schedule_date"]) || $input["schedule_date"] == NULL) {
             foreach (array_keys($input["platforms"]) as $platform) {
                 switch ($platform) {
@@ -72,6 +73,9 @@ class PostManager extends Controller
                         break;
                     case "twitter":
                         (new TwitterController())->postNow($post);
+                        break;
+                    case "facebook":
+                        (new FacebookController())->postNow($post);
                         break;
                 }
             }
@@ -83,19 +87,18 @@ class PostManager extends Controller
 
     public function test()
     {
-        
     }
 
     public function GetPosts(Request $request)
     {
         $user = Auth::user();
-        
+
         $posts = Post::where("user_id", $user->id)->where('is_posted', '=', true)->get();
-        foreach($posts as $post) {
+        foreach ($posts as $post) {
             $post['company'] = $post->Company;
             // unset($post['company_id']);
         }
-       return response()->json(['status' => 'success', 'posts' => $posts]);
+        return response()->json(['status' => 'success', 'posts' => $posts]);
     }
 
     public function GetScheduledPosts(Request $request)
@@ -104,7 +107,7 @@ class PostManager extends Controller
 
         $posts = Post::where("user_id", $user->id)->where('schedule_date', '!=', '')->where('is_posted', '!=', true)->get();
 
-        foreach($posts as $post) {
+        foreach ($posts as $post) {
             $post['company'] = $post->Company;
             // unset($post['company_id']);
         }
@@ -162,9 +165,9 @@ class PostManager extends Controller
             'company_id' => ['required', 'integer'],
             'content' => ['required', 'string'],
             'media' => ['array'],
-            
+
             'platforms' => ['required', 'array'],
-            
+
             'schedule_date' => ['integer']
         ]);
 
