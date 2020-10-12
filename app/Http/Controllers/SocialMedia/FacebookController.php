@@ -195,7 +195,7 @@ class FacebookController extends Controller
     $linkData = [
       'message' => $text
     ];
-    foreach ($post['platforms']['linkedin'] as $account) {
+    foreach ($post['platforms']['facebook'] as $account) {
       if ($account['category'] == 'personal') {
        
         try {
