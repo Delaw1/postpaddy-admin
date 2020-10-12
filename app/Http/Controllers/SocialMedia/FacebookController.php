@@ -38,11 +38,11 @@ class FacebookController extends Controller
     Session::put('social_company_id', $company_id);
 
     // $clientID = env("FACEBOOK_CLIENT_ID'");
-    // $clientID = "493415521357024";
-    // $clientSecret = "54c9846d87b01d7920e880fb1881cb99";
+    $clientID = "493415521357024";
+    $clientSecret = "54c9846d87b01d7920e880fb1881cb99";
 
-    $clientID = "1484064975133443";
-    $clientSecret = "b3a2299aca447cb36c3a6b9584c84119";
+    // $clientID = "1484064975133443";
+    // $clientSecret = "b3a2299aca447cb36c3a6b9584c84119";
     session_start();
     $fb = new Facebook([
       'app_id' => $clientID,
@@ -57,7 +57,7 @@ class FacebookController extends Controller
       $helper->getPersistentDataHandler()->set('state', $_GET['state']);
     }
 
-    $permissions = ['email']; // Optional permissions
+    $permissions = ['email', 'pages_manage_posts', 'pages_read_engagement']; // Optional permissions
     $loginUrl = $helper->getLoginUrl('https://postslate.com/api/facebook_callback', $permissions);
 
     return redirect($loginUrl);
