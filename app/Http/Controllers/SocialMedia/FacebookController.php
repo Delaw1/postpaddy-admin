@@ -126,6 +126,19 @@ class FacebookController extends Controller
     }
     $me = $response->getGraphUser();
     $id = $me['id'];
+    // dd($response);
+    // return response()->json($id);
+
+    try {
+      $response = $fb->get('/'.$id.'/accounts', $access_token);
+      // return response()->json(['response' => $response]);
+    } catch (\Facebook\Exception\FacebookResponseException $e) {
+      return response()->json(['status' => 'failure', 'error' => $e->getMessage()]);
+      // exit;
+    } catch (\Facebook\Exception\FacebookSDKException $e) {
+      return response()->json(['status' => 'failure', 'error' => $e->getMessage()]);
+      // exit;
+    }
     dd($response);
     return response()->json($id);
 
