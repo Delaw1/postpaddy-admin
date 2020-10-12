@@ -107,7 +107,7 @@ class FacebookController extends Controller
 
     $_SESSION['fb_access_token'] = (string) $accessToken;
     $access_token = (string) $accessToken;
-    
+
     try {
       // Get the \Facebook\GraphNode\GraphUser object for the current user.
       // If you provided a 'default_access_token', the '{access-token}' is optional.
@@ -130,8 +130,12 @@ class FacebookController extends Controller
     // return response()->json($id);
 
     try {
-      $response = $fb->get('/'.$id.'/accounts', $access_token);
-      // return response()->json(['response' => $response]);
+      $response = $fb->get('/' . $id . '/accounts', $access_token);
+      // dd($response);
+      $graphObject = $response->getGraphEdge()->asArray;
+      dd($graphObject);
+      // $data = $graphObject["data"];
+      return response()->json($graphObject);
     } catch (\Facebook\Exception\FacebookResponseException $e) {
       return response()->json(['status' => 'failure', 'error' => $e->getMessage()]);
       // exit;
@@ -139,13 +143,9 @@ class FacebookController extends Controller
       return response()->json(['status' => 'failure', 'error' => $e->getMessage()]);
       // exit;
     }
-    // dd($response);
-    $graphObject = $response->getGraphEdge();
-    dd($graphObject);
-    // $data = $graphObject["data"];
-    return response()->json($graphObject);
+
     $pages = array();
-    foreach($response["data"] as $fb_page) {
+    foreach ($response["data"] as $fb_page) {
       array_push($pages, ["access_token" => $fb_page["access_token"], "name" => $fb_page["name"], "id" => $fb_page["id"]]);
     }
     return response()->json($pages);
@@ -165,7 +165,7 @@ class FacebookController extends Controller
 
     $company_id = Session::get('social_company_id');
     FacebookAccount::create(["company_id" => $company_id, "oauth_token" => $access_token, "facebook_id" => $id]);
-   
+
     if (env("APP_ENV") == "development") {
       return redirect(env('APP_FRONTEND_URL_DEV') . "/dashboard/accounts/add-social-media-accounts?facebook=true");
     }
@@ -209,7 +209,8 @@ class FacebookController extends Controller
     echo 'Posted with id: ' . $graphNode['id'];
   }
 
-  public function remove($company_id) {
+  public function remove($company_id)
+  {
     $input["id"] = $company_id;
 
     $validation = Validator::make($input, [
