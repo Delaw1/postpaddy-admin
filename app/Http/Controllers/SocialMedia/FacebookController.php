@@ -125,7 +125,7 @@ class FacebookController extends Controller
     }
     $me = $response->getGraphUser();
     $id = $me['id'];
-    return response()->json($me);
+    return response()->json($response);
 
     $data = ['facebook_id' => $id];
 
