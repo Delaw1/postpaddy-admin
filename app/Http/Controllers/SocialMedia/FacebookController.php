@@ -132,8 +132,8 @@ class FacebookController extends Controller
     try {
       $response = $fb->get('/' . $id . '/accounts', $access_token);
       // dd($response);
-      $graphObject = $response->getGraphEdge()->asArray();
-      dd($graphObject);
+      $fb_pages = $response->getGraphEdge()->asArray();
+      // dd($graphObject);
       // $data = $graphObject["data"];
       return response()->json($graphObject);
     } catch (\Facebook\Exception\FacebookResponseException $e) {
@@ -145,7 +145,7 @@ class FacebookController extends Controller
     }
 
     $pages = array();
-    foreach ($response["data"] as $fb_page) {
+    foreach ($fb_pages as $fb_page) {
       array_push($pages, ["access_token" => $fb_page["access_token"], "name" => $fb_page["name"], "id" => $fb_page["id"]]);
     }
     return response()->json($pages);
