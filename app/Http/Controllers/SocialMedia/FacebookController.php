@@ -139,8 +139,12 @@ class FacebookController extends Controller
       return response()->json(['status' => 'failure', 'error' => $e->getMessage()]);
       // exit;
     }
-    dd($response);
-    return response()->json($id);
+    // dd($response);
+    $pages = array();
+    foreach($response->data as $fb_page) {
+      array_push($pages, ["access_token" => $fb_page["access_token"], "name" => $fb_page["name"], "id" => $fb_page["id"]]);
+    }
+    return response()->json($pages);
 
     $data = ['facebook_id' => $id];
 
