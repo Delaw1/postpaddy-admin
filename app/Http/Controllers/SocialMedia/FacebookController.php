@@ -140,7 +140,8 @@ class FacebookController extends Controller
       // exit;
     }
     // dd($response);
-    $data = $response["data"];
+    $graphObject = $response->getGraphNode();
+    $data = $graphObject->data;
     return response()->json($data);
     $pages = array();
     foreach($response["data"] as $fb_page) {
