@@ -133,7 +133,7 @@ class FacebookController extends Controller
       $response = $fb->get('/' . $id . '/accounts', $access_token);
       // dd($response);
       $graphObject = $response->getGraphEdge();
-      dd($graphObject['items']);
+      dd($graphObject);
       // $data = $graphObject["data"];
       return response()->json($graphObject);
     } catch (\Facebook\Exception\FacebookResponseException $e) {
