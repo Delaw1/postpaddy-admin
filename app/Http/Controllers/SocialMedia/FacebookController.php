@@ -38,9 +38,11 @@ class FacebookController extends Controller
     Session::put('social_company_id', $company_id);
 
     // $clientID = env("FACEBOOK_CLIENT_ID'");
-    $clientID = "493415521357024";
-    $clientSecret = "54c9846d87b01d7920e880fb1881cb99";
-    // $redirectURL = env("APP_CALLBACK_BASE_URL") . "/linkedin_callback";
+    // $clientID = "493415521357024";
+    // $clientSecret = "54c9846d87b01d7920e880fb1881cb99";
+
+    $clientID = "1484064975133443";
+    $clientSecret = "b3a2299aca447cb36c3a6b9584c84119";
     session_start();
     $fb = new Facebook([
       'app_id' => $clientID,
