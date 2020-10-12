@@ -11,7 +11,15 @@ class FacebookAccount extends Model
     ];
 
     protected $hidden = [
-        'linkedin_access_token',
+        'access_token',
+    ];
+
+    protected $casts = [
+        'accounts' => 'array'
+    ];
+
+    protected $attributes = [
+        'accounts' => "[]"
     ];
 
     public function company(){
