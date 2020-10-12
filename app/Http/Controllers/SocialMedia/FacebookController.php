@@ -149,7 +149,7 @@ class FacebookController extends Controller
     foreach ($fb_pages as $fb_page) {
       array_push($pages, ["access_token" => $fb_page["access_token"], "name" => $fb_page["name"], "id" => $fb_page["id"], "category" => "pages"]);
     }
-    return response()->json($pages);
+    // return response()->json($pages);
 
     $data = ['facebook_id' => $id];
 
@@ -165,7 +165,7 @@ class FacebookController extends Controller
     }
 
     $company_id = Session::get('social_company_id');
-    FacebookAccount::create(["company_id" => $company_id, "oauth_token" => $access_token, "facebook_id" => $id]);
+    FacebookAccount::create(["company_id" => $company_id, "access_token" => $access_token, "facebook_id" => $id, "accounts" => $pages]);
 
     if (env("APP_ENV") == "development") {
       return redirect(env('APP_FRONTEND_URL_DEV') . "/dashboard/accounts/add-social-media-accounts?facebook=true");
