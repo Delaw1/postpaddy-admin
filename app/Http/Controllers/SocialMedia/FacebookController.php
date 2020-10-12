@@ -112,7 +112,7 @@ class FacebookController extends Controller
       // Get the \Facebook\GraphNode\GraphUser object for the current user.
       // If you provided a 'default_access_token', the '{access-token}' is optional.
       $response = $fb->get('/me', $access_token);
-      return response()->json(['response' => $response]);
+      // return response()->json(['response' => $response]);
     } catch (\Facebook\Exception\FacebookResponseException $e) {
       // When Graph returns an error
       // echo 'Graph returned an error: ' . $e->getMessage();
@@ -126,7 +126,7 @@ class FacebookController extends Controller
     }
     $me = $response->getGraphUser();
     $id = $me['id'];
-    return response()->json($response);
+    return response()->json($id);
 
     $data = ['facebook_id' => $id];
 
