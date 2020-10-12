@@ -57,7 +57,7 @@ class FacebookController extends Controller
       $helper->getPersistentDataHandler()->set('state', $_GET['state']);
     }
 
-    $permissions = ['email']; // Optional permissions
+    $permissions = ['email', 'pages_manage_posts', 'pages_read_engagement']; // Optional permissions
     $loginUrl = $helper->getLoginUrl('https://postslate.com/api/facebook_callback', $permissions);
 
     return redirect($loginUrl);
