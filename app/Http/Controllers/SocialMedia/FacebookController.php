@@ -135,7 +135,7 @@ class FacebookController extends Controller
       $fb_pages = $response->getGraphEdge()->asArray();
       // dd($graphObject);
       // $data = $graphObject["data"];
-      return response()->json($graphObject);
+      // return response()->json($graphObject);
     } catch (\Facebook\Exception\FacebookResponseException $e) {
       return response()->json(['status' => 'failure', 'error' => $e->getMessage()]);
       // exit;
