@@ -126,6 +126,7 @@ class FacebookController extends Controller
     }
     $me = $response->getGraphUser();
     $id = $me['id'];
+    $name = $me['name'];
     // dd($response);
     // return response()->json($id);
 
@@ -144,9 +145,9 @@ class FacebookController extends Controller
       // exit;
     }
 
-    $pages = array();
+    $pages = array(["access_token" => $access_token, "name" => $name, "id" => $id, "category" => "personal"]);
     foreach ($fb_pages as $fb_page) {
-      array_push($pages, ["access_token" => $fb_page["access_token"], "name" => $fb_page["name"], "id" => $fb_page["id"]]);
+      array_push($pages, ["access_token" => $fb_page["access_token"], "name" => $fb_page["name"], "id" => $fb_page["id"], "category" => "pages"]);
     }
     return response()->json($pages);
 
