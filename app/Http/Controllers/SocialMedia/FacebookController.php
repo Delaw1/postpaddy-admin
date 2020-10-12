@@ -107,7 +107,7 @@ class FacebookController extends Controller
 
     $_SESSION['fb_access_token'] = (string) $accessToken;
     $access_token = (string) $accessToken;
-
+    return response()->json($access_token);
     try {
       // Get the \Facebook\GraphNode\GraphUser object for the current user.
       // If you provided a 'default_access_token', the '{access-token}' is optional.
