@@ -25,11 +25,11 @@ class Company extends Model
         $data = [];
 
         $twitter = TwitterAccount::where("company_id", "=", $this->id)->first();
-        $facebook = FacebookAccount::where("company_id", "=", $this->id)->count() > 0;
+        $facebook = FacebookAccount::where("company_id", "=", $this->id)->where("accounts", "!=", '')->where("accounts", "!=", '[]')->first();
         $linkedin = LinkedinAccount::where("company_id", "=", $this->id)->where("accounts", "!=", '')->where("accounts", "!=", '[]')->first();
 
         if($twitter){array_push($data, ["twitter" => $twitter->name]);}
-        if($facebook){array_push($data, ["facebook" => []]);}
+        if($facebook){array_push($data, ["facebook" => $facebook->accounts]);}
         if($linkedin){
             array_push($data, ["linkedin" => $linkedin->accounts]);
         }
@@ -49,7 +49,7 @@ class Company extends Model
         $data = [];
 
         $twitter = TwitterAccount::where("company_id", "=", $this->id)->count() > 0;
-        $facebook = FacebookAccount::where("company_id", "=", $this->id)->count() > 0;
+        $facebook = FacebookAccount::where("company_id", "=", $this->id)->where("accounts", "!=", '')->where("accounts", "!=", '[]')->count() > 0;
         $linkedin = LinkedinAccount::where("company_id", "=", $this->id)->where("accounts", "!=", '')->where("accounts", "!=", '[]')->count() > 0;
 
         if($twitter){array_push($data, "twitter");}
