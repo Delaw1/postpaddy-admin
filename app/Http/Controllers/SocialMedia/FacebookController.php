@@ -198,17 +198,17 @@ class FacebookController extends Controller
     foreach ($post['platforms']['facebook'] as $account) {
       if ($account['category'] == 'personal') {
        
-        try {
-          // Returns a `Facebook\FacebookResponse` object
-          $response = $fb->post('/me/feed', $linkData, $facebookAccount->access_token);
-        } catch (Facebook\Exceptions\FacebookResponseException $e) {
-          echo 'Graph returned an error: ' . $e->getMessage();
-          exit;
-        } catch (Facebook\Exceptions\FacebookSDKException $e) {
-          echo 'Facebook SDK returned an error: ' . $e->getMessage();
-          exit;
-        }
-        $graphNode = $response->getGraphNode();
+        // try {
+        //   // Returns a `Facebook\FacebookResponse` object
+        //   $response = $fb->post('/me/feed', $linkData, $facebookAccount->access_token);
+        // } catch (Facebook\Exceptions\FacebookResponseException $e) {
+        //   echo 'Graph returned an error: ' . $e->getMessage();
+        //   exit;
+        // } catch (Facebook\Exceptions\FacebookSDKException $e) {
+        //   echo 'Facebook SDK returned an error: ' . $e->getMessage();
+        //   exit;
+        // }
+        // $graphNode = $response->getGraphNode();
       } else {
         try {
           // Returns a `Facebook\FacebookResponse` object
