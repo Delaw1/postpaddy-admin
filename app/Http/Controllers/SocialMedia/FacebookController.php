@@ -247,7 +247,7 @@ class FacebookController extends Controller
             $response = $this->fb->post(
               '/'.$page_id.'/photos',
               $url,
-              $account['access_token']
+              $facebookAccount->access_token
             );
           } catch(Facebook\Exceptions\FacebookResponseException $e) {
             echo 'Graph returned an error: ' . $e->getMessage();
