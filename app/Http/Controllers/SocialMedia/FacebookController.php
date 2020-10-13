@@ -238,15 +238,17 @@ class FacebookController extends Controller
         $page_id = $graphNode ['id'];
 
         if (!empty($media) && $media != "[]") {
-          $url = array();
-          foreach ($media as $m) {
-            array_push($url, ['url' => public_path(Utils::UPLOADS_DIR . "/$m")]);
-          }
+          // $url = array();
+          // foreach ($media as $m) {
+          //   array_push($url, ['url' => public_path(Utils::UPLOADS_DIR . "/$m")]);
+          // }
           try {
             // Returns a `Facebook\FacebookResponse` object
             $response = $this->fb->post(
               '/'.$page_id.'/photos',
-              $url,
+              array (
+                'url' => 'https://image.shutterstock.com/image-vector/nigeria-independence-day-60th-logo-260nw-1820406143.jpg',
+              ),
               $facebookAccount->access_token
             );
           } catch(Facebook\Exceptions\FacebookResponseException $e) {
