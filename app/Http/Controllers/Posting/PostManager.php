@@ -75,7 +75,8 @@ class PostManager extends Controller
                         (new TwitterController())->postNow($post);
                         break;
                     case "facebook":
-                        (new FacebookController())->postNow($post);
+                        $fab = (new FacebookController())->postNow($post);
+                        return $fab;
                         break;
                 }
             }
