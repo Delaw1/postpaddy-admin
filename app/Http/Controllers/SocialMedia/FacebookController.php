@@ -11,12 +11,24 @@ use Session;
 use App\Gs;
 use App\Company;
 use \App\Http\Controllers\UserController;
+use \App\Utils;
 // require('./vendor/facebook/graph-sdk/src/Facebook/autoload.php');
 
 class FacebookController extends Controller
 {
+  protected $fb;
 
-
+  public function __construct()
+  {
+    $clientID = "493415521357024";
+    $clientSecret = "54c9846d87b01d7920e880fb1881cb99";
+    $this->fb = new Facebook([
+      'app_id' => $clientID,
+      'app_secret' => $clientSecret,
+      'default_graph_version' => 'v2.10',
+      //'default_access_token' => '{access-token}', // optional
+    ]);
+  }
   public function addAccount(Request $request)
   {
     $input = $request->all();
@@ -180,24 +192,26 @@ class FacebookController extends Controller
 
     $facebookAccount = FacebookAccount::where("company_id", '=', $post->company_id)->first();
     if ($facebookAccount == null) {
-        return NULL;
+      return NULL;
     }
 
-    $clientID = "493415521357024";
-    $clientSecret = "54c9846d87b01d7920e880fb1881cb99";
-    $fb = new Facebook([
-      'app_id' => $clientID,
-      'app_secret' => $clientSecret,
-      'default_graph_version' => 'v2.10',
-      //'default_access_token' => '{access-token}', // optional
-    ]);
+    // $clientID = "493415521357024";
+    // $clientSecret = "54c9846d87b01d7920e880fb1881cb99";
+    // $fb = new Facebook([
+    //   'app_id' => $clientID,
+    //   'app_secret' => $clientSecret,
+    //   'default_graph_version' => 'v2.10',
+    //   //'default_access_token' => '{access-token}', // optional
+    // ]);
 
     $linkData = [
       'message' => $text
     ];
+
+
     foreach ($post['platforms']['facebook'] as $account) {
       if ($account['category'] == 'personal') {
-       
+
         // try {
         //   // Returns a `Facebook\FacebookResponse` object
         //   $response = $fb->post('/me/feed', $linkData, $facebookAccount->access_token);
@@ -212,7 +226,7 @@ class FacebookController extends Controller
       } else {
         try {
           // Returns a `Facebook\FacebookResponse` object
-          $response = $fb->post('/'.$account['id'].'/feed', $linkData, $account['access_token']);
+          $response = $this->fb->post('/' . $account['id'] . '/feed', $linkData, $account['access_token']);
         } catch (Facebook\Exceptions\FacebookResponseException $e) {
           echo 'Graph returned an error: ' . $e->getMessage();
           exit;
@@ -220,14 +234,38 @@ class FacebookController extends Controller
           echo 'Facebook SDK returned an error: ' . $e->getMessage();
           exit;
         }
+        $graphNode = $response->getGraphNode();
+        $page_id = $graphNode ['id'];
+
+        if (!empty($media) && $media != "[]") {
+          $url = array();
+          foreach ($media as $m) {
+            array_push($url, ['url' => public_path(Utils::UPLOADS_DIR . "/$m")]);
+          }
+          try {
+            // Returns a `Facebook\FacebookResponse` object
+            $response = $this->fb->post(
+              '/'.$page_id.'/photos',
+              $url,
+              $account['access_token']
+            );
+          } catch(Facebook\Exceptions\FacebookResponseException $e) {
+            echo 'Graph returned an error: ' . $e->getMessage();
+            exit;
+          } catch(Facebook\Exceptions\FacebookSDKException $e) {
+            echo 'Facebook SDK returned an error: ' . $e->getMessage();
+            exit;
+          }
+          $graphNode = $response->getGraphNode();
+        }
       }
     }
 
-    
 
-    
 
-    
+
+
+
 
     // echo 'Posted with id: ' . $graphNode['id'];
   }
