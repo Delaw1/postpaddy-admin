@@ -218,13 +218,10 @@ class FacebookController extends Controller
       } else {
         $photoIdArray = array();
         if (!empty($media) && $media != "[]") {
-          $newMedia = [];
-          foreach ($media as $m) {
-            $newMedia[] = $m;
-            // array_push($newMedia, $m);
-          }
-          return response()->json($newMedia);
-          $url = "https://postslate.com/api/uploads/".$newMedia[0]."";
+          
+          // return response()->json($newMedia);
+          $media[0] = "16027142263810.PNG";
+          $url = "https://postslate.com/api/uploads/".$media[0]."";
           $photo = (Utils::curlPostRequest("https://graph.facebook.com/" . $account["id"] . "/photos", "url=" . $url . "&published=false&access_token=" . $account["access_token"], [], ["Content-Type: application/json"]));
           return response()->json($photo);
           foreach ($media as $m) {
