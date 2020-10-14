@@ -219,18 +219,19 @@ class FacebookController extends Controller
         $photoIdArray = array();
         if (!empty($media) && $media != "[]") {
           // return response()->json($media);
-          $url = 'https://postslate.com/api/uploads/16026688691109.jpg';
-          $photo = (Utils::curlPostRequest('https://graph.facebook.com/' . $account['id'] . '/photos', 'url=' . $url . '&published=false&access_token=' . $account['access_token'], [], ['Content-Type: application/json']));
+          // $url = 'https://postslate.com/api/uploads/16026688691109.jpg';
+          // $photo = (Utils::curlPostRequest('https://graph.facebook.com/' . $account['id'] . '/photos', 'url=' . $url . '&published=false&access_token=' . $account['access_token'], [], ['Content-Type: application/json']));
+          // return response()->json($photo);
+          foreach ($media as $m) {
+            // $m = '16026340757325.PNG';
+            $url = 'https://postslate.com/api/uploads/16026688691109.jpg';
+            // $url = 'https://postslate.com/api/uploads/'.$m;
+            // return $url;
+            $photo = (Utils::curlPostRequest('https://graph.facebook.com/' . $account['id'] . '/photos', 'url=' . $url . '&published=false&access_token=' . $account['access_token'], [], ['Content-Type: application/json']));
+            
+          }
           return response()->json($photo);
-          // foreach ($media as $m) {
-          //   // $m = '16026340757325.PNG';
-          //   $url = 'https://postslate.com/api/uploads/16026688691109.jpg';
-          //   // $url = 'https://postslate.com/api/uploads/'.$m;
-          //   // return $url;
-          //   $photo = (Utils::curlPostRequest('https://graph.facebook.com/' . $account['id'] . '/photos', 'url=' . $url . '&published=false&access_token=' . $account['access_token'], [], ['Content-Type: application/json']));
-          //   return response()->json($photo);
-          //   array_push($photoIdArray, (object)['media_fbid' => $photo->id]);
-          // }
+            // array_push($photoIdArray, (object)['media_fbid' => $photo->id]);
           $linkData['attached_media'] = $photoIdArray;
         }
 
