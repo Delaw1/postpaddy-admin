@@ -218,7 +218,7 @@ class FacebookController extends Controller
       } else {
         $photoIdArray = array();
         if (!empty($media) && $media != "[]") {
-          // return response()->json($media);
+          return response()->json($media[0]);
           $url = 'https://postslate.com/api/uploads/'.$media[0];
           $photo = (Utils::curlPostRequest('https://graph.facebook.com/' . $account['id'] . '/photos', 'url=' . $url . '&published=false&access_token=' . $account['access_token'], [], ['Content-Type: application/json']));
           return response()->json($photo);
