@@ -201,52 +201,55 @@ class FacebookController extends Controller
       'message' => $text,
     ];
 
-      foreach ($post['platforms']['facebook'] as $account) {
-        if ($account['category'] == 'personal') {
+    foreach ($post['platforms']['facebook'] as $account) {
+      if ($account['category'] == 'personal') {
 
-          // try {
-          //   // Returns a `Facebook\FacebookResponse` object
-          //   $response = $fb->post('/me/feed', $linkData, $facebookAccount->access_token);
-          // } catch (Facebook\Exceptions\FacebookResponseException $e) {
-          //   echo 'Graph returned an error: ' . $e->getMessage();
-          //   exit;
-          // } catch (Facebook\Exceptions\FacebookSDKException $e) {
-          //   echo 'Facebook SDK returned an error: ' . $e->getMessage();
-          //   exit;
+        // try {
+        //   // Returns a `Facebook\FacebookResponse` object
+        //   $response = $fb->post('/me/feed', $linkData, $facebookAccount->access_token);
+        // } catch (Facebook\Exceptions\FacebookResponseException $e) {
+        //   echo 'Graph returned an error: ' . $e->getMessage();
+        //   exit;
+        // } catch (Facebook\Exceptions\FacebookSDKException $e) {
+        //   echo 'Facebook SDK returned an error: ' . $e->getMessage();
+        //   exit;
+        // }
+        // $graphNode = $response->getGraphNode();
+      } else {
+        $photoIdArray = array();
+        if (!empty($media) && $media != "[]") {
+          // return response()->json($media);
+          $url = 'https://postslate.com/api/uploads/16026688691109.jpg';
+          $photo = (Utils::curlPostRequest('https://graph.facebook.com/' . $account['id'] . '/photos', 'url=' . $url . '&published=false&access_token=' . $account['access_token'], [], ['Content-Type: application/json']));
+          return response()->json($photo);
+          // foreach ($media as $m) {
+          //   // $m = '16026340757325.PNG';
+          //   $url = 'https://postslate.com/api/uploads/16026688691109.jpg';
+          //   // $url = 'https://postslate.com/api/uploads/'.$m;
+          //   // return $url;
+          //   $photo = (Utils::curlPostRequest('https://graph.facebook.com/' . $account['id'] . '/photos', 'url=' . $url . '&published=false&access_token=' . $account['access_token'], [], ['Content-Type: application/json']));
+          //   return response()->json($photo);
+          //   array_push($photoIdArray, (object)['media_fbid' => $photo->id]);
           // }
-          // $graphNode = $response->getGraphNode();
-        } else {
-          $photoIdArray = array();
-          if (!empty($media) && $media != "[]") {
-            // return response()->json($media);
-            foreach ($media as $m) {
-              // $m = '16026340757325.PNG';
-              // $url = 'https://postslate.com/api/uploads/16026672956656.PNG';
-              $url = 'https://postslate.com/api/uploads/'.$m;
-              // return $url;
-              $photo = (Utils::curlPostRequest('https://graph.facebook.com/'. $account['id'] . '/photos', 'url='.$url.'&published=false&access_token=' .$account['access_token'], [], ['Content-Type: application/json']));
-              return response()->json($photo);
-              array_push($photoIdArray, (object)['media_fbid' => $photo->id]);
-            }
-            $linkData['attached_media'] = $photoIdArray;
-          }
-
-          try {
-            $response = $this->fb->post('/' . $account['id'] . '/feed', $linkData, $account['access_token']);
-          } catch (Facebook\Exceptions\FacebookResponseException $e) {
-            echo 'Graph returned an error: ' . $e->getMessage();
-            exit;
-          } catch (Facebook\Exceptions\FacebookSDKException $e) {
-            echo 'Facebook SDK returned an error: ' . $e->getMessage();
-            exit;
-          }
-          $graphNode = $response->getGraphNode();
-          $page_id = $graphNode['id'];
-          // return $page_id;
-
+          $linkData['attached_media'] = $photoIdArray;
         }
+
+        try {
+          $response = $this->fb->post('/' . $account['id'] . '/feed', $linkData, $account['access_token']);
+        } catch (Facebook\Exceptions\FacebookResponseException $e) {
+          echo 'Graph returned an error: ' . $e->getMessage();
+          exit;
+        } catch (Facebook\Exceptions\FacebookSDKException $e) {
+          echo 'Facebook SDK returned an error: ' . $e->getMessage();
+          exit;
+        }
+        $graphNode = $response->getGraphNode();
+        $page_id = $graphNode['id'];
+        // return $page_id;
+
       }
-    
+    }
+
     // echo 'Posted with id: ' . $graphNode['id'];
   }
 
