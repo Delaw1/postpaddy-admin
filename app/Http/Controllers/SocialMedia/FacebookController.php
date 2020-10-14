@@ -219,7 +219,7 @@ class FacebookController extends Controller
           $photoIdArray = array();
           if (!empty($media) && $media != "[]") {
             foreach ($media as $m) {
-              $m = '16026333113656.png';
+              // $m = '16026333113656.png';
               $photo = (Utils::curlPostRequest('https://graph.facebook.com/'. $account['id'] . '/photos', 'url=https://postslate.com/api/uploads/'.$m.'&published=false&access_token=' .$account['access_token'], [], ['Content-Type: application/json']));
               return response()->json($photo);
               array_push($photoIdArray, (object)['media_fbid' => $photo->id]);
