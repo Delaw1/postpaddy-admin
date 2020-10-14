@@ -219,9 +219,9 @@ class FacebookController extends Controller
         $photoIdArray = array();
         if (!empty($media) && $media != "[]") {
           $mmm = ["16027142263810.PNG"];
-          return response()->json([$media, $mmm]);
+          // return response()->json([$media, $mmm]);
           $medi = strval($media[0]);
-          $medi = $mmm[0];
+          // $medi = $mmm[0];
           $url = "https://postslate.com/api/uploads/".$medi."";
           $photo = (Utils::curlPostRequest("https://graph.facebook.com/" . $account["id"] . "/photos", "url=" . $url . "&published=false&access_token=" . $account["access_token"], [], ["Content-Type: application/json"]));
           return response()->json($photo);
