@@ -222,9 +222,9 @@ class FacebookController extends Controller
           // return response()->json([$media, $mmm]);
           $medi = strval($media[0]);
           // $medi = $mmm[0];
-          $url = "https://postslate.com/api/uploads/" . $medi . "";
-          $imagesize = getimagesize($url);
-          return response()->json($imagesize);
+          $url = urlencode("https://postslate.com/api/uploads/" . $medi . "");
+          // $imagesize = getimagesize($url);
+          // return response()->json($imagesize);
           // $url = $medi;
           // sleep(10);
           // $image_url = 'https://i.redd.it/fnxbn804hpd31.jpg';
