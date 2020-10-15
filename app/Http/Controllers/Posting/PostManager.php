@@ -135,7 +135,7 @@ class PostManager extends Controller
             $destinationPath = public_path(Utils::UPLOADS_DIR);
             $media->move($destinationPath, $name);
 
-            array_push($names, "https://postslate.com/api/uploads/".$name);
+            array_push($names, $name);
         }
 
         return response()->json(['success' => ["message" => "Media uploaded successfuly", "media_path" => $names]], 200);
