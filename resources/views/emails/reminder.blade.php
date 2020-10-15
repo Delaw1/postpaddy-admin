@@ -30,12 +30,13 @@
                 <div style="width: 90%; margin: auto;">
                     <p>Hey <b>{{NAME}}</b>,</p>
                     <p>Your subscription to the <b>{{PLAN}}</b> will expire soon, which means your access to the <b>{{PLAN}}</b> features would be cancelled soon. Only <b>{{DAYS}} days</b> left.</p>
-                    <p>Please click the button below to renew your subscription. To enjoy more features, click <a href="#" style="color: #01a3fa;">here</a> to upgrade your plan.</p>
+                    <p>Please click the button below to renew your subscription. To enjoy more features, click <a href="https://postslate.com/upgrade" style="color: #01a3fa;">here</a> to upgrade your plan.</p>
                     <br>
-                    <a href="#">
+                    @if(PLAN !== 'Freemium')
+                    <a href="https://postslate.com/upgrade">
                         <button style="padding: 0.5rem 1.5rem; background-color: #01a3fa; color: #ffffff; border: none; border-radius: 0.3rem;">Renew subscription</button>
                     </a>
-                    
+                    @endif
                     <br>
                     <br>
                     <p>Happy Posting!<br />Postslate Team</p>

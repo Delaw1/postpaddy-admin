@@ -15,7 +15,7 @@ class CronJobController extends Controller
         $users = User::all();
         // $day7 = array();
         foreach ($users as $user) {
-            if ($user->daysLeft == 7 || $user->daysLeft == 13 || $user->daysLeft == 1) {
+            if ($user->daysLeft == 7 || $user->daysLeft == 3 || $user->daysLeft == 1) {
                 // array_push($day7, $user);
                 Notification::create([
                     'user_id' => $user->id,
