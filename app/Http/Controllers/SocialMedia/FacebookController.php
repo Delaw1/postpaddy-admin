@@ -222,15 +222,16 @@ class FacebookController extends Controller
           // return response()->json([$media, $mmm]);
           $medi = strval($media[0]);
           // $medi = $mmm[0];
-          $url = "https://postslate.com/api/uploads/" . $medi . "";
+          // $url = "https://postslate.com/api/uploads/" . $medi . "";
+          $url = $medi;
           // sleep(10);
           // $image_url = 'https://i.redd.it/fnxbn804hpd31.jpg';
-          $image_type_check = @exif_imagetype($url);
-          if (strpos($http_response_header[0], "200")) {
-            return "image exists<br>";
-          } else {
-            return "image DOES NOT exist<br>";
-          }
+          // $image_type_check = @exif_imagetype($url);
+          // if (strpos($http_response_header[0], "200")) {
+          //   return "image exists<br>";
+          // } else {
+          //   return "image DOES NOT exist<br>";
+          // }
           $photo = (Utils::curlPostRequest("https://graph.facebook.com/" . $account["id"] . "/photos", "url=" . $url . "&published=false&access_token=" . $account["access_token"], [], ["Content-Type: application/json"]));
           return response()->json($photo);
           foreach ($media as $m) {
