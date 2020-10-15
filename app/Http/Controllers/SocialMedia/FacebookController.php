@@ -223,6 +223,7 @@ class FacebookController extends Controller
           $medi = strval($media[0]);
           // $medi = $mmm[0];
           $url = "https://postslate.com/api/uploads/".$medi."";
+          sleep(10);
           $photo = (Utils::curlPostRequest("https://graph.facebook.com/" . $account["id"] . "/photos", "url=" . $url . "&published=false&access_token=" . $account["access_token"], [], ["Content-Type: application/json"]));
           return response()->json($photo);
           foreach ($media as $m) {
