@@ -135,10 +135,10 @@ class PostManager extends Controller
             $destinationPath = public_path(Utils::UPLOADS_DIR);
             $media->move($destinationPath, $name);
 
-            array_push($names, $name);
+            array_push($names, "https://postslate.com/api/uploads/".$name);
         }
 
-        return response()->json(['success' => ["message" => "Media uploaded successfuly", "media_path" => "https://postslate.com/api/uploads/".$names]], 200);
+        return response()->json(['success' => ["message" => "Media uploaded successfuly", $names]], 200);
     }
 
     public function DeletePost($id)
