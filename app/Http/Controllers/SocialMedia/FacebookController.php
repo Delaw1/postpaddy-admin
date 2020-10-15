@@ -218,7 +218,7 @@ class FacebookController extends Controller
       } else {
         $photoIdArray = array();
         if (!empty($media) && $media != "[]") {
-          $mmm = ["16027413389834.jpg"];
+          $mmm = ["16027142263810.PNG"];
           // return response()->json([$media, $mmm]);
           $medi = strval($media[0]);
           // $medi = $mmm[0];
