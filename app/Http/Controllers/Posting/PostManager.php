@@ -138,7 +138,7 @@ class PostManager extends Controller
             array_push($names, "https://postslate.com/api/uploads/".$name);
         }
 
-        return response()->json(['success' => ["message" => "Media uploaded successfuly", $names]], 200);
+        return response()->json(['success' => ["message" => "Media uploaded successfuly", "media_path" => $names]], 200);
     }
 
     public function DeletePost($id)
