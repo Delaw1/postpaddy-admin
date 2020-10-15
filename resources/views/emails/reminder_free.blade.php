@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,11 +23,11 @@
                     <img style="width: 3rem; height: auto;" src="https://postslate.com/api/images/logo.png" alt="Postslate" />
                 </div>
                 <div style="width: fit-content; margin: 2rem auto;">
-                    <img style="width: 15rem; height: auto;" src="https://postslate.com/api/images/oops.png" alt="Postslate" />
+                    <img style="width: 10rem; height: auto;" src="https://postslate.com/api/images/reminder.png" alt="Postslate" />
                 </div>
                 <div style="width: 90%; margin: auto;">
-                    <p style="text-align: center; font-weight: 600; font-size: 150%;">Ooops!</p>
-                    <p style="text-align: center; width: 80%; margin: auto;">Hi {{NAME}}, your subscription to {{PLAN}} has expired. But good news! You can still get access to a full range of our products and services. Here’s your chance to upgrade to a our value-priced plans starting at just N2999/month.</p>
+                    <p style="text-align: center; font-weight: 600; font-size: 150%;">Reminder!</p>
+                    <p style="text-align: center; width: 80%; margin: auto;">Hi {{NAME}} , your subscription to your monthly plan will expire soon. {{PLAN}} plan at N{{PRICE}}/month starting {{DATE}}. To upgrade, please review your subscription here.</p>
                     <br>
                     <div style="width: 100%;">
                         <a href="https://postslate.com/upgrade" style="display: block; width: fit-content; margin: auto;">

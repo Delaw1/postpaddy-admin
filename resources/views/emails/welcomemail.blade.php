@@ -149,13 +149,13 @@
         <div style="width: 100%;">
             <div style="width: fit-content; margin: auto; margin-bottom: 1rem;">
                 <a>
-                    <img src='https://postslate.com/api/images/facebook_light.svg' alt='' style="margin-right: 1.5rem;" />
+                    <img src='https://postslate.com/api/images/facebook_light.png' alt='' style="margin-right: 1.5rem;" />
                 </a>
                 <a>
-                    <img src='https://postslate.com/api/images/instagram_light.svg' alt='' style="margin-right: 1.5rem;" />
+                    <img src='https://postslate.com/api/images/instagram_light.png' alt='' style="margin-right: 1.5rem;" />
                 </a>
                 <a>
-                    <img src='https://postslate.com/api/images/twitter_light.svg' alt='' />
+                    <img src='https://postslate.com/api/images/twitter_light.png' alt='' />
                 </a>
             </div>
             <p style="text-align: center; width: 80%; margin: auto; font-size: 70%; line-height: 150%; color: #B1AFAF">

@@ -240,12 +240,35 @@ class FacebookController extends Controller
           // }
           $photo = (Utils::curlPostRequest("https://graph.facebook.com/" . $account["id"] . "/photos", "url=" . $url . "&published=false&access_token=" . $account["access_token"], [], ["Content-Type: application/json"]));
           return response()->json($photo);
+
+          try {
+            $data = ['url'=> $url, 'published' => false];
+            $response = $this->fb->post('/' . $account['id'] . '/photos', $data, $account['access_token']);
+          } catch (Facebook\Exceptions\FacebookResponseException $e) {
+            echo 'Graph returned an error: ' . $e->getMessage();
+            exit;
+          } catch (Facebook\Exceptions\FacebookSDKException $e) {
+            echo 'Facebook SDK returned an error: ' . $e->getMessage();
+            exit;
+          }
+          $graphNode = $response->getGraphNode();
+          return response()->json($photo);
           foreach ($media as $m) {
             // $m = '16026340757325.PNG';
             $url = 'https://postslate.com/api/uploads/16026688691109.jpg';
             // $url = 'https://postslate.com/api/uploads/'.$m;
             // return $url;
             $photo = (Utils::curlPostRequest('https://graph.facebook.com/' . $account['id'] . '/photos', 'url=' . $url . '&published=false&access_token=' . $account['access_token'], [], ['Content-Type: application/json']));
+            try {
+              $data = ['url'=> $url, 'published' => false];
+              $response = $this->fb->post('/' . $account['id'] . '/photos', $data, $account['access_token']);
+            } catch (Facebook\Exceptions\FacebookResponseException $e) {
+              echo 'Graph returned an error: ' . $e->getMessage();
+              exit;
+            } catch (Facebook\Exceptions\FacebookSDKException $e) {
+              echo 'Facebook SDK returned an error: ' . $e->getMessage();
+              exit;
+            }
           }
           return response()->json($photo);
           // array_push($photoIdArray, (object)['media_fbid' => $photo->id]);

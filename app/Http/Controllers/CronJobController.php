@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\User;
 use \Mailjet\Resources;
 use App\Notification;
+use Carbon\Carbon;
 
 class CronJobController extends Controller
 {
@@ -23,12 +24,23 @@ class CronJobController extends Controller
 
                 ]);
 
-                $html = file_get_contents(resource_path('views/emails/reminder.blade.php'));
-                $html = str_replace(
-                    ['{{NAME}}', '{{PLAN}}', '{{DAYS}}'],
-                    [$user->name, $user->plan->name, $user->daysLeft],
-                    $html
-                );
+                if ($user->plan_id == 1) {
+                    $html = file_get_contents(resource_path('views/emails/reminder_free.blade.php'));
+                    $html = str_replace(
+                        ['{{NAME}}', '{{PLAN}}', '{{DAYS}}', '{{PRICE}}', '{{DATE}}'],
+                        [$user->name, $user->plan->name, $user->daysLeft, $user->plan->price, Carbon::parse($user->ended_at)->format('d M')],
+                        $html
+                    );
+                } else {
+                    $html = file_get_contents(resource_path('views/emails/reminder.blade.php'));
+                    $html = str_replace(
+                        ['{{NAME}}', '{{PLAN}}', '{{DAYS}}', '{{PRICE}}', '{{DATE}}'],
+                        [$user->name, $user->plan->name, $user->daysLeft, $user->plan->price, Carbon::parse($user->ended_at)->format('d M')],
+                        $html
+                    );
+                }
+
+
                 $body = [
                     'Messages' => [
                         [
@@ -125,7 +137,6 @@ class CronJobController extends Controller
                 $user->expired = true;
                 $user->save();
             }
-            
         }
         return response()->json('success');
     }

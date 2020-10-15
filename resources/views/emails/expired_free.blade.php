@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,17 +20,17 @@
             <div style="width: 100%; height: 0.7rem; background-color: #042250; "></div>
             <div style="width: 100%;">
                 <div style="width: fit-content; margin: 2rem auto;">
-                    <img style="width: 3rem; height: auto;" src="https://postslate.com/api/images/logo.svg" alt="Postslate" />
+                    <img style="width: 3rem; height: auto;" src="https://postslate.com/api/images/logo.png" alt="Postslate" />
                 </div>
                 <div style="width: fit-content; margin: 2rem auto;">
-                    <img style="width: 15rem; height: auto;" src="https://postslate.com/api/images/oops.svg" alt="Postslate" />
+                    <img style="width: 15rem; height: auto;" src="https://postslate.com/api/images/oops.png" alt="Postslate" />
                 </div>
                 <div style="width: 90%; margin: auto;">
                     <p style="text-align: center; font-weight: 600; font-size: 150%;">Ooops!</p>
                     <p style="text-align: center; width: 80%; margin: auto;">Hi {{NAME}}, your free trial offer for 14 days has ended. But good news! You can still get access to a full range of our products and services. Here’s your chance to upgrade to a our value-priced plans starting at just N2999/month.</p>
                     <br>
                     <div style="width: 100%;">
-                        <a href="#" style="display: block; width: fit-content; margin: auto;">
+                        <a href="https://postslate.com/upgrade" style="display: block; width: fit-content; margin: auto;">
                             <button style="padding: 0.7rem 2.5rem; font-size: 1.3rem; background-color: #01a3fa; color: #ffffff; border: none; border-radius: 0.3rem; margin-bottom: 2rem; cursor: pointer;">Upgrade</button>
                         </a>
                     </div>
@@ -40,13 +41,13 @@
             <div style="width: 100%; border-top: 0.05rem solid #B1AFAF; margin-top: 1.5rem; padding-top: 1.5rem;">
                 <div style="width: fit-content; margin: auto; margin-bottom: 1rem;">
                     <a>
-                        <img src='https://postslate.com/api/images/facebook_light.svg' alt='' style="margin-right: 1.5rem;" />
+                        <img src='https://postslate.com/api/images/facebook_light.png' alt='' style="margin-right: 1.5rem;" />
                     </a>
                     <a>
-                        <img src='https://postslate.com/api/images/instagram_light.svg' alt='' style="margin-right: 1.5rem;" />
+                        <img src='https://postslate.com/api/images/instagram_light.png' alt='' style="margin-right: 1.5rem;" />
                     </a>
                     <a>
-                        <img src='https://postslate.com/api/images/twitter_light.svg' alt='' />
+                        <img src='https://postslate.com/api/images/twitter_light.png' alt='' />
                     </a>
                 </div>
                 <p style="text-align: center; width: 80%; margin: auto; font-size: 70%; line-height: 150%; color: #B1AFAF">
