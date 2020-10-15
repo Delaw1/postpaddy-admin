@@ -131,7 +131,7 @@ class PostManager extends Controller
         $names = array();
 
         foreach ($request->file('media') as $media) {
-            $name = time() . mt_rand(1, 9999) . '.' . $media->getClientOriginalExtension();
+            $name = 'postslate'.time() . mt_rand(1, 9999) . '.' . $media->getClientOriginalExtension();
             $destinationPath = public_path(Utils::UPLOADS_DIR);
             $media->move($destinationPath, $name);
 
