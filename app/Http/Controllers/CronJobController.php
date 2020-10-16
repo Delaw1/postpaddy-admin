@@ -40,6 +40,8 @@ class CronJobController extends Controller
                     );
                 }
 
+                // return $html;
+
 
                 $body = [
                     'Messages' => [
@@ -78,6 +80,7 @@ class CronJobController extends Controller
                         [$user->name, $user->plan->name, $user->daysLeft],
                         $html
                     );
+                    // return $html;
                     $body = [
                         'Messages' => [
                             [
@@ -112,6 +115,7 @@ class CronJobController extends Controller
                         [$user->name, $user->plan->name, $user->daysLeft],
                         $html
                     );
+                    return $html;
                     $body = [
                         'Messages' => [
                             [

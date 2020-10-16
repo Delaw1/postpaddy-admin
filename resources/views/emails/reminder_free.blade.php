@@ -27,7 +27,7 @@
                 </div>
                 <div style="width: 90%; margin: auto;">
                     <p style="text-align: center; font-weight: 600; font-size: 150%;">Reminder!</p>
-                    <p style="text-align: center; width: 80%; margin: auto;">Hi {{NAME}} , your subscription to your monthly plan will expire soon. {{PLAN}} plan at N{{PRICE}}/month starting {{DATE}}. To upgrade, please review your subscription here.</p>
+                    <p style="text-align: center; width: 80%; margin: auto;">Hi {{NAME}} , your subscription to your monthly plan will expire soon ({{DAYS}} days left). {{PLAN}} plan at N{{PRICE}}/month starting {{DATE}}. To upgrade, please review your subscription here.</p>
                     <br>
                     <div style="width: 100%;">
                         <a href="https://postslate.com/upgrade" style="display: block; width: fit-content; margin: auto;">

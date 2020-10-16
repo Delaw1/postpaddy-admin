@@ -97,7 +97,7 @@ Route::get('/getLatestNotification', 'UserController@getLatestNotifications');
 Route::get('/sendSubscriptionReminder', 'CronJobController@subscriptionReminder');
 
 Route::get('/test', 'SocialMedia\LinkedinController@test');
-Route::get('/test2', 'UserController@checkSubcription');
+Route::get('/test2', 'CronJobController@subscriptionReminder');
 Route::get('/sendmail', 'EmailController@sendMail');
 
 

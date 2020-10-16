@@ -218,14 +218,14 @@ class FacebookController extends Controller
       } else {
         $photoIdArray = array();
         if (!empty($media) && $media != "[]") {
-          $mmm = ["16027142263810.PNG"];
-          // return response()->json([$media, $mmm]);
-          $medii = strval($media[0]);
-          // $medi = $mmm[0];
-          $medi = "postslate16027580406019.jpg";
-          $new = ["postslate16027580406019.jpg", $media[0]];
-          // return response()->json([$medi, $medii]);
-          $url = "https://www.postslate.com/api/uploads/".$new[1];
+          // $mmm = ["16027142263810.PNG"];
+          // // return response()->json([$media, $mmm]);
+          // $medii = strval($media[0]);
+          // // $medi = $mmm[0];
+          // $medi = "postslate16027580406019.jpg";
+          // $new = ["postslate16027580406019.jpg", $media[0]];
+          // // return response()->json([$medi, $medii]);
+          // $url = "https://www.postslate.com/api/uploads/".$new[1];
           // return $url;
           // $imagesize = getimagesize($url);
           // return response()->json($imagesize);
@@ -238,41 +238,41 @@ class FacebookController extends Controller
           // } else {
           //   return "image DOES NOT exist<br>";
           // }
-          $photo = (Utils::curlPostRequest("https://graph.facebook.com/" . $account["id"] . "/photos", "url=" . $url . "&published=false&access_token=" . $account["access_token"], [], ["Content-Type: application/json"]));
-          return response()->json($photo);
+          // $photo = (Utils::curlPostRequest("https://graph.facebook.com/" . $account["id"] . "/photos", "url=" . $url . "&published=false&access_token=" . $account["access_token"], [], ["Content-Type: application/json"]));
+          // return response()->json($photo);
 
-          try {
-            $data = ['url'=> $url, 'published' => false];
-            $response = $this->fb->post('/' . $account['id'] . '/photos', $data, $account['access_token']);
-          } catch (Facebook\Exceptions\FacebookResponseException $e) {
-            echo 'Graph returned an error: ' . $e->getMessage();
-            exit;
-          } catch (Facebook\Exceptions\FacebookSDKException $e) {
-            echo 'Facebook SDK returned an error: ' . $e->getMessage();
-            exit;
-          }
-          $graphNode = $response->getGraphNode();
-          return response()->json($photo);
-          foreach ($media as $m) {
-            // $m = '16026340757325.PNG';
-            $url = 'https://postslate.com/api/uploads/16026688691109.jpg';
-            // $url = 'https://postslate.com/api/uploads/'.$m;
-            // return $url;
-            $photo = (Utils::curlPostRequest('https://graph.facebook.com/' . $account['id'] . '/photos', 'url=' . $url . '&published=false&access_token=' . $account['access_token'], [], ['Content-Type: application/json']));
-            try {
-              $data = ['url'=> $url, 'published' => false];
-              $response = $this->fb->post('/' . $account['id'] . '/photos', $data, $account['access_token']);
-            } catch (Facebook\Exceptions\FacebookResponseException $e) {
-              echo 'Graph returned an error: ' . $e->getMessage();
-              exit;
-            } catch (Facebook\Exceptions\FacebookSDKException $e) {
-              echo 'Facebook SDK returned an error: ' . $e->getMessage();
-              exit;
-            }
-          }
-          return response()->json($photo);
-          // array_push($photoIdArray, (object)['media_fbid' => $photo->id]);
-          $linkData['attached_media'] = $photoIdArray;
+          // try {
+          //   $data = ['url'=> $url, 'published' => false];
+          //   $response = $this->fb->post('/' . $account['id'] . '/photos', $data, $account['access_token']);
+          // } catch (Facebook\Exceptions\FacebookResponseException $e) {
+          //   echo 'Graph returned an error: ' . $e->getMessage();
+          //   exit;
+          // } catch (Facebook\Exceptions\FacebookSDKException $e) {
+          //   echo 'Facebook SDK returned an error: ' . $e->getMessage();
+          //   exit;
+          // }
+          // $graphNode = $response->getGraphNode();
+          // return response()->json($photo);
+          // foreach ($media as $m) {
+          //   // $m = '16026340757325.PNG';
+          //   $url = 'https://postslate.com/api/uploads/16026688691109.jpg';
+          //   // $url = 'https://postslate.com/api/uploads/'.$m;
+          //   // return $url;
+          //   $photo = (Utils::curlPostRequest('https://graph.facebook.com/' . $account['id'] . '/photos', 'url=' . $url . '&published=false&access_token=' . $account['access_token'], [], ['Content-Type: application/json']));
+          //   try {
+          //     $data = ['url'=> $url, 'published' => false];
+          //     $response = $this->fb->post('/' . $account['id'] . '/photos', $data, $account['access_token']);
+          //   } catch (Facebook\Exceptions\FacebookResponseException $e) {
+          //     echo 'Graph returned an error: ' . $e->getMessage();
+          //     exit;
+          //   } catch (Facebook\Exceptions\FacebookSDKException $e) {
+          //     echo 'Facebook SDK returned an error: ' . $e->getMessage();
+          //     exit;
+          //   }
+          // }
+          // return response()->json($photo);
+          // // array_push($photoIdArray, (object)['media_fbid' => $photo->id]);
+          // $linkData['attached_media'] = $photoIdArray;
         }
 
         try {
