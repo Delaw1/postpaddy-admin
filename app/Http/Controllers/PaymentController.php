@@ -25,8 +25,8 @@ class PaymentController extends Controller
      */
     public function __construct()
     {
-        Auth::loginUsingId(20);
-        // $this->middleware( 'auth' );
+        // Auth::loginUsingId(20);
+        $this->middleware( 'auth' );
     }
     public function redirectToGateway(Request $request)
     {
