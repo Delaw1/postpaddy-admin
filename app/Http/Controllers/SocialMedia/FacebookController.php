@@ -165,18 +165,18 @@ class FacebookController extends Controller
     }
     // return response()->json($pages);
 
-    $data = ['facebook_id' => $id];
+    // $data = ['facebook_id' => $id];
 
-    $validation = Validator::make($data, [
-      'facebook_id' => ['required', 'unique:facebook_accounts']
-    ]);
+    // $validation = Validator::make($data, [
+    //   'facebook_id' => ['required', 'unique:facebook_accounts']
+    // ]);
 
-    if ($validation->fails()) {
-      if (env("APP_ENV") == "development") {
-        return redirect(env('APP_FRONTEND_URL_DEV') . "/dashboard/accounts/add-social-media-accounts?facebook=existing");
-      }
-      return redirect(env('APP_FRONTEND_URL') . "/dashboard/accounts/add-social-media-accounts?facebook=existing");
-    }
+    // if ($validation->fails()) {
+    //   if (env("APP_ENV") == "development") {
+    //     return redirect(env('APP_FRONTEND_URL_DEV') . "/dashboard/accounts/add-social-media-accounts?facebook=existing");
+    //   }
+    //   return redirect(env('APP_FRONTEND_URL') . "/dashboard/accounts/add-social-media-accounts?facebook=existing");
+    // }
 
     $company_id = Session::get('social_company_id');
     FacebookAccount::create(["company_id" => $company_id, "access_token" => $access_token, "facebook_id" => $id, "accounts" => $pages]);
