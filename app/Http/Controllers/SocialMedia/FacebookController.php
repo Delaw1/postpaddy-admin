@@ -27,7 +27,7 @@ class FacebookController extends Controller
     $this->fb = new Facebook([
       'app_id' => $clientID,
       'app_secret' => $clientSecret,
-      'default_graph_version' => 'v3.0',
+      'default_graph_version' => 'v3.2',
       'fileUpload' => true,
       'cookie' => true
     ]);
