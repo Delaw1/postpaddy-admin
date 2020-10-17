@@ -203,35 +203,6 @@ class FacebookController extends Controller
       } else {
         $photoIdArray = array();
         if (!empty($media) && $media != "[]") {
-          // $media[0] = "postslate1602934967234.png";
-          // $url = "https://www.postslate.com/api/uploads/" . $media[0];
-          // $url = public_path(Utils::UPLOADS_DIR . "/$media[0]");
-          // return $url;
-          // return redirect($url);
-          // $mmm = ["16027142263810.PNG"];
-          // // return response()->json([$media, $mmm]);
-          // $medii = strval($media[0]);
-          // // $medi = $mmm[0];
-          // $medi = "postslate16027580406019.jpg";
-          // $new = ["postslate16027580406019.jpg", $media[0]];
-          // // return response()->json([$medi, $medii]);
-          // $url = "https://www.postslate.com/api/uploads/".$new[1];
-          // return $url;
-          // $imagesize = getimagesize($url);
-          // return response()->json($imagesize);
-          // $url = $medi;
-          // sleep(10);
-          // $image_url = 'https://i.redd.it/fnxbn804hpd31.jpg';
-          // $image_type_check = @exif_imagetype($url);
-          // if (strpos($http_response_header[0], "200")) {
-          //   return "image exists<br>";
-          // } else {
-          //   return "image DOES NOT exist<br>";
-          // }
-          // $photo = (Utils::curlPostRequest("https://graph.facebook.com/" . $account["id"] . "/photos", "url=" . $url . "&published=false&access_token=" . $account["access_token"], [], ["Content-Type: application/json"]));
-          // return response()->json($photo);
-          // sleep(30);
-
           foreach ($media as $m) {
             try {
               $source = public_path(Utils::UPLOADS_DIR . "/$m");
