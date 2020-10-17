@@ -219,8 +219,8 @@ class FacebookController extends Controller
         $photoIdArray = array();
         if (!empty($media) && $media != "[]") {
           // $media[0] = "postslate1602934967234.png";
-          // $url = "https://www.postslate.com/api/uploads/" . $media[0];
-          $url = public_path(Utils::UPLOADS_DIR . "/$media[0]");
+          $url = "https://www.postslate.com/api/uploads/" . $media[0];
+          // $url = public_path(Utils::UPLOADS_DIR . "/$media[0]");
           // return $url;
           // return redirect($url);
           // $mmm = ["16027142263810.PNG"];
@@ -245,9 +245,9 @@ class FacebookController extends Controller
           // }
           // $photo = (Utils::curlPostRequest("https://graph.facebook.com/" . $account["id"] . "/photos", "url=" . $url . "&published=false&access_token=" . $account["access_token"], [], ["Content-Type: application/json"]));
           // return response()->json($photo);
-            // sleep(15);
+            sleep(30);
           try {
-            $data = ['url' => fopen($url, 'r'), 'published' => true];
+            $data = ['url' => $url, 'published' => true];
             $response = $this->fb->post('/' . $account['id'] . '/photos', $data, $account['access_token']);
           } catch (Facebook\Exceptions\FacebookResponseException $e) {
             return 'Graph returned an error: ' . $e->getMessage();
