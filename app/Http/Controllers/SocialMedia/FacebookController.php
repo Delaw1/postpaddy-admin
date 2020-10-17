@@ -218,8 +218,8 @@ class FacebookController extends Controller
       } else {
         $photoIdArray = array();
         if (!empty($media) && $media != "[]") {
-          $url = "https://www.postslate.com/api/uploads/".$media[0];
-          return redirect($url);
+          $url = "https://www.postslate.com/api/uploads/" . $media[0];
+          // return redirect($url);
           // $mmm = ["16027142263810.PNG"];
           // // return response()->json([$media, $mmm]);
           // $medii = strval($media[0]);
@@ -243,17 +243,17 @@ class FacebookController extends Controller
           // $photo = (Utils::curlPostRequest("https://graph.facebook.com/" . $account["id"] . "/photos", "url=" . $url . "&published=false&access_token=" . $account["access_token"], [], ["Content-Type: application/json"]));
           // return response()->json($photo);
 
-          // try {
-          //   $data = ['url'=> $url, 'published' => false];
-          //   $response = $this->fb->post('/' . $account['id'] . '/photos', $data, $account['access_token']);
-          // } catch (Facebook\Exceptions\FacebookResponseException $e) {
-          //   echo 'Graph returned an error: ' . $e->getMessage();
-          //   exit;
-          // } catch (Facebook\Exceptions\FacebookSDKException $e) {
-          //   echo 'Facebook SDK returned an error: ' . $e->getMessage();
-          //   exit;
-          // }
-          // $graphNode = $response->getGraphNode();
+          try {
+            $data = ['url' => $url, 'published' => false];
+            $response = $this->fb->post('/' . $account['id'] . '/photos', $data, $account['access_token']);
+          } catch (Facebook\Exceptions\FacebookResponseException $e) {
+            return 'Graph returned an error: ' . $e->getMessage();
+            exit;
+          } catch (Facebook\Exceptions\FacebookSDKException $e) {
+            return 'Facebook SDK returned an error: ' . $e->getMessage();
+            exit;
+          }
+          $photo = $response->getGraphNode();
           // return response()->json($photo);
           // foreach ($media as $m) {
           //   // $m = '16026340757325.PNG';
@@ -273,8 +273,8 @@ class FacebookController extends Controller
           //   }
           // }
           // return response()->json($photo);
-          // // array_push($photoIdArray, (object)['media_fbid' => $photo->id]);
-          // $linkData['attached_media'] = $photoIdArray;
+          array_push($photoIdArray, (object)['media_fbid' => $photo->id]);
+          $linkData['attached_media'] = $photoIdArray;
         }
 
         try {

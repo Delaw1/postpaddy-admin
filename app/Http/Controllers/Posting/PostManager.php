@@ -76,7 +76,7 @@ class PostManager extends Controller
                         break;
                     case "facebook":
                         $fab = (new FacebookController())->postNow($post);
-                        // return $fab;
+                        return $fab;
                         break;
                 }
             }
