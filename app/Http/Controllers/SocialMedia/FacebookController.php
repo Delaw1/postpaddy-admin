@@ -220,6 +220,7 @@ class FacebookController extends Controller
         if (!empty($media) && $media != "[]") {
           // $media[0] = "postslate1602934967234.png";
           $url = "https://www.postslate.com/api/uploads/" . $media[0];
+          return $url;
           // return redirect($url);
           // $mmm = ["16027142263810.PNG"];
           // // return response()->json([$media, $mmm]);
