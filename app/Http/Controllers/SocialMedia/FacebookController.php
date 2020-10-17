@@ -240,7 +240,7 @@ class FacebookController extends Controller
             // $source = '/var/www/api/public/uploads/'.$media[0];
             $source = public_path(Utils::UPLOADS_DIR . "/$media[0]");
             // $photo = (Utils::curlPostRequest("https://graph.facebook.com/" . $account["id"] . "/photos", "source=" . $source . "&published=false&access_token=" . $account["access_token"], [], ["Content-Type: application/json"]));
-            $data = ['source' => $this->fb->fileToUpload($source)];
+            $data = ['source' => $this->fb->fileToUpload($source), 'published' => false];
             
             $response = $this->fb->post('/' . $account['id'] . '/photos', $data, $account['access_token']);
             // return response()->json($photo);
@@ -273,7 +273,7 @@ class FacebookController extends Controller
           // return response()->json($photo);
           array_push($photoIdArray, (object)['media_fbid' => $photo['id']]);
           $linkData['attached_media'] = $photoIdArray;
-          return response()->json($linkData);
+          // return response()->json($linkData);
         }
 
         try {
