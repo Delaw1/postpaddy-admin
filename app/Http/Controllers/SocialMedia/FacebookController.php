@@ -29,6 +29,8 @@ class FacebookController extends Controller
       'app_secret' => $clientSecret,
       'default_graph_version' => 'v8.0',
       //'default_access_token' => '{access-token}', // optional
+      'fileUpload' => true,
+      'cookie' => true
     ]);
   }
   public function addAccount(Request $request)
@@ -245,7 +247,7 @@ class FacebookController extends Controller
           // }
           // $photo = (Utils::curlPostRequest("https://graph.facebook.com/" . $account["id"] . "/photos", "url=" . $url . "&published=false&access_token=" . $account["access_token"], [], ["Content-Type: application/json"]));
           // return response()->json($photo);
-            // sleep(30);
+          // sleep(30);
 
           try {
             // $data = ['url' => $url, 'published' => true];
@@ -294,7 +296,6 @@ class FacebookController extends Controller
         $graphNode = $response->getGraphNode();
         $page_id = $graphNode['id'];
         return $page_id;
-
       }
     }
 
