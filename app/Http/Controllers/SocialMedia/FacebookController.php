@@ -245,9 +245,11 @@ class FacebookController extends Controller
           // }
           // $photo = (Utils::curlPostRequest("https://graph.facebook.com/" . $account["id"] . "/photos", "url=" . $url . "&published=false&access_token=" . $account["access_token"], [], ["Content-Type: application/json"]));
           // return response()->json($photo);
-            sleep(30);
+            // sleep(30);
+
           try {
-            $data = ['url' => $url, 'published' => true];
+            // $data = ['url' => $url, 'published' => true];
+            $data = ['source' => fopen(public_path(Utils::UPLOADS_DIR . "/$media[0]"), 'r'), 'published' => true];
             $response = $this->fb->post('/' . $account['id'] . '/photos', $data, $account['access_token']);
           } catch (Facebook\Exceptions\FacebookResponseException $e) {
             return 'Graph returned an error: ' . $e->getMessage();
@@ -257,7 +259,7 @@ class FacebookController extends Controller
             exit;
           }
           $photo = $response->getGraphNode();
-          // return response()->json($photo);
+          return response()->json($photo);
           // foreach ($media as $m) {
           //   // $m = '16026340757325.PNG';
           //   $url = 'https://postslate.com/api/uploads/16026688691109.jpg';
