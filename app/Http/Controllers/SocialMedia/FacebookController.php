@@ -204,7 +204,7 @@ class FacebookController extends Controller
         $photoIdArray = array();
         if (!empty($media) && $media != "[]") {
           // $media[0] = "postslate1602934967234.png";
-          $url = "https://www.postslate.com/api/uploads/" . $media[0];
+          // $url = "https://www.postslate.com/api/uploads/" . $media[0];
           // $url = public_path(Utils::UPLOADS_DIR . "/$media[0]");
           // return $url;
           // return redirect($url);
@@ -232,48 +232,26 @@ class FacebookController extends Controller
           // return response()->json($photo);
           // sleep(30);
 
-          try {
-            // $data = ['url' => $url, 'published' => true];
-            // $this->fb->setFileUploadSupport(true);
-            // $source = '@'.realpath(public_path(Utils::UPLOADS_DIR . "/$media[0]"));
-            // $this->fb->setFileUploadSupport(true);
-            // $source = '/var/www/api/public/uploads/'.$media[0];
-            $source = public_path(Utils::UPLOADS_DIR . "/$media[0]");
-            // $photo = (Utils::curlPostRequest("https://graph.facebook.com/" . $account["id"] . "/photos", "source=" . $source . "&published=false&access_token=" . $account["access_token"], [], ["Content-Type: application/json"]));
-            $data = ['source' => $this->fb->fileToUpload($source), 'published' => false];
-            
-            $response = $this->fb->post('/' . $account['id'] . '/photos', $data, $account['access_token']);
-            // return response()->json($photo);
-          } catch (Facebook\Exceptions\FacebookResponseException $e) {
-            return 'Graph returned an error: ' . $e->getMessage();
-            exit;
-          } catch (Facebook\Exceptions\FacebookSDKException $e) {
-            return 'Facebook SDK returned an error: ' . $e->getMessage();
-            exit;
+          foreach ($media as $m) {
+            try {
+              $source = public_path(Utils::UPLOADS_DIR . "/$m");
+              $data = ['source' => $this->fb->fileToUpload($source), 'published' => false];
+              
+              $response = $this->fb->post('/' . $account['id'] . '/photos', $data, $account['access_token']);
+              
+            } catch (Facebook\Exceptions\FacebookResponseException $e) {
+              return 'Graph returned an error: ' . $e->getMessage();
+              exit;
+            } catch (Facebook\Exceptions\FacebookSDKException $e) {
+              return 'Facebook SDK returned an error: ' . $e->getMessage();
+              exit;
+            }
+            $photo = $response->getGraphNode();
+
+            array_push($photoIdArray, (object)['media_fbid' => $photo['id']]);
+            $linkData['attached_media'] = $photoIdArray;
+            // return response()->json($linkData);
           }
-          $photo = $response->getGraphNode();
-          // return response()->json($photo['id']);
-          // foreach ($media as $m) {
-          //   // $m = '16026340757325.PNG';
-          //   $url = 'https://postslate.com/api/uploads/16026688691109.jpg';
-          //   // $url = 'https://postslate.com/api/uploads/'.$m;
-          //   // return $url;
-          //   $photo = (Utils::curlPostRequest('https://graph.facebook.com/' . $account['id'] . '/photos', 'url=' . $url . '&published=false&access_token=' . $account['access_token'], [], ['Content-Type: application/json']));
-          //   try {
-          //     $data = ['url'=> $url, 'published' => false];
-          //     $response = $this->fb->post('/' . $account['id'] . '/photos', $data, $account['access_token']);
-          //   } catch (Facebook\Exceptions\FacebookResponseException $e) {
-          //     echo 'Graph returned an error: ' . $e->getMessage();
-          //     exit;
-          //   } catch (Facebook\Exceptions\FacebookSDKException $e) {
-          //     echo 'Facebook SDK returned an error: ' . $e->getMessage();
-          //     exit;
-          //   }
-          // }
-          // return response()->json($photo);
-          array_push($photoIdArray, (object)['media_fbid' => $photo['id']]);
-          $linkData['attached_media'] = $photoIdArray;
-          // return response()->json($linkData);
         }
 
         try {
