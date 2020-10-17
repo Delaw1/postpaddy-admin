@@ -236,7 +236,7 @@ class FacebookController extends Controller
             // $data = ['url' => $url, 'published' => true];
             // $this->fb->setFileUploadSupport(true);
             // $source = '@'.realpath(public_path(Utils::UPLOADS_DIR . "/$media[0]"));
-
+            $this->fb->setFileUploadSupport(true);
             $source = '@var/www/api/public/uploads/postslate1602947680420.png';
             // $photo = (Utils::curlPostRequest("https://graph.facebook.com/" . $account["id"] . "/photos", "source=" . $source . "&published=false&access_token=" . $account["access_token"], [], ["Content-Type: application/json"]));
             $data = ['message' => $text, 'source' => $source];
