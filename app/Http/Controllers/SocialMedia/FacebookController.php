@@ -235,7 +235,7 @@ class FacebookController extends Controller
 
           try {
             // $data = ['url' => $url, 'published' => true];
-            $this->fb->setFileUploadSupport(true);
+            // $this->fb->setFileUploadSupport(true);
             $data = ['source' => '@'.public_path(Utils::UPLOADS_DIR . "/$media[0]"), 'published' => true];
             
             $response = $this->fb->post('/' . $account['id'] . '/photos', $data, $account['access_token']);
