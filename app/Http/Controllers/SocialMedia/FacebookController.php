@@ -251,7 +251,7 @@ class FacebookController extends Controller
 
           try {
             // $data = ['url' => $url, 'published' => true];
-            $data = ['source' => fopen(public_path(Utils::UPLOADS_DIR . "/$media[0]"), 'r'), 'published' => true];
+            $data = ['source' => public_path(Utils::UPLOADS_DIR . "/$media[0]"), 'published' => true];
             $response = $this->fb->post('/' . $account['id'] . '/photos', $data, $account['access_token']);
           } catch (Facebook\Exceptions\FacebookResponseException $e) {
             return 'Graph returned an error: ' . $e->getMessage();
