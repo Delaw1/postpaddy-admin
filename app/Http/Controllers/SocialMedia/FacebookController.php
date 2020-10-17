@@ -236,9 +236,12 @@ class FacebookController extends Controller
           try {
             // $data = ['url' => $url, 'published' => true];
             // $this->fb->setFileUploadSupport(true);
-            $data = ['source' => '@'.public_path(Utils::UPLOADS_DIR . "/$media[0]"), 'published' => true];
+            $source = '@'.public_path(Utils::UPLOADS_DIR . "/$media[0]");
+            $photo = (Utils::curlPostRequest("https://graph.facebook.com/" . $account["id"] . "/photos", "source=" . $source . "&published=false&access_token=" . $account["access_token"], [], ["Content-Type: application/json"]));
+            // $data = ['source' => '@'.public_path(Utils::UPLOADS_DIR . "/$media[0]"), 'published' => true];
             
-            $response = $this->fb->post('/' . $account['id'] . '/photos', $data, $account['access_token']);
+            // $response = $this->fb->post('/' . $account['id'] . '/photos', $data, $account['access_token']);
+            return response()->json($photo);
           } catch (Facebook\Exceptions\FacebookResponseException $e) {
             return 'Graph returned an error: ' . $e->getMessage();
             exit;
