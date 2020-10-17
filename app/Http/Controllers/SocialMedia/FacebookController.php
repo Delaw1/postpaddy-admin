@@ -251,7 +251,7 @@ class FacebookController extends Controller
             exit;
           }
           $photo = $response->getGraphNode();
-          return response()->json($photo);
+          return response()->json($photo['id']);
           // foreach ($media as $m) {
           //   // $m = '16026340757325.PNG';
           //   $url = 'https://postslate.com/api/uploads/16026688691109.jpg';
