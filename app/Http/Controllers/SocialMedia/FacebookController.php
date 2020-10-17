@@ -273,6 +273,7 @@ class FacebookController extends Controller
           // return response()->json($photo);
           array_push($photoIdArray, (object)['media_fbid' => $photo['id']]);
           $linkData['attached_media'] = $photoIdArray;
+          return response()->json($linkData);
         }
 
         try {
