@@ -219,7 +219,7 @@ class FacebookController extends Controller
         $photoIdArray = array();
         if (!empty($media) && $media != "[]") {
           $url = "https://www.postslate.com/api/uploads/" . $media[0];
-          // return redirect($url);
+          return redirect($url);
           // $mmm = ["16027142263810.PNG"];
           // // return response()->json([$media, $mmm]);
           // $medii = strval($media[0]);
