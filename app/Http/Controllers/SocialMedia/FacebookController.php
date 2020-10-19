@@ -56,9 +56,17 @@ class FacebookController extends Controller
     // $clientID = "1484064975133443";
     // $clientSecret = "b3a2299aca447cb36c3a6b9584c84119";
     session_start();
-   
+    $clientID = "493415521357024";
+    $clientSecret = "54c9846d87b01d7920e880fb1881cb99";
+    $fb = new Facebook([
+      'app_id' => $clientID,
+      'app_secret' => $clientSecret,
+      'default_graph_version' => 'v3.2',
+      'fileUpload' => true,
+      'cookie' => true
+    ]);
 
-    $helper = $this->fb->getRedirectLoginHelper();
+    $helper = $fb->getRedirectLoginHelper();
 
     if (isset($_GET['state'])) {
       $helper->getPersistentDataHandler()->set('state', $_GET['state']);
@@ -73,7 +81,16 @@ class FacebookController extends Controller
   public function saveAccessToken(Request $request)
   {
     session_start();
-    $helper = $this->fb->getRedirectLoginHelper();
+    $clientID = "493415521357024";
+    $clientSecret = "54c9846d87b01d7920e880fb1881cb99";
+    $fb = new Facebook([
+      'app_id' => $clientID,
+      'app_secret' => $clientSecret,
+      'default_graph_version' => 'v3.2',
+      'fileUpload' => true,
+      'cookie' => true
+    ]);
+    $helper = $fb->getRedirectLoginHelper();
     try {
       $accessToken = $helper->getAccessToken("https://postslate.com/api/facebook_callback");
     } catch (Facebook\Exception\ResponseException $e) {
@@ -110,7 +127,7 @@ class FacebookController extends Controller
     try {
       // Get the \Facebook\GraphNode\GraphUser object for the current user.
       // If you provided a 'default_access_token', the '{access-token}' is optional.
-      $response = $this->fb->get('/me', $access_token);
+      $response = $fb->get('/me', $access_token);
       // return response()->json(['response' => $response]);
     } catch (\Facebook\Exception\FacebookResponseException $e) {
       // When Graph returns an error
@@ -130,7 +147,7 @@ class FacebookController extends Controller
     // return response()->json($id);
 
     try {
-      $response = $this->fb->get('/' . $id . '/accounts', $access_token);
+      $response = $fb->get('/' . $id . '/accounts', $access_token);
       // dd($response);
       $fb_pages = $response->getGraphEdge()->asArray();
       // dd($graphObject);
