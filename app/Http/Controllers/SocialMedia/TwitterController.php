@@ -70,12 +70,15 @@ class TwitterController extends Controller
         $oauth_verifier = $request->input("oauth_verifier");
         $response = $connection->oauth("oauth/access_token", ["oauth_token" => $oauth_token, "oauth_verifier" => $oauth_verifier]);
         // return response()->json($response);
+        
         $oauth_token = $response["oauth_token"];
         $oauth_token_secret = $response["oauth_token_secret"];
 
         $twitter_id = $response["user_id"];
-        $twitter_name = $response["screen_name"];
+        $twitter_username = $response["screen_name"];
 
+        $result = $connection->get("users/show", ["id" => $twitter_id]);
+        $twitter_name = $result["name"];
         $data = ['twitter_id' => $twitter_id];
 
         // $validation = Validator::make($data, [
@@ -92,7 +95,7 @@ class TwitterController extends Controller
         $company_id = Session::get('social_company_id');
 
         // DB::delete('delete from twitter_accounts where id = ?',[$company_id]);
-        TwitterAccount::create(["company_id" => $company_id, "oauth_token" => $oauth_token, "oauth_token_secret" => $oauth_token_secret, "twitter_id" => $twitter_id, "name" => $twitter_name]);
+        TwitterAccount::create(["company_id" => $company_id, "oauth_token" => $oauth_token, "oauth_token_secret" => $oauth_token_secret, "twitter_id" => $twitter_id, "name" => $twitter_name, "username" => $twitter_username]);
 
         // return redirect(env("CLOSE_WINDOW_URL"));
 
