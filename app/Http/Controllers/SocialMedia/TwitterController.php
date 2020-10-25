@@ -78,9 +78,9 @@ class TwitterController extends Controller
         $twitter_username = $response["screen_name"];
 
         $result = $connection->get("users/show", ["id" => $twitter_id]);
-        // $twitter_name = $result["name"];
+        $twitter_name = $result->name;
         $data = ['twitter_id' => $twitter_id];
-        return response()->json($result);
+        // return response()->json($result);
 
         // $validation = Validator::make($data, [
         //   'twitter_id' => ['required', 'unique:twitter_accounts']
