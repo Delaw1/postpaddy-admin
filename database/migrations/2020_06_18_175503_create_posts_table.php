@@ -16,12 +16,14 @@ class CreatePostsTable extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->integer("user_id");
-            $table->integer("company_id");
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('company_id')->constrained();
             $table->text("content");
             $table->json("media"); 
+            $table->string('hashtag')->nullable();
             $table->json("platforms");
             $table->string("schedule_date")->default("");
+            $table->boolean('is_posted')->default(false);
         });
     }
 

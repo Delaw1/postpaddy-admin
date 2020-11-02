@@ -22,10 +22,10 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'status', 'category', 'business_name', 'phone', 'employees', 'image', 'plan_id', 'started_at', 'ended_at'
+        'first_name', 'last_name', 'email', 'password', 'status', 'category', 'business_name', 'phone', 'employees', 'image', 'plan_id', 'started_at', 'ended_at'
     ];
 
-    protected $appends = ['daysLeft', 'plan'];
+    protected $appends = ['daysLeft', 'plan', 'updateprofile'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -75,5 +75,9 @@ class User extends Authenticatable
     public function getPlanAttribute() {
         $plan = Plan::find($this->plan_id);
         return $plan;
+    }
+
+    public function getUpdateProfileAttribute() {
+        return $this->created_at->addDays(5);
     }
 }

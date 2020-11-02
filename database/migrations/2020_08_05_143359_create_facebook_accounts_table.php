@@ -15,11 +15,11 @@ class CreateFacebookAccountsTable extends Migration
     {
         Schema::create('facebook_accounts', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
-            $table->integer("company_id");
+            $table->foreignId('company_id')->constrained();
             $table->string('facebook_id');
-            $table->text("oauth_token");
-            $table->text("oauth_token_secret");
+            $table->text("access_token");
+            $table->json("accounts");
+            $table->timestamps();
         });
     }
 

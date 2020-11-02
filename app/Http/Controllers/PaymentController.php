@@ -121,7 +121,7 @@ class PaymentController extends Controller
             $html = file_get_contents(resource_path('views/emails/subscription.blade.php'));
             $html = str_replace(
                 ['{{NAME}}', '{{PLAN}}'],
-                [$user->name, $plan->name],
+                [$user->last_name." ".$user->first_name, $plan->name],
                 $html
             );
             $body = [
@@ -134,7 +134,7 @@ class PaymentController extends Controller
                         'To' => [
                             [
                                 'Email' => $user->email,
-                                'Name' => $user->name
+                                'Name' => $user->last_name." ".$user->first_name
                             ]
                         ],
                         'Subject' => "Subscription successfully",

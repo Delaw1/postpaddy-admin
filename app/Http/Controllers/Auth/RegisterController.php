@@ -45,13 +45,10 @@ class RegisterController extends Controller
         $input = $request->all();
 
         $validation = Validator::make($input, [
-            'name' => ['required', 'string', 'max:255'],
+            'first_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'category' => 'required',
-            'employees' => 'integer',
-            'phone' => 'required',
-            'business_name' => 'required'
+            'password' => ['required', 'string', 'min:8', 'confirmed']
         ]); 
 
         if($validation->fails())
@@ -85,7 +82,7 @@ class RegisterController extends Controller
         $html = file_get_contents(resource_path('views/emails/welcomemail.blade.php'));
         $html = str_replace(
             ['{{NAME}}', '{{VERIFY_LINK}}'],
-            [$data['name'], "https://postslate.com/api/VerifyEmail/".base64_encode($data['email'])],
+            [$data['last_name']." ".$data['first_name'], "https://postslate.com/api/VerifyEmail/".base64_encode($data['email'])],
             $html
         ); 
         $body = [
@@ -98,7 +95,7 @@ class RegisterController extends Controller
                 'To' => [
                   [
                     'Email' => $data['email'],
-                    'Name' => $data['name']
+                    'Name' => $data['last_name']." ".$data['first_name']
                   ]
                 ],
                 'Subject' => "Welcome to Postslate",
@@ -114,13 +111,10 @@ class RegisterController extends Controller
         
         $plan = Plan::where('name', 'Freemium')->first();
         $user = User::create([
-            'name' => $data['name'],
+            'first_name' => $data['first_name'],
+            'last_name' => $data['last_name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'category' => $data['category'],
-            'phone' => $data['phone'],
-            'employees' => $data['employees'],
-            'business_name' => $data['business_name'],
             'plan_id' => $plan->id,
             'started_at' => Carbon::now(),
             'ended_at' => Carbon::now()->addDays($plan->days)
@@ -144,7 +138,7 @@ class RegisterController extends Controller
       $html = file_get_contents(resource_path('views/emails/subscription.blade.php'));
             $html = str_replace(
                 ['{{NAME}}', '{{PLAN}}'],
-                [$user->name, $plan->name],
+                [$user->last_name." ".$user->first_name, $plan->name],
                 $html
             );
             $body = [
@@ -157,7 +151,7 @@ class RegisterController extends Controller
                         'To' => [
                             [
                                 'Email' => $user->email,
-                                'Name' => $user->name
+                                'Name' => $user->last_name." ".$user->first_name
                             ]
                         ],
                         'Subject' => "Subscription successfully",

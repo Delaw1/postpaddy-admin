@@ -15,9 +15,11 @@ class CreateLinkedinAccountsTable extends Migration
     {
         Schema::create('linkedin_accounts', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
-            $table->integer("company_id");
+            $table->foreignId('company_id')->constrained();
             $table->text("linkedin_access_token");
+            $table->string("linkedin_id");
+            $table->json("accounts");
+            $table->timestamps();
         });
     }
 

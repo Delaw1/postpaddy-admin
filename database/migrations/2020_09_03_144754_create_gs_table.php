@@ -19,6 +19,7 @@ class CreateGsTable extends Migration
             $table->id();
             $table->integer('clients');
             $table->integer('days');
+            $table->integer('remove_social_media'); 
             $table->timestamps();
         });
     }

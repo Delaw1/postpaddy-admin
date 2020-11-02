@@ -28,14 +28,14 @@ class CronJobController extends Controller
                     $html = file_get_contents(resource_path('views/emails/reminder_free.blade.php'));
                     $html = str_replace(
                         ['{{NAME}}', '{{PLAN}}', '{{DAYS}}', '{{PRICE}}', '{{DATE}}'],
-                        [$user->name, $user->plan->name, $user->daysLeft, $user->plan->price, Carbon::parse($user->ended_at)->format('d M')],
+                        [$user->last_name." ".$user->first_name, $user->plan->name, $user->daysLeft, $user->plan->price, Carbon::parse($user->ended_at)->format('d M')],
                         $html
                     );
                 } else {
                     $html = file_get_contents(resource_path('views/emails/reminder.blade.php'));
                     $html = str_replace(
                         ['{{NAME}}', '{{PLAN}}', '{{DAYS}}', '{{PRICE}}', '{{DATE}}'],
-                        [$user->name, $user->plan->name, $user->daysLeft, $user->plan->price, Carbon::parse($user->ended_at)->format('d M')],
+                        [$user->last_name." ".$user->first_name, $user->plan->name, $user->daysLeft, $user->plan->price, Carbon::parse($user->ended_at)->format('d M')],
                         $html
                     );
                 }
@@ -53,7 +53,7 @@ class CronJobController extends Controller
                             'To' => [
                                 [
                                     'Email' => $user->email,
-                                    'Name' => $user->name
+                                    'Name' => $user->last_name." ".$user->first_name
                                 ]
                             ],
                             'Subject' => "Subscription Reminder",
@@ -77,7 +77,7 @@ class CronJobController extends Controller
                     $html = file_get_contents(resource_path('views/emails/expired_free.blade.php'));
                     $html = str_replace(
                         ['{{NAME}}', '{{PLAN}}', '{{DAYS}}'],
-                        [$user->name, $user->plan->name, $user->daysLeft],
+                        [$user->last_name." ".$user->first_name, $user->plan->name, $user->daysLeft],
                         $html
                     );
                     // return $html;
@@ -91,7 +91,7 @@ class CronJobController extends Controller
                                 'To' => [
                                     [
                                         'Email' => $user->email,
-                                        'Name' => $user->name
+                                        'Name' => $user->last_name." ".$user->first_name
                                     ]
                                 ],
                                 'Subject' => "Subscription Expired",
@@ -112,7 +112,7 @@ class CronJobController extends Controller
                     $html = file_get_contents(resource_path('views/emails/expired.blade.php'));
                     $html = str_replace(
                         ['{{NAME}}', '{{PLAN}}', '{{DAYS}}'],
-                        [$user->name, $user->plan->name, $user->daysLeft],
+                        [$user->last_name." ".$user->first_name, $user->plan->name, $user->daysLeft],
                         $html
                     );
                     return $html;
@@ -126,7 +126,7 @@ class CronJobController extends Controller
                                 'To' => [
                                     [
                                         'Email' => $user->email,
-                                        'Name' => $user->name
+                                        'Name' => $user->last_name." ".$user->first_name
                                     ]
                                 ],
                                 'Subject' => "Subscription Reminder",
