@@ -9,12 +9,12 @@ use Illuminate\Notifications\Notifiable;
 use Carbon\Carbon;
 use DateTime;
 use App\Plan;
-// use Laravel\Passport\HasApiTokens;
+use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
     use Notifiable;
-    // use HasApiTokens;
+    use HasApiTokens;
 
     /**
      * The attributes that are mass assignable.

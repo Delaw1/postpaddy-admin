@@ -34,12 +34,13 @@ class LoginController extends Controller
             } else {
                 $response['success'] = 'Successfully logged in';
                 $response["user_data"] = Auth::user();
+                $response['token'] = Auth::user()->createToken('myApp')->accessToken;
                 return response()->json([$response]);
             }
         } else {
             $response['failure'] = 'Incorrect email or password';
         }
-        return response()->json([$response]);
+        return response()->json($response);
     }
 
     public function isLoggedIn()

@@ -119,7 +119,7 @@ class RegisterController extends Controller
             'started_at' => Carbon::now(),
             'ended_at' => Carbon::now()->addDays($plan->days)
         ]);
-        
+        // $user['token'] = $user->createToken('myApp')->accessToken; 
         Subscription::create([
           'user_id' => $user->id,
           'plan_id' => $plan->id,

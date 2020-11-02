@@ -25,7 +25,7 @@ class CompanyManager extends Controller
     public function __construct()
     {
         // Auth::loginUsingId(20);
-        $this->middleware( 'auth' );
+        // $this->middleware( 'auth' );
     }
 
     public function CreateCompany(Request $request)
@@ -88,11 +88,12 @@ class CompanyManager extends Controller
 
     public function GetCompanies(Request $request)
     {
-        $user = Auth::user();
+        // $user = Auth::user();
 
-        $companies = Company::where('user_id', $user->id)->get();
+        // $companies = Company::where('user_id', $user->id)->get();
 
-        return response()->json(['status' => 'success', 'companies' => $companies]);
+        // return response()->json(['status' => 'success', 'companies' => $companies]);
+        return response()->json(['status' => 'success']);
     }
 
     public function GetCompany($id)
