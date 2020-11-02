@@ -17,7 +17,7 @@ class UserController extends Controller
     public function __construct()
     {
         // Auth::loginUsingId(20);
-        $this->middleware('auth');
+        // $this->middleware('auth');
     }
 
     public function EditProfile(Request $request) {
@@ -110,5 +110,9 @@ class UserController extends Controller
     public function getNotifications() {
         $notifications = Notification::where('user_id', Auth::User()->id)->get();
         return response()->json(['status' => 'success', 'notification' => $notifications]);
+    }
+
+    public function guest() {
+        return response()->json(["status" => "failure", "message" => "unauthorize"]);
     }
 }
