@@ -19,9 +19,10 @@ Route::get('/', function () {
 });
 
 //Auth
-Route::get("/unauthorized", function () {
+Route::get("/api/unauthorized", function () {
     return response()->json(["status" => "failure", "message" => "unauthorized"]);
 })->name("login");
+
 Route::post('/Login', 'Auth\LoginController@login');
 Route::post('/Register', 'Auth\RegisterController@register');
 Route::get('/VerifyEmail/{emailb64}', 'Auth\RegisterController@verifyEmail');
