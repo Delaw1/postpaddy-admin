@@ -20,9 +20,9 @@ use Illuminate\Support\Facades\Route;
 // });
 
 //Auth
-// Route::get("/unauthorized", function () {
-//     return response()->json(["status" => "failure", "message" => "unauthorized"]);
-// })->name("login");
+Route::get("/unauthorized", function () {
+    return response()->json(["status" => "failure", "message" => "unauthorized"]);
+})->name("unauthorized");
 // Route::post('/Login', 'Auth\LoginController@login');
 // Route::post('/Register', 'Auth\RegisterController@register');
 // Route::get('/VerifyEmail/{emailb64}', 'Auth\RegisterController@verifyEmail');
