@@ -113,6 +113,6 @@ class UserController extends Controller
     }
 
     public function guest() {
-        return response()->json(["status" => "failure", "message" => "unauthorize"]);
+        return response()->json(["status" => "failure", "message" => "unauthorized"]);
     }
 }

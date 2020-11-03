@@ -19,7 +19,7 @@ Route::get('/', function () {
 });
 
 //Auth
-Route::get("/api/unauthorized", 'UserController@guest')->name("login");
+Route::get("/unauthorized", 'UserController@guest')->name("unauthenticated");
 
 Route::post('/Login', 'Auth\LoginController@login');
 Route::post('/Register', 'Auth\RegisterController@register');
