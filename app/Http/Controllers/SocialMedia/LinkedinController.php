@@ -439,53 +439,54 @@ class LinkedinController extends Controller
 
   public function test()
   {
-    $gs = Plan::create([
-      'name' => 'Freemium',
-      'clients' => 5,
-      'posts' => 20,
-      'accounts' => 3,
-      'days' => 14,
-      'price' => 0,
-      'remove_social' => 2
-    ]);
-    Plan::create([
-      'name' => 'Oyo',
-      'clients' => 7,
-      'posts' => 40,
-      'accounts' => 3,
-      'days' => 30,
-      'price' => 2000,
-      'remove_social' => 3
-    ]);
-    Plan::create([
-      'name' => 'Eko',
-      'clients' => 15,
-      'posts' => 60,
-      'accounts' => 5,
-      'days' => 14,
-      'price' => 3000,
-      'remove_social' => 4
-    ]);
-    Plan::create([
-      'name' => 'Bere',
-      'clients' => 16,
-      'posts' => 80,
-      'accounts' => 6,
-      'days' => 30,
-      'price' => 4000,
-      'remove_social' => 5
-    ]);
-    Plan::create([
-      'name' => 'Mokola',
-      'clients' => 20,
-      'posts' => 100,
-      'accounts' => 7,
-      'days' => 30,
-      'price' => 5000,
-      'remove_social' => 6
-    ]);
+    // $gs = Plan::create([
+    //   'name' => 'Freemium',
+    //   'clients' => 5,
+    //   'posts' => 20,
+    //   'accounts' => 3,
+    //   'days' => 14,
+    //   'price' => 0,
+    //   'remove_social' => 2
+    // ]);
+    // Plan::create([
+    //   'name' => 'Oyo',
+    //   'clients' => 7,
+    //   'posts' => 40,
+    //   'accounts' => 3,
+    //   'days' => 30,
+    //   'price' => 2000,
+    //   'remove_social' => 3
+    // ]);
+    // Plan::create([
+    //   'name' => 'Eko',
+    //   'clients' => 15,
+    //   'posts' => 60,
+    //   'accounts' => 5,
+    //   'days' => 14,
+    //   'price' => 3000,
+    //   'remove_social' => 4
+    // ]);
+    // Plan::create([
+    //   'name' => 'Bere',
+    //   'clients' => 16,
+    //   'posts' => 80,
+    //   'accounts' => 6,
+    //   'days' => 30,
+    //   'price' => 4000,
+    //   'remove_social' => 5
+    // ]);
+    // Plan::create([
+    //   'name' => 'Mokola',
+    //   'clients' => 20,
+    //   'posts' => 100,
+    //   'accounts' => 7,
+    //   'days' => 30,
+    //   'price' => 5000,
+    //   'remove_social' => 6
+    // ]);
 
-    return 'yes';
+    $url = route('unauthorized');
+    return $url;
     // return date('d, M. Y', strtotime(Auth::User()->ended_at));
     // return Carbon::parse(Auth::User()->ended_at)->toDateString();
     // // $user = User::where('id', 2)->first();
