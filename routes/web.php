@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 // });
 
 //Auth
-Route::get("/unauthorized", function () {
+Route::get("unauthorized", function () {
     return response()->json(["status" => "failure", "message" => "unauthorized"]);
 })->name("unauthorized");
 // Route::post('/Login', 'Auth\LoginController@login');
