@@ -61,10 +61,10 @@ class User extends Authenticatable
 
         $now = strtotime(Carbon::now());
         $end = strtotime($this->ended_at);
-        if($end >= $now) {
+        if ($end >= $now) {
             return $different_days;
         }
-        if($different_days === 0) {
+        if ($different_days === 0) {
             return $different_days;
         } else {
             return -1 * $different_days;
@@ -72,12 +72,19 @@ class User extends Authenticatable
         // return 0;
     }
 
-    public function getPlanAttribute() {
+    public function getPlanAttribute()
+    {
         $plan = Plan::find($this->plan_id);
         return $plan;
     }
 
-    public function getUpdateProfileAttribute() {
+    public function getUpdateProfileAttribute()
+    {
         return $this->created_at->addDays(5);
     }
+
+    public function AauthAcessToken()
+    {
+        return $this->hasMany('\App\OauthAccessToken');
+    }   
 }

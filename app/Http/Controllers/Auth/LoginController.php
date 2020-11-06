@@ -45,7 +45,7 @@ class LoginController extends Controller
 
     public function isLoggedIn()
     {
-        if (Auth::check()) {
+        if (Auth::guard('api')->check()) {
             return response()->json(["status" => true, "msg" => "User is logged in"]);
         }
         return response()->json(["status" => false, "msg" => "User not logged in"]);
@@ -53,8 +53,9 @@ class LoginController extends Controller
 
     public function logout()
     {
-        if (Auth::check()) {
-            Auth::logout();
+        if (Auth::guard('api')->check()) {
+            // Auth::logout();
+            Auth::user()->AauthAcessToken()->delete();
             return response()->json(["msg" => "Logout successful"]);
         }
         return response()->json(["msg" => "User already logged out"]);
