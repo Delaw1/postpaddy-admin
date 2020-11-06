@@ -5,9 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Mail\MyMail;
 use Illuminate\Support\Facades\Mail;
+use \Mailjet\Resources;
 
 class EmailController extends Controller
 {
+    private $mj;
+
+    public function __construct()
+    {
+        $this->mj = new \Mailjet\Client(env('MAILJET_APIKEY'), env('MAILJET_APISECRET'), true, ['version' => 'v3.1']);
+    }
     public function sendMail(Request $request)
     {
         $subject = "Geonel";
@@ -21,5 +28,69 @@ class EmailController extends Controller
             return true;
         }
         return false;
+    }
+
+    public function sendSubscriptionEmail(array $data)
+    {
+        
+
+        $html = file_get_contents(resource_path('views/emails/subscription.blade.php'));
+        $html = str_replace(
+            ['{{NAME}}', '{{PLAN}}'],
+            [$data['name'], $data['plan_name']],
+            $html
+        );
+        $body = [
+            'Messages' => [
+                [
+                    'From' => [
+                        'Email' => "info@digifigs.com",
+                        'Name' => "Postlate"
+                    ],
+                    'To' => [
+                        [
+                            'Email' => $data['email'],
+                            'Name' => $data['name']
+                        ]
+                    ],
+                    'Subject' => "Subscription successfully",
+                    'TextPart' => "Subscription successfully",
+                    'HTMLPart' => $html,
+                    'CustomID' => "AppGettingStartedTest"
+                ]
+            ]
+        ];
+        $response = $this->mj->post(Resources::$Email, ['body' => $body]);
+    }
+
+    public function sendVerificationEmail(array $data)
+    {
+        $html = file_get_contents(resource_path('views/emails/welcomemail.blade.php'));
+        $html = str_replace(
+            ['{{NAME}}', '{{VERIFY_LINK}}'],
+            [$data['name'], "https://postslate.com/api/VerifyEmail/" . base64_encode($data['email'])],
+            $html
+        );
+        $body = [
+            'Messages' => [
+                [
+                    'From' => [
+                        'Email' => "info@digifigs.com",
+                        'Name' => "Postlate"
+                    ],
+                    'To' => [
+                        [
+                            'Email' => $data['email'],
+                            'Name' => $data['name']
+                        ]
+                    ],
+                    'Subject' => "Welcome to Postslate",
+                    'TextPart' => "Welcome to Postslate",
+                    'HTMLPart' => $html,
+                    'CustomID' => "AppGettingStartedTest"
+                ]
+            ]
+        ];
+        $response = $this->mj->post(Resources::$Email, ['body' => $body]);
     }
 }

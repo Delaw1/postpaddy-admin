@@ -30,7 +30,8 @@ Route::get('/logout', 'Auth\LoginController@logout');
 Route::post('/ChangePassword', 'Auth\ResetPasswordController@ChangePassword');
 // Check if a user is logged in
 Route::get('/isLoggedIn', 'Auth\LoginController@isLoggedIn');
-
+// Check if a user has subscribe before signup
+Route::get('/isSubscribe', 'Auth\RegisterController@isSubscribe');
 
 Route::group(['middleware' => 'auth:api'], function () {
     //Company APIs
@@ -79,7 +80,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     // Payment controller
     Route::get('/pay', 'PaymentController@redirectToGateway')->name('pay');
     Route::get('/paynow', 'PaymentController@redirectToPay');
-    Route::get('/payment/callback', 'PaymentController@handleGatewayCallback');
+
 
     // Subscription
     Route::get('/subscriptions', 'UserController@prevSubcription');
@@ -88,11 +89,14 @@ Route::group(['middleware' => 'auth:api'], function () {
     // Notification
     Route::get('/getAllNotification', 'UserController@getNotifications');
     Route::get('/getLatestNotification', 'UserController@getLatestNotifications');
-
-    // Cron Jobs
-    Route::get('/sendSubscriptionReminder', 'CronJobController@subscriptionReminder');
-
 });
+
+// Cron Jobs
+Route::get('/sendSubscriptionReminder', 'CronJobController@subscriptionReminder');
+
+Route::get('/paywithoutsignup', 'PaymentController@paywithoutsignup');
+Route::get('/payment/callback', 'PaymentController@handleGatewayCallback');
+
 
 Route::get('/test', 'SocialMedia\LinkedinController@test');
 Route::get('/test2', 'CronJobController@subscriptionReminder');

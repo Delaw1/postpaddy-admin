@@ -17,6 +17,8 @@ use \Mailjet\Resources;
 use App\Plan;
 use App\Subscription;
 use App\Notification;
+use \App\Http\Controllers\UserController;
+use \App\Http\Controllers\EmailController;
 
 class RegisterController extends Controller
 {
@@ -47,22 +49,43 @@ class RegisterController extends Controller
         $validation = Validator::make($input, [
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'email' => ['required', 'string', 'email', 'max:255'],
             'password' => ['required', 'string', 'min:8', 'confirmed']
-        ]); 
+        ]);
 
-        if($validation->fails())
-        {
+        if ($validation->fails()) {
             $data = json_decode($validation->errors(), true);
-            
+
             $data = ['status' => 'failure']  + $data;
 
             return response()->json($data);
         }
 
-        $user = $this->create($input);
+        $user = User::where(['email' => $request->email])->whereNotNull('password')->first();
+        if($user) {
+            return response()->json(['status' => 'failure', 'email' => ['Email already exist']]);
+        }
 
-        return response()->json(['status' => 'success', 'user'=>$user], 200);
+        $user = User::where(['email' => $request->email, 'password' => null])->first();
+        if($user) {
+            // $validation = Validator::make($input, [
+            //     'id' => ['required', 'integer']
+            // ]);
+    
+            // if ($validation->fails()) {
+            //     $data = json_decode($validation->errors(), true);
+    
+            //     $data = ['status' => 'failure']  + $data;
+    
+            //     return response()->json($data);
+            // }
+    
+            $user = $this->completeReg($input);
+        } else {
+            $user = $this->create($input);
+        }
+        
+        return response()->json(['status' => 'success', 'user' => $user], 200);
     }
 
     /**
@@ -73,42 +96,6 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        // $url = "https://digifigs.com/postslate-emails/mail-em.php?name=".urlencode($data["name"])."&email=".urlencode($data["email"]);
-    
-        // $response = file_get_contents($url);
-
-        $mj = new \Mailjet\Client(env('MAILJET_APIKEY'), env('MAILJET_APISECRET'),true,['version' => 'v3.1']);
-        
-        $html = file_get_contents(resource_path('views/emails/welcomemail.blade.php'));
-        $html = str_replace(
-            ['{{NAME}}', '{{VERIFY_LINK}}'],
-            [$data['last_name']." ".$data['first_name'], "https://postslate.com/api/VerifyEmail/".base64_encode($data['email'])],
-            $html
-        ); 
-        $body = [
-            'Messages' => [
-              [
-                'From' => [
-                  'Email' => "info@digifigs.com",
-                  'Name' => "Postlate"
-                ],
-                'To' => [
-                  [
-                    'Email' => $data['email'],
-                    'Name' => $data['last_name']." ".$data['first_name']
-                  ]
-                ],
-                'Subject' => "Welcome to Postslate",
-                'TextPart' => "Welcome to Postslate",
-                'HTMLPart' => $html,
-                'CustomID' => "AppGettingStartedTest"
-              ]
-            ]
-          ];
-        $response = $mj->post(Resources::$Email, ['body' => $body]);
-
-        // $response->success() && var_dump($response->getData());
-        
         $plan = Plan::where('name', 'Freemium')->first();
         $user = User::create([
             'first_name' => $data['first_name'],
@@ -119,49 +106,35 @@ class RegisterController extends Controller
             'started_at' => Carbon::now(),
             'ended_at' => Carbon::now()->addDays($plan->days)
         ]);
-        // $user['token'] = $user->createToken('myApp')->accessToken; 
+
         Subscription::create([
-          'user_id' => $user->id,
-          'plan_id' => $plan->id,
-          'clients' => $plan->clients,
-          'posts' => $plan->posts,
-          'accounts' => $plan->accounts,
-          'remove_social' => $plan->remove_social,
-          'started_at' => $user->started_at,
-          'ended_at' => $user->ended_at
+            'user_id' => $user->id,
+            'plan_id' => $plan->id,
+            'clients' => $plan->clients,
+            'posts' => $plan->posts,
+            'accounts' => $plan->accounts,
+            'remove_social' => $plan->remove_social,
+            'started_at' => $user->started_at,
+            'ended_at' => $user->ended_at
         ]);
         Notification::create([
-          'user_id' => $user->id,
-          'message' => "You've successfully subscribe to " . $plan->name.". Subscription will expire on ".date('d, M. Y', strtotime($user->ended_at))
-      ]);
+            'user_id' => $user->id,
+            'message' => "You've successfully subscribe to " . $plan->name . ". Subscription will expire on " . date('d, M. Y', strtotime($user->ended_at))
+        ]);
 
-      $html = file_get_contents(resource_path('views/emails/subscription.blade.php'));
-            $html = str_replace(
-                ['{{NAME}}', '{{PLAN}}'],
-                [$user->last_name." ".$user->first_name, $plan->name],
-                $html
-            );
-            $body = [
-                'Messages' => [
-                    [
-                        'From' => [
-                            'Email' => "info@digifigs.com",
-                            'Name' => "Postlate"
-                        ],
-                        'To' => [
-                            [
-                                'Email' => $user->email,
-                                'Name' => $user->last_name." ".$user->first_name
-                            ]
-                        ],
-                        'Subject' => "Subscription successfully",
-                        'TextPart' => "Subscription successfully",
-                        'HTMLPart' => $html,
-                        'CustomID' => "AppGettingStartedTest"
-                    ]
-                ]
-            ];
-            $response = $mj->post(Resources::$Email, ['body' => $body]);
+        $emailController = new EmailController();
+
+        $emailController->sendVerificationEmail([
+            'name' => $user->last_name . " " . $user->first_name,
+            'email' => $user->email
+        ]);
+        
+        $emailController->sendSubscriptionEmail([
+            'name' => $user->last_name . " " . $user->first_name,
+            'plan_name' => $plan->name,
+            'email' => $user->email
+        ]);
+
         return $user;
     }
 
@@ -169,13 +142,45 @@ class RegisterController extends Controller
     {
         $email = base64_decode($emailb64);
         $user = User::where('email', '=', $email)->first();
-        if(!$user){
+        if (!$user) {
             die("Invalid verification linkl!");
-        }
-        else{
+        } else {
             $user->email_verified_at = Carbon::now();
             $user->save();
-            return redirect( env('APP_FRONTEND_URL') . '/verify-account-success' );
+            return redirect(env('APP_FRONTEND_URL') . '/verify-account-success');
         }
+    }
+
+    public function isSubscribe(Request $request)
+    {
+        // session(['postslate_id' => 2]);
+        $user_id = $request->session()->get('postslate_id');
+        if ($user_id) {
+            $user = User::find($user_id);
+            if($user) {
+                if ($user->password === null) {
+                    return response()->json($user);
+                }
+            }
+        }
+        return response()->json([]);
+    }
+
+    public function completeReg(array $data)
+    {
+        $user = User::where('email', $data['email'])->first();
+
+        $user->first_name = $data['first_name'];
+        $user->last_name = $data['last_name'];
+        $user->password = Hash::make($data['password']);
+
+        $user->save();
+
+        (new EmailController())->sendVerificationEmail([
+            'name' => $data['last_name'] . " " . $data['first_name'],
+            'email' => $data['email']
+        ]);
+
+        return $user;
     }
 }
