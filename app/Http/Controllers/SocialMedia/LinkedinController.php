@@ -451,11 +451,11 @@ class LinkedinController extends Controller
     // Plan::create([
     //   'name' => 'Starter',
     //   'clients' => 7,
-    //   'posts' => 40,
-    //   'accounts' => 3,
+    //   'posts' => 100,
+    //   'accounts' => 2,
     //   'days' => 30,
     //   'price' => 2999,
-    //   'remove_social' => 3
+    //   'remove_social' => 2
     // ]);
     // Plan::create([
     //   'name' => 'Basic',

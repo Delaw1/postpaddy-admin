@@ -34,8 +34,13 @@ Route::get('/isLoggedIn', 'Auth\LoginController@isLoggedIn');
 Route::get('/isSubscribe', 'Auth\RegisterController@isSubscribe');
 
 //SOCIALS
+Route::get('/add_linkedin_account', 'SocialMedia\LinkedinController@addAccount');
 Route::get('/linkedin_callback', 'SocialMedia\LinkedinController@saveAccessToken');
+
+Route::get('/add_twitter_account', 'SocialMedia\TwitterController@addAccount');
 Route::get('/twitter_callback', 'SocialMedia\TwitterController@saveAccessToken');
+
+Route::get('/add_facebook_account', 'SocialMedia\FacebookController@addAccount');
 Route::get('/facebook_callback', 'SocialMedia\FacebookController@saveAccessToken');
 
 Route::group(['middleware' => 'auth:api'], function () {
@@ -61,16 +66,12 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('/scheduler', 'Posting\PostManager@scheduler');
 
     //SOCIALS
-    Route::get('/add_linkedin_account', 'SocialMedia\LinkedinController@addAccount');
-    // Route::get('/linkedin_callback', 'SocialMedia\LinkedinController@saveAccessToken');
+    
     Route::get('/linkedin_selectaccount', 'SocialMedia\LinkedinController@selectAccount');
     Route::post('/linkedin_saveaccount', 'SocialMedia\LinkedinController@saveAccount');
     Route::post('/CreatePostLin', 'SocialMedia\LinkedinController@postNow');
 
-    Route::get('/add_twitter_account', 'SocialMedia\TwitterController@addAccount');
-
-
-    Route::get('/add_facebook_account', 'SocialMedia\FacebookController@addAccount');
+    
 
 
     Route::get('/add_instagram_account', 'SocialMedia\TwitterController@addAccount');
