@@ -88,7 +88,7 @@ class CompanyManager extends Controller
 
     public function GetCompanies(Request $request)
     {
-        $user = Auth::user();
+        $user = Auth::guard('api')->user();
 
         $companies = Company::where('user_id', $user->id)->get();
 

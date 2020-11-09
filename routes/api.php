@@ -33,6 +33,11 @@ Route::get('/isLoggedIn', 'Auth\LoginController@isLoggedIn');
 // Check if a user has subscribe before signup
 Route::get('/isSubscribe', 'Auth\RegisterController@isSubscribe');
 
+//SOCIALS
+Route::get('/linkedin_callback', 'SocialMedia\LinkedinController@saveAccessToken');
+Route::get('/twitter_callback', 'SocialMedia\TwitterController@saveAccessToken');
+Route::get('/facebook_callback', 'SocialMedia\FacebookController@saveAccessToken');
+
 Route::group(['middleware' => 'auth:api'], function () {
     //Company APIs
     Route::post('/CreateCompany', 'CompanyManager@CreateCompany');
@@ -57,16 +62,16 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     //SOCIALS
     Route::get('/add_linkedin_account', 'SocialMedia\LinkedinController@addAccount');
-    Route::get('/linkedin_callback', 'SocialMedia\LinkedinController@saveAccessToken');
+    // Route::get('/linkedin_callback', 'SocialMedia\LinkedinController@saveAccessToken');
     Route::get('/linkedin_selectaccount', 'SocialMedia\LinkedinController@selectAccount');
     Route::post('/linkedin_saveaccount', 'SocialMedia\LinkedinController@saveAccount');
     Route::post('/CreatePostLin', 'SocialMedia\LinkedinController@postNow');
 
     Route::get('/add_twitter_account', 'SocialMedia\TwitterController@addAccount');
-    Route::get('/twitter_callback', 'SocialMedia\TwitterController@saveAccessToken');
+
 
     Route::get('/add_facebook_account', 'SocialMedia\FacebookController@addAccount');
-    Route::get('/facebook_callback', 'SocialMedia\FacebookController@saveAccessToken');
+
 
     Route::get('/add_instagram_account', 'SocialMedia\TwitterController@addAccount');
     Route::get('/add_pinterest_account', 'SocialMedia\FacebookController@addAccount');

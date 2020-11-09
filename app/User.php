@@ -50,7 +50,8 @@ class User extends Authenticatable
         if ($value !== NULL) {
             return "https://postslate.com/api/profile/" . $value;
         }
-        return "https://postslate.com/api/profile/user_profile.png";
+        // return "https://postslate.com/api/profile/user_profile.png";
+        return $value;
     }
 
     public function getDaysLeftAttribute()
