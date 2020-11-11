@@ -101,9 +101,9 @@ class TwitterController extends Controller
         // return redirect(env("CLOSE_WINDOW_URL"));
 
         if (env("APP_ENV") == "development") {
-            return redirect(env('APP_FRONTEND_URL_DEV') . "/dashboard/accounts/add-social-media-accounts?twitter=true");
+            return redirect(env('APP_FRONTEND_URL_DEV') . "/dashboard/client-accounts/add-social-media-accounts?twitter=true");
         }
-        return redirect(env('APP_FRONTEND_URL') . "/dashboard/accounts/add-social-media-accounts?twitter=true");
+        return redirect(env('APP_FRONTEND_URL') . "/dashboard/client-accounts/add-social-media-accounts?twitter=true");
     }
 
     public function postNow($post)

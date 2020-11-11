@@ -95,6 +95,8 @@ Route::group(['middleware' => 'auth:api'], function () {
     // Notification
     Route::get('/getAllNotification', 'UserController@getNotifications');
     Route::get('/getLatestNotification', 'UserController@getLatestNotifications');
+
+    
 });
 
 // Cron Jobs
@@ -107,3 +109,7 @@ Route::get('/payment/callback', 'PaymentController@handleGatewayCallback');
 Route::get('/test', 'SocialMedia\LinkedinController@test');
 Route::get('/test2', 'CronJobController@subscriptionReminder');
 Route::get('/sendmail', 'EmailController@sendMail');
+
+Route::prefix('admin')->group(function() {
+    Route::post('/setEnterprisePackage', 'AdminController@setEnterprisePackage');
+});

@@ -18,6 +18,7 @@ use GuzzleHttp\Client;
 use stdClass;
 use \App\Gs;
 use App\Plan;
+use App\Enterprise;
 use DateTime;
 use Carbon\Carbon;
 use App\Subscription;
@@ -485,6 +486,15 @@ class LinkedinController extends Controller
     //   'remove_social' => 6
     // ]);
 
+    Enterprise::create([
+      'name' => 'PPD',
+    ]);
+    Enterprise::create([
+      'name' => 'PPC',
+    ]);
+    Enterprise::create([
+      'name' => 'TNC',
+    ]);
     // $url = route('unauthorized');
     return 'yes';
     // return date('d, M. Y', strtotime(Auth::User()->ended_at));
