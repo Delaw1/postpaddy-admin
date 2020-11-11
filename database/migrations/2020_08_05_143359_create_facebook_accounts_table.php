@@ -15,7 +15,7 @@ class CreateFacebookAccountsTable extends Migration
     {
         Schema::create('facebook_accounts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('company_id')->constrained();
+            $table->foreignId('company_id')->constrained()->onDelete('cascade');;
             $table->string('facebook_id');
             $table->text("access_token");
             $table->json("accounts");

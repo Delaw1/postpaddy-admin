@@ -15,7 +15,7 @@ class CreateLinkedinAccountsTable extends Migration
     {
         Schema::create('linkedin_accounts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('company_id')->constrained();
+            $table->foreignId('company_id')->constrained()->onDelete('cascade');;
             $table->text("linkedin_access_token");
             $table->string("linkedin_id");
             $table->json("accounts");

@@ -16,7 +16,7 @@ class CreateTwitterAccountsTable extends Migration
         Schema::create('twitter_accounts', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->foreignId('company_id')->constrained();
+            $table->foreignId('company_id')->constrained()->onDelete('cascade');;
             $table->text("oauth_token");
             $table->text("oauth_token_secret");
             $table->string('twitter_id');

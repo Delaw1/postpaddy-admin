@@ -15,8 +15,8 @@ class CreateEnterprisePaymentsTable extends Migration
     {
         Schema::create('enterprise_payments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
-            $table->foreignId('enterprise_id')->constrained();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');;
+            $table->foreignId('enterprise_id')->constrained()->onDelete('cascade');;
             $table->integer('clients')->default(0);
             $table->integer('posts')->default(0);
             $table->integer('remove_social')->default(0);
