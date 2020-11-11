@@ -11,8 +11,8 @@ class AdminController extends Controller
     public function setEnterprisePackage(Request $request)
     {
         $validation = Validator::make($request->all(), [
-            'enterprise_id' => ['required', 'exists:enterprises'],
-            'user_id' => ['required', 'exists:users'],
+            'enterprise_id' => ['required', 'exists:enterprises,id'],
+            'user_id' => ['required', 'exists:users,id'],
             'clients' => ['required'],
             'posts' => ['required'],
             'remove_social' => ['required'],

@@ -84,8 +84,9 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('/changeNotificationSettings', 'UserController@changeNotification');
 
     // Payment controller
-    Route::get('/pay', 'PaymentController@redirectToGateway')->name('pay');
+    
     Route::get('/paynow', 'PaymentController@redirectToPay');
+    
 
 
     // Subscription
@@ -102,8 +103,11 @@ Route::group(['middleware' => 'auth:api'], function () {
 // Cron Jobs
 Route::get('/sendSubscriptionReminder', 'CronJobController@subscriptionReminder');
 
+Route::get('/pay', 'PaymentController@redirectToGateway')->name('pay');
 Route::get('/paywithoutsignup', 'PaymentController@paywithoutsignup');
 Route::get('/payment/callback', 'PaymentController@handleGatewayCallback');
+
+Route::get('/payforenterprise', 'PaymentController@payforenterprise');
 
 
 Route::get('/test', 'SocialMedia\LinkedinController@test');
