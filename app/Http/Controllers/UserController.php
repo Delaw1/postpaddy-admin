@@ -12,13 +12,12 @@ use Carbon\Carbon;
 use App\Subscription;
 use App\Notification;
 use \Mailjet\Resources;
+use App\Company;
 
 class UserController extends Controller
 {
     public function __construct()
     {
-        // Auth::loginUsingId(20);
-        // $this->middleware('auth');
     }
 
     public function EditProfile(Request $request)
@@ -155,8 +154,120 @@ class UserController extends Controller
         return response()->json(['status' => 'success', 'notification' => $notifications]);
     }
 
+    public function checkPostStatus($sub, $client)
+    {
+        if ($sub->enterprise_id !== null) {
+            if ($sub->enterprise->name === "PPD") {
+            }
+            if ($sub->enterprise->name === "PPC") {
+                $company = Company::find($client['company_id']);
+                if ($company->posts === $sub->posts) {
+                    return false;
+                }
+                return true;
+            }
+            if ($sub->enterprise->name === "TNC") {
+                return true;
+            }
+            return '$sub->enterprise';
+        } else {
+            if ($sub->posts <= 0) {
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public function reducePost($sub, $client)
+    {
+        if ($sub->enterprise_id !== null) {
+            if ($sub->enterprise->name === "PPD") {
+
+            }
+            if ($sub->enterprise->name === "PPC") {
+                $company = Company::find($client['company_id']);
+                $company->posts += 1;
+                $company->save();
+            }
+            if ($sub->enterprise->name === "TNC") {
+                
+            }
+        } else {
+            $sub->posts -= 1;
+            $sub->save();
+        }
+        return false;
+    }
+
     public function guest()
     {
         return response()->json(["status" => "failure", "message" => "unauthorized"]);
+    }
+
+    public function test()
+    {
+        // $gs = Plan::create([
+        //     'name' => 'Freemium',
+        //     'clients' => 5,
+        //     'posts' => 20,
+        //     'accounts' => 3,
+        //     'days' => 14,
+        //     'price' => 0,
+        //     'remove_social' => 2
+        // ]);
+        // Plan::create([
+        //     'name' => 'Starter',
+        //     'clients' => 7,
+        //     'posts' => 100,
+        //     'accounts' => 2,
+        //     'days' => 30,
+        //     'price' => 2999,
+        //     'remove_social' => 2
+        // ]);
+        // Plan::create([
+        //     'name' => 'Basic',
+        //     'clients' => 15,
+        //     'posts' => 60,
+        //     'accounts' => 5,
+        //     'days' => 14,
+        //     'price' => 3999,
+        //     'remove_social' => 4
+        // ]);
+        // Plan::create([
+        //     'name' => 'Plus',
+        //     'clients' => 16,
+        //     'posts' => 80,
+        //     'accounts' => 6,
+        //     'days' => 30,
+        //     'price' => 6999,
+        //     'remove_social' => 5
+        // ]);
+        // Plan::create([
+        //     'name' => 'Enterprise',
+        //     'clients' => 20,
+        //     'posts' => 100,
+        //     'accounts' => 7,
+        //     'days' => 30,
+        //     'price' => 5000,
+        //     'remove_social' => 6
+        // ]);
+
+        // Enterprise::create([
+        //     'name' => 'PPD',
+        // ]);
+        // Enterprise::create([
+        //     'name' => 'PPC',
+        // ]);
+        // Enterprise::create([
+        //     'name' => 'TNC',
+        // ]);
+
+        $sub = Subscription::where('user_id', 1)->latest()->first();
+        $post = $this->checkPostStatus($sub, ['company_id' => 1]);
+        if (!$post) {
+            return response()->json(['status' => 'failure', 'error' => 'Minimum number of allowed post exceeded, Upgrade you account']);
+        }
+        return response()->json($post);
     }
 }

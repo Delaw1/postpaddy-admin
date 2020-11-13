@@ -110,7 +110,7 @@ Route::get('/payment/callback', 'PaymentController@handleGatewayCallback');
 Route::get('/payforenterprise', 'PaymentController@payforenterprise');
 
 
-Route::get('/test', 'SocialMedia\LinkedinController@test');
+Route::get('/test', 'UserController@test');
 Route::get('/test2', 'CronJobController@subscriptionReminder');
 Route::get('/sendmail', 'EmailController@sendMail');
 

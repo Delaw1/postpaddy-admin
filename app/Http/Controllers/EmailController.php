@@ -32,8 +32,6 @@ class EmailController extends Controller
 
     public function sendSubscriptionEmail(array $data)
     {
-        
-
         $html = file_get_contents(resource_path('views/emails/subscription.blade.php'));
         $html = str_replace(
             ['{{NAME}}', '{{PLAN}}'],
@@ -86,6 +84,39 @@ class EmailController extends Controller
                     ],
                     'Subject' => "Welcome to Postslate",
                     'TextPart' => "Welcome to Postslate",
+                    'HTMLPart' => $html,
+                    'CustomID' => "AppGettingStartedTest"
+                ]
+            ]
+        ];
+        $response = $this->mj->post(Resources::$Email, ['body' => $body]);
+    }
+
+    public function sendPasswordResetEmail(array $data)
+    {
+        $email = $data["email"];
+        $token = base64_encode($email);
+
+        $html = file_get_contents(resource_path('views/emails/passwordreset.blade.php'));
+        $html = str_replace(
+            ['{{TOKEN}}'],
+            [$token],
+            $html
+        );
+        $body = [
+            'Messages' => [
+                [
+                    'From' => [
+                        'Email' => "info@digifigs.com",
+                        'Name' => "Postlate"
+                    ],
+                    'To' => [
+                        [
+                            'Email' => $email,
+                        ]
+                    ],
+                    'Subject' => "Postlate Password Reset",
+                    'TextPart' => "Postlate Password Reset",
                     'HTMLPart' => $html,
                     'CustomID' => "AppGettingStartedTest"
                 ]

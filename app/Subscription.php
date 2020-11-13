@@ -11,4 +11,8 @@ class Subscription extends Model
     protected $hidden = [
         'created_at', 'updated_at',
     ];
+
+    public function Enterprise() {
+        return $this->belongsTo('App\Enterprise');
+    }
 }

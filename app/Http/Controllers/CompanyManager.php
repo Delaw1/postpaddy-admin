@@ -30,7 +30,7 @@ class CompanyManager extends Controller
 
     public function CreateCompany(Request $request)
     {
-        $sub = (new UserController())->checkSubcription();
+        $sub = (new UserController())->checkSubcription(); 
         if(!$sub) {
             return response()->json(['status' => 'failure', 'error' => 'Subcription expired, upgrade your plan']);
         }

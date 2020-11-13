@@ -25,14 +25,11 @@ class PostManager extends Controller
 
     public function CreatePost(Request $request)
     {
-        $sub = (new UserController())->checkSubcription();
+        $userController = new UserController();
+        $sub = $userController->checkSubcription();
         // Check active subscription
         if (!$sub) {
             return response()->json(['status' => 'failure', 'error' => 'Subscription expired, upgrade your plan']);
-        }
-
-        if ($sub->posts <= 0) {
-            return response()->json(['status' => 'failure', 'error' => 'Minimum number of allowed post exceeded, Upgrade you account']);
         }
 
         $input = $request->all();
@@ -56,14 +53,20 @@ class PostManager extends Controller
             return response()->json($data, 400);
         }
 
+        $checkPost = $userController->checkPostStatus($sub, ['company_id' => $input['company_id']]);
+        if (!$checkPost) {
+            return response()->json(['status' => 'failure', 'error' => 'Minimum number of allowed post exceeded, Upgrade you account']);
+        }
+
         if (empty($input["media"])) {
             $input["media"] = [];
         }
 
         $post = Post::create($input);
 
-        $sub->posts -= 1;
-        $sub->save();
+        $checkPost = $userController->reducePost($sub, ['company_id' => $input['company_id']]);
+        // $sub->posts -= 1;
+        // $sub->save();
 
         if (!isset($input["schedule_date"]) || $input["schedule_date"] == NULL) {
             foreach (array_keys($input["platforms"]) as $platform) {
