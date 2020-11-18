@@ -113,8 +113,6 @@ class LinkedinController extends Controller
       'company_id' => ['required', 'exists:linkedin_accounts']
     ]);
 
-
-
     if ($validation->fails()) {
       $data = json_decode($validation->errors(), true);
 

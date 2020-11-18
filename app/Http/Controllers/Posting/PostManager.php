@@ -54,6 +54,7 @@ class PostManager extends Controller
         }
 
         $checkPost = $userController->checkPostStatus($sub, ['company_id' => $input['company_id']]);
+        
         if (!$checkPost) {
             return response()->json(['status' => 'failure', 'error' => 'Minimum number of allowed post exceeded, Upgrade you account']);
         }
@@ -78,8 +79,7 @@ class PostManager extends Controller
                         (new TwitterController())->postNow($post);
                         break;
                     case "facebook":
-                        $fab = (new FacebookController())->postNow($post);
-                        // return $fab;
+                        (new FacebookController())->postNow($post);
                         break;
                 }
             }

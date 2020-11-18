@@ -24,18 +24,19 @@ class UserController extends Controller
     {
         $input = $request->all();
 
-        $validation = Validator::make($input, [
-            'name' => ['required', 'string', 'max:255'],
+        // $validation = Validator::make($input, [
+        //     'first_name' => ['required', 'string', 'max:255'],
+        //     'last_name' => ['required', 'string', 'max:255'],
 
-        ]);
+        // ]);
 
-        if ($validation->fails()) {
-            $data = json_decode($validation->errors(), true);
+        // if ($validation->fails()) {
+        //     $data = json_decode($validation->errors(), true);
 
-            $data = ['status' => 'failure']  + $data;
+        //     $data = ['status' => 'failure']  + $data;
 
-            return response()->json(['status' => 'failure', 'error' => $validation->errors()->first()], 400);
-        }
+        //     return response()->json(['status' => 'failure', 'error' => $validation->errors()->first()], 400);
+        // }
 
 
 
@@ -169,14 +170,14 @@ class UserController extends Controller
             if ($sub->enterprise->name === "TNC") {
                 return true;
             }
-            return '$sub->enterprise';
+            return true;
         } else {
             if ($sub->posts <= 0) {
                 return false;
             }
             return true;
         }
-        return false;
+        // return false;
     }
 
     public function reducePost($sub, $client)
