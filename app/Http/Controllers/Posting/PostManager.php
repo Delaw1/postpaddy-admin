@@ -14,12 +14,13 @@ use \App\Utils;
 use \App\Post;
 use App\Subscription;
 use \App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\File;
 
 class PostManager extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        // $this->middleware('auth');
     }
 
     public function CreatePost(Request $request)
@@ -53,7 +54,7 @@ class PostManager extends Controller
         }
 
         $checkPost = $userController->checkPostStatus($sub, ['company_id' => $input['company_id']]);
-        
+
         if (!$checkPost) {
             return response()->json(['status' => 'failure', 'error' => 'Minimum number of allowed post exceeded, Upgrade you account']);
         }
@@ -129,7 +130,7 @@ class PostManager extends Controller
         $names = array();
 
         foreach ($request->file('media') as $media) {
-            $name = 'postslate'.time() . mt_rand(1, 9999) . '.' . $media->getClientOriginalExtension();
+            $name = 'postslate' . time() . mt_rand(1, 9999) . '.' . $media->getClientOriginalExtension();
             $destinationPath = public_path(Utils::UPLOADS_DIR);
             $media->move($destinationPath, $name);
 
@@ -183,6 +184,16 @@ class PostManager extends Controller
         // }
         // $post = $input;
         $post = Post::where('id', $request->input('post_id'))->first();
+
+        $old_media = array_diff($post->media, $input['media']);
+
+        $old_media_path = array();
+        foreach($old_media as $media) {
+            array_push($old_media_path, public_path(Utils::UPLOADS_DIR).'/'.$media);
+        }
+
+        File::delete($old_media_path);
+
         $post->update($input);
         // return $post["hashtag"];
         if ($post["schedule_date"] == 0 || $post["schedule_date"] == NULL) {
@@ -194,12 +205,27 @@ class PostManager extends Controller
                     case "twitter":
                         (new TwitterController())->postNow($post);
                         break;
+                    case "facebook":
+                        (new FacebookController())->postNow($post);
+                        break;
                 }
             }
             $post->update(["is_posted" => true]);
         }
 
         return response()->json(['status' => 'success', 'post' => $post], 200);
+    }
+
+    public function test() {
+        $old_media = array_diff(['a', 'b', 'c'], ['a', 'd']);
+        
+
+        $old_media_path = array();
+        foreach($old_media as $media) {
+            array_push($old_media_path, public_path(Utils::UPLOADS_DIR).'/'.$media);
+        }
+        // File::delete($old_media_path);
+        return response()->json($old_media_path);
     }
 
     public function scheduler()
