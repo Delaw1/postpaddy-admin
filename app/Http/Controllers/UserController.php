@@ -22,6 +22,7 @@ class UserController extends Controller
 
     public function EditProfile(Request $request)
     {
+        // return response()->json($request->profile_img);
         $input = $request->all();
 
         // $validation = Validator::make($input, [
@@ -47,7 +48,7 @@ class UserController extends Controller
             $input['image'] = $name;
         }
 
-        if ($request->has('profile_img') && $request->profile_img == null) {
+        if ($request->profile_img == null || $request->profile_img == 'null') {
             $input['image'] = null;
         }
 

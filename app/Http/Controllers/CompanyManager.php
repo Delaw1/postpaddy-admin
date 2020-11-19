@@ -147,7 +147,7 @@ class CompanyManager extends Controller
             $input['image'] = $name;
         }
         
-        if($request->has('profile_img') && $request->profile_img == null) {
+        if($request->profile_img == null || $request->profile_img == 'null') {
             $input['image'] = null;
         }
 
