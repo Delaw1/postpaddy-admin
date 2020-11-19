@@ -14,7 +14,6 @@ use App\Company;
 use \App\Http\Controllers\UserController;
 use \App\Utils;
 use stdClass;
-// require('./vendor/facebook/graph-sdk/src/Facebook/autoload.php');
 
 class FacebookController extends Controller
 {
@@ -22,8 +21,9 @@ class FacebookController extends Controller
 
   public function __construct()
   {
-    $clientID = "493415521357024";
-    $clientSecret = "54c9846d87b01d7920e880fb1881cb99";
+    $clientID = env('FACEBOOK_CLIENT_ID');
+    $clientSecret = env('FACEBOOK_CLIENT_SECRET');
+
     $this->fb = new Facebook([
       'app_id' => $clientID,
       'app_secret' => $clientSecret,
@@ -53,11 +53,11 @@ class FacebookController extends Controller
     Session::put('social_company_id', $company_id);
 
 
-    // $clientID = "1484064975133443";
-    // $clientSecret = "b3a2299aca447cb36c3a6b9584c84119";
+  
     session_start();
-    $clientID = "493415521357024";
-    $clientSecret = "54c9846d87b01d7920e880fb1881cb99";
+    $clientID = env('FACEBOOK_CLIENT_ID');
+    $clientSecret = env('FACEBOOK_CLIENT_SECRET');
+
     $fb = new Facebook([
       'app_id' => $clientID,
       'app_secret' => $clientSecret,
@@ -81,8 +81,9 @@ class FacebookController extends Controller
   public function saveAccessToken(Request $request)
   {
     session_start();
-    $clientID = "493415521357024";
-    $clientSecret = "54c9846d87b01d7920e880fb1881cb99";
+    $clientID = env('FACEBOOK_CLIENT_ID');
+    $clientSecret = env('FACEBOOK_CLIENT_SECRET');
+
     $fb = new Facebook([
       'app_id' => $clientID,
       'app_secret' => $clientSecret,
@@ -117,7 +118,6 @@ class FacebookController extends Controller
       } else {
         header('HTTP/1.0 400 Bad Request');
         return response()->json(['status' => 'failure', 'error' => 'Bad request']);
-        // echo 'Bad request';
       }
     }
 
