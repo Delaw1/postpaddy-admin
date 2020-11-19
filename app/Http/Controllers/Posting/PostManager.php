@@ -225,7 +225,8 @@ class PostManager extends Controller
             array_push($old_media_path, public_path(Utils::UPLOADS_DIR).'/'.$media);
         }
         // File::delete($old_media_path);
-        return response()->json($old_media_path);
+        $ext = strtolower(pathinfo('/uploads/categories/featured_image.jpg', PATHINFO_EXTENSION));
+        return response()->json($ext);
     }
 
     public function scheduler()

@@ -121,8 +121,15 @@ class TwitterController extends Controller
         if (!empty($media) && $media != "[]") {
             $data["media_ids"] = '';
             foreach ($media as $m) {
-                $upload = $connection->upload('media/upload', ['media' => public_path(Utils::UPLOADS_DIR . "/$m")]);
-                $data["media_ids"] .= $upload->media_id_string . ",";
+                $ext = strtolower(pathinfo($m, PATHINFO_EXTENSION));
+                if($ext == "mp4" || $ext == "3gp" || $ext == "avi" || $ext == "mov") {
+                     $upload = $connection->upload('media/upload', ['media' => public_path(Utils::UPLOADS_DIR . "/$m"), 'media_type' => 'video/mp4'], true);
+                    $data["media_ids"] .= $upload->media_id . ",";
+                } else {
+                    $upload = $connection->upload('media/upload', ['media' => public_path(Utils::UPLOADS_DIR . "/$m")]);
+                    $data["media_ids"] .= $upload->media_id_string . ",";
+                }
+               
             }
         }
 
