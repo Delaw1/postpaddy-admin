@@ -43,7 +43,7 @@ class PaymentController extends Controller
 
         $total_price = $plan->price * 100;
 
-        $user = User::find($request->input('user_id'));
+        $user = User::where('id', $request->input('user_id'))->first();
         
 
         $r = [
