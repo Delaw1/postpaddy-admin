@@ -56,7 +56,7 @@ class PaymentController extends Controller
             'metadata' => json_encode(['plan_id' => $plan->id, 'enterprise_id' => null])
         ];
 
-        return response()->json($r);
+        return response()->json($user->email);
 
         // $r = [
         //     'email' => 'lawrenceajayi481@gmail.com',
