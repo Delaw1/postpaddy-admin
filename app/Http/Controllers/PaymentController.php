@@ -43,13 +43,15 @@ class PaymentController extends Controller
 
         $total_price = $plan->price * 100;
 
+        $user = User::find($request->input('user_id'));
+
         $r = [
-            'email' => Auth()->User()->email,
+            'email' => $user->email,
             'amount' => $total_price,
             'quantity' => 1,
             'currency' => 'NGN',
             'reference' => Paystack::genTranxRef(),
-            'orderID' => Auth()->User()->id,
+            'orderID' => $user->id,
             'metadata' => json_encode(['plan_id' => $plan->id, 'enterprise_id' => null])
         ];
 
