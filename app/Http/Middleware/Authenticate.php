@@ -22,6 +22,6 @@ class Authenticate extends Middleware
         //     return route('unauthorized'); 
         // }
         // return route('unauthorized'); 
-        return 'http://postslate.com/api/unauthorized';
+        return 'http://postpaddy.com/api/unauthorized';
     }
 }
