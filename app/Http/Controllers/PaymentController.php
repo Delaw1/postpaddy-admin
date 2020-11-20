@@ -44,7 +44,7 @@ class PaymentController extends Controller
         $total_price = $plan->price * 100;
 
         $user = User::find($request->input('user_id'));
-        return response()->json($user);
+        
 
         $r = [
             'email' => $user->email,
@@ -55,6 +55,8 @@ class PaymentController extends Controller
             'orderID' => $user->id,
             'metadata' => json_encode(['plan_id' => $plan->id, 'enterprise_id' => null])
         ];
+
+        return response()->json($r);
 
         // $r = [
         //     'email' => 'lawrenceajayi481@gmail.com',
