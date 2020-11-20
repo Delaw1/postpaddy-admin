@@ -45,7 +45,7 @@ class PaymentController extends Controller
 
         $user = User::where('id', $request->input('user_id'))->first();
         
-        return response()->json(json_encode(['plan_id' => $plan->id, 'enterprise_id' => null]));
+        
         $r = [
             'email' => $user->email,
             'amount' => $total_price,
@@ -56,6 +56,7 @@ class PaymentController extends Controller
             'metadata' => json_encode(['plan_id' => $plan->id, 'enterprise_id' => null])
         ];
 
+        return response()->json(json_encode(['plan_id' => $plan->id, 'enterprise_id' => null]));
         
 
         // $r = [
