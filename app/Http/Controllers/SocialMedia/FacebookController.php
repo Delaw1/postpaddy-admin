@@ -32,6 +32,7 @@ class FacebookController extends Controller
       'cookie' => true
     ]);
   }
+  
   public function addAccount(Request $request)
   {
     $input = $request->all();

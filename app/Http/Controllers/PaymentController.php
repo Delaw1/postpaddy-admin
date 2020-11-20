@@ -19,7 +19,7 @@ use App\EnterprisePayment;
 use Illuminate\Support\Facades\Validator;
 use App\Transaction;
 
-class PaymentController extends Controller
+class PaymentController extends Controller 
 {
 
     /**

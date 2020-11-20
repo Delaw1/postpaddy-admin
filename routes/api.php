@@ -85,7 +85,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     // Payment controller
     
-    Route::get('/paynow', 'PaymentController@redirectToPay');
+    
     
 
 
@@ -103,6 +103,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 // Cron Jobs
 Route::get('/sendSubscriptionReminder', 'CronJobController@subscriptionReminder');
 
+Route::get('/paynow', 'PaymentController@redirectToPay');
 Route::get('/pay', 'PaymentController@redirectToGateway')->name('pay');
 Route::get('/paywithoutsignup', 'PaymentController@paywithoutsignup');
 Route::get('/payment/callback', 'PaymentController@handleGatewayCallback');
