@@ -218,15 +218,15 @@ class PaymentController extends Controller
                     $user->ended_at = Carbon::now()->addDays($plan->days);
                     $user->save();
 
-                    $prevSub = (new UserController())->checkSubcription();
-                    if ($prevSub) {
-                        if ($prevSub->plan_id != 1) {
-                            $plan->clients += $prevSub->clients;
-                            $plan->posts += $prevSub->posts;
-                            $plan->accounts += $prevSub->accounts;
-                            $plan->remove_social += $prevSub->remove_social;
-                        }
-                    }
+                    // $prevSub = (new UserController())->checkSubcription();
+                    // if ($prevSub) {
+                    //     if ($prevSub->plan_id != 1) {
+                    //         $plan->clients += $prevSub->clients;
+                    //         $plan->posts += $prevSub->posts;
+                    //         $plan->accounts += $prevSub->accounts;
+                    //         $plan->remove_social += $prevSub->remove_social;
+                    //     }
+                    // }
 
                     $sub = Subscription::create([
                         'user_id' => $user->id,
