@@ -207,8 +207,15 @@ class LinkedinController extends Controller
 
         if (!empty($media) && $media != "[]") {
           foreach ($media as $m) {
-            $id = $this->uploadMedia($personID, 'person', $linkedinAccount->linkedin_access_token, $m);
-            array_push($uploadedContents, $id);
+            $ext = strtolower(pathinfo($m, PATHINFO_EXTENSION));
+            if ($ext == "mp4" || $ext == "3gp" || $ext == "avi" || $ext == "mov") {
+              $id = $this->uploadVideo($personID, 'person', $linkedinAccount->linkedin_access_token, $m);
+              array_push($uploadedContents, $id);
+            } else {
+              $id = $this->uploadMedia($personID, 'person', $linkedinAccount->linkedin_access_token, $m);
+              array_push($uploadedContents, $id);
+            }
+           
           }
         }
 
@@ -235,6 +242,43 @@ class LinkedinController extends Controller
         (Utils::curlPostRequest('https://api.linkedin.com/v2/shares', 'oauth2_access_token=' . $linkedinAccount->linkedin_access_token, $body, ['Content-Type: application/json']));
       }
     }
+  }
+
+  public function uploadVideo($ID, $type, $linkedin_access_token, $fileID)
+  {
+    $data = array(
+      'registerUploadRequest' =>
+      array(
+        'recipes' =>
+        array(
+          'urn:li:digitalmediaRecipe:feedshare-video',
+        ),
+        'owner' => "urn:li:$type:$ID",
+        'serviceRelationships' =>
+        array(
+          array(
+            'relationshipType' => 'OWNER',
+            'identifier' => 'urn:li:userGeneratedContent',
+          ),
+        ),
+      ),
+    );
+
+    $body = json_encode($data);
+    $response = Utils::curlPostRequest('https://api.linkedin.com/v2/assets', 'action=registerUpload&oauth2_access_token=' . $linkedin_access_token, $body, ['Content-Type: application/json']);
+    $uploadURL = $response->value->uploadMechanism->{"com.linkedin.digitalmedia.uploading.MediaUploadHttpRequest"}->uploadUrl;
+    $assetID = $response->value->asset;
+
+    // $res = Utils::curlPutRequest($uploadURL, File::get(public_path(Utils::UPLOADS_DIR . "/$fileID")), ['Authorization: Bearer '.$linkedin_access_token]);
+
+    $client = new Client();
+    $res = $client->request('PUT', $uploadURL, [
+      'headers' => ['Content-Type' => 'application/octet-stream'],
+      'body' => fopen(public_path(Utils::UPLOADS_DIR . "/$fileID"), 'r'),
+      'verify' => true
+    ]);
+
+    return $assetID;
   }
 
   public function uploadMedia($ID, $type, $linkedin_access_token, $fileID)
@@ -435,6 +479,4 @@ class LinkedinController extends Controller
 
     return response()->json(['status' => 'success', 'msg' => 'Linkedin account successfully deleted']);
   }
-
-  
 }
