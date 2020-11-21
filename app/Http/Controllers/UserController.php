@@ -209,51 +209,51 @@ class UserController extends Controller
 
     public function test()
     {
-        // $gs = Plan::create([
-        //     'name' => 'Freemium',
-        //     'clients' => 5,
-        //     'posts' => 20,
-        //     'accounts' => 3,
-        //     'days' => 14,
-        //     'price' => 0,
-        //     'remove_social' => 2
-        // ]);
-        // Plan::create([
-        //     'name' => 'Starter',
-        //     'clients' => 7,
-        //     'posts' => 100,
-        //     'accounts' => 2,
-        //     'days' => 30,
-        //     'price' => 2999,
-        //     'remove_social' => 2
-        // ]);
-        // Plan::create([
-        //     'name' => 'Basic',
-        //     'clients' => 15,
-        //     'posts' => 60,
-        //     'accounts' => 5,
-        //     'days' => 14,
-        //     'price' => 3999,
-        //     'remove_social' => 4
-        // ]);
-        // Plan::create([
-        //     'name' => 'Plus',
-        //     'clients' => 16,
-        //     'posts' => 80,
-        //     'accounts' => 6,
-        //     'days' => 30,
-        //     'price' => 6999,
-        //     'remove_social' => 5
-        // ]);
-        // Plan::create([
-        //     'name' => 'Enterprise',
-        //     'clients' => 20,
-        //     'posts' => 100,
-        //     'accounts' => 7,
-        //     'days' => 30,
-        //     'price' => 5000,
-        //     'remove_social' => 6
-        // ]);
+        $gs = Plan::create([
+            'name' => 'Freemium',
+            'clients' => 5,
+            'posts' => 20,
+            'accounts' => 3,
+            'days' => 14,
+            'price' => 0,
+            'remove_social' => 2
+        ]);
+        Plan::create([
+            'name' => 'Starter',
+            'clients' => 2,
+            'posts' => 100,
+            'accounts' => 2,
+            'days' => 30,
+            'price' => 2999,
+            'remove_social' => 2
+        ]);
+        Plan::create([
+            'name' => 'Basic',
+            'clients' => 6,
+            'posts' => 240,
+            'accounts' => 5,
+            'days' => 14,
+            'price' => 6999,
+            'remove_social' => 4
+        ]);
+        Plan::create([
+            'name' => 'Plus',
+            'clients' => 3,
+            'posts' => 150,
+            'accounts' => 6,
+            'days' => 30,
+            'price' => 3999,
+            'remove_social' => 5
+        ]);
+        Plan::create([
+            'name' => 'Enterprise',
+            'clients' => 20,
+            'posts' => 100,
+            'accounts' => 7,
+            'days' => 30,
+            'price' => 5000,
+            'remove_social' => 6
+        ]);
 
         // Enterprise::create([
         //     'name' => 'PPD',

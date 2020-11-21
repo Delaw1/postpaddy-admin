@@ -33,8 +33,7 @@ class ResetPasswordController extends Controller
     // protected $redirectTo = RouteServiceProvider::HOME;
     public function __construct()
   {
-    $this->middleware('auth');
-    // Auth::loginUsingId(20); 
+      
   }
 
 

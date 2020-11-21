@@ -27,7 +27,7 @@ Route::get('/VerifyEmail/{emailb64}', 'Auth\RegisterController@verifyEmail');
 Route::post('/PasswordReset/Request', 'Auth\ForgotPasswordController@forgot');
 Route::post('/PasswordReset/SetNow', 'Auth\ForgotPasswordController@setNow');
 Route::get('/logout', 'Auth\LoginController@logout');
-Route::post('/ChangePassword', 'Auth\ResetPasswordController@ChangePassword');
+
 // Check if a user is logged in
 Route::get('/isLoggedIn', 'Auth\LoginController@isLoggedIn');
 // Check if a user has subscribe before signup
@@ -44,6 +44,8 @@ Route::get('/add_facebook_account', 'SocialMedia\FacebookController@addAccount')
 Route::get('/facebook_callback', 'SocialMedia\FacebookController@saveAccessToken');
 
 Route::group(['middleware' => 'auth:api'], function () {
+    Route::post('/ChangePassword', 'Auth\ResetPasswordController@ChangePassword');
+    
     //Company APIs
     Route::post('/CreateCompany', 'CompanyManager@CreateCompany');
     Route::get('/GetCompanies', 'CompanyManager@GetCompanies');

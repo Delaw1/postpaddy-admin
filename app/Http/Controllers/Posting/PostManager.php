@@ -185,7 +185,7 @@ class PostManager extends Controller
         // $post = $input;
         $post = Post::where('id', $request->input('post_id'))->first();
 
-        $old_media = array_diff($post->media, $input['media']);
+        $old_media = array_diff($post->media, $request->input('media'));
 
         $old_media_path = array();
         foreach($old_media as $media) {
