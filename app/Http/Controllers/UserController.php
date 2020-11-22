@@ -163,6 +163,8 @@ class UserController extends Controller
             }
             if ($sub->enterprise->name === "PPC") {
                 $company = Company::find($client['company_id']);
+                // dd($company);
+                // return;
                 if ($company->posts === $sub->posts) {
                     return false;
                 }

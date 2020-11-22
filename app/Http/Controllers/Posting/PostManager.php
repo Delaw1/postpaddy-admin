@@ -37,7 +37,7 @@ class PostManager extends Controller
         $input["user_id"] = Auth::user()->id;
 
         $validation = Validator::make($input, [
-            'company_id' => ['required', 'integer'],
+            'company_id' => ['required', 'integer', 'exists:companies,id'],
             'content' => ['required', 'string'],
             'media' => ['array'],
 
@@ -162,7 +162,8 @@ class PostManager extends Controller
         // 'platforms.*' => ['required', 'string'],
 
         $validation = Validator::make($input, [
-            'company_id' => ['required', 'integer'],
+            'post_id' => ['required', 'integer', 'exists:posts,id'],
+            'company_id' => ['required', 'integer', 'exists:companies,id'],
             'content' => ['required', 'string'],
             'media' => ['array'],
 
@@ -185,17 +186,19 @@ class PostManager extends Controller
         // $post = $input;
         $post = Post::where('id', $request->input('post_id'))->first();
 
-        $old_media = array_diff($post->media, $request->input('media'));
+        if (is_array($request->input('media'))) {
+            $old_media = array_diff($post->media, $request->input('media'));
 
-        $old_media_path = array();
-        foreach($old_media as $media) {
-            array_push($old_media_path, public_path(Utils::UPLOADS_DIR).'/'.$media);
+            $old_media_path = array();
+            foreach ($old_media as $media) {
+                array_push($old_media_path, public_path(Utils::UPLOADS_DIR) . '/' . $media);
+            }
+
+            File::delete($old_media_path);
         }
 
-        File::delete($old_media_path);
-
         $post->update($input);
-        // return $post["hashtag"];
+        
         if ($post["schedule_date"] == 0 || $post["schedule_date"] == NULL) {
             foreach (array_keys($post["platforms"]) as $platform) {
                 switch ($platform) {
@@ -216,13 +219,14 @@ class PostManager extends Controller
         return response()->json(['status' => 'success', 'post' => $post], 200);
     }
 
-    public function test() {
+    public function test()
+    {
         $old_media = array_diff(['a', 'b', 'c'], ['a', 'd']);
-        
+
 
         $old_media_path = array();
-        foreach($old_media as $media) {
-            array_push($old_media_path, public_path(Utils::UPLOADS_DIR).'/'.$media);
+        foreach ($old_media as $media) {
+            array_push($old_media_path, public_path(Utils::UPLOADS_DIR) . '/' . $media);
         }
         // File::delete($old_media_path);
         $ext = strtolower(pathinfo('/uploads/categories/featured_image.jpg', PATHINFO_EXTENSION));
