@@ -21,16 +21,16 @@ class FacebookController extends Controller
 
   public function __construct()
   {
-    $clientID = env('FACEBOOK_CLIENT_ID');
-    $clientSecret = env('FACEBOOK_CLIENT_SECRET');
+    // $clientID = env('FACEBOOK_CLIENT_ID');
+    // $clientSecret = env('FACEBOOK_CLIENT_SECRET');
 
-    $this->fb = new Facebook([
-      'app_id' => $clientID,
-      'app_secret' => $clientSecret,
-      'default_graph_version' => 'v3.2',
-      'fileUpload' => true,
-      'cookie' => true
-    ]);
+    // $this->fb = new Facebook([
+    //   'app_id' => $clientID,
+    //   'app_secret' => $clientSecret,
+    //   'default_graph_version' => 'v3.2',
+    //   'fileUpload' => true,
+    //   'cookie' => true
+    // ]);
   }
   
   public function addAccount(Request $request)
@@ -204,6 +204,17 @@ class FacebookController extends Controller
       'message' => $text,
     ];
 
+    $clientID = env('FACEBOOK_CLIENT_ID');
+    $clientSecret = env('FACEBOOK_CLIENT_SECRET');
+
+    $fb = new Facebook([
+      'app_id' => $clientID,
+      'app_secret' => $clientSecret,
+      'default_graph_version' => 'v3.2',
+      'fileUpload' => true,
+      'cookie' => true
+    ]);
+
     foreach ($post['platforms']['facebook'] as $account) {
       if ($account['category'] == 'personal') {
 
@@ -224,9 +235,9 @@ class FacebookController extends Controller
           foreach ($media as $m) {
             try {
               $source = public_path(Utils::UPLOADS_DIR . "/$m");
-              $data = ['source' => $this->fb->fileToUpload($source), 'published' => false];
+              $data = ['source' => $fb->fileToUpload($source), 'published' => false];
               
-              $response = $this->fb->post('/' . $account['id'] . '/photos', $data, $account['access_token']);
+              $response = $fb->post('/' . $account['id'] . '/photos', $data, $account['access_token']);
               
             } catch (Facebook\Exceptions\FacebookResponseException $e) {
               return 'Graph returned an error: ' . $e->getMessage();
@@ -244,7 +255,7 @@ class FacebookController extends Controller
         }
 
         try {
-          $response = $this->fb->post('/' . $account['id'] . '/feed', $linkData, $account['access_token']);
+          $response = $fb->post('/' . $account['id'] . '/feed', $linkData, $account['access_token']);
         } catch (Facebook\Exceptions\FacebookResponseException $e) {
           echo 'Graph returned an error: ' . $e->getMessage();
           exit;
