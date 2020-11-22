@@ -315,10 +315,17 @@ class PaymentController extends Controller
 
                 $data = ['msg' => 'User account successfully upgraded'];
 
-                return redirect('/payment?success=true');
+                if (env("APP_ENV") == "development") {
+                    return redirect(env('APP_FRONTEND_URL_DEV') . "/payment?success=true");
+                  }
+                return redirect(env('APP_FRONTEND_URL') . "/payment?success=true");
             }
         }
         $data = ['error' => 'Payment failed, pls try again'];
-        return redirect('/payment?success=false');
+
+        if (env("APP_ENV") == "development") {
+            return redirect(env('APP_FRONTEND_URL_DEV') . "/payment?success=false");
+          }
+        return redirect(env('APP_FRONTEND_URL') . "/payment?success=false");
     }
 }
