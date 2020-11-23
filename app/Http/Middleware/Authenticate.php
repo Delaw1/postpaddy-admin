@@ -21,7 +21,7 @@ class Authenticate extends Middleware
         // if (! $request->expectsJson()) {
         //     return route('unauthorized'); 
         // }
-        // return route('unauthorized'); 
-        return 'http://postpaddy.com/api/unauthorized';
+        return route('unauthorized'); 
+        // return 'http://postpaddy.com/api/unauthorized';
     }
 }
