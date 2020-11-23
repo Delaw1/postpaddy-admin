@@ -165,12 +165,12 @@
 <body>
     <div class="wrapper">
         <div class="inner">
-            <img src="https://digifigs.com/postslate-emails/images/Logo.png" alt="Postslate" class="logo" width="200px" height="70px">
+            <img src="https://digifigs.com/postslate-emails/images/Logo.png" alt="postpaddy" class="logo" width="200px" height="70px">
             <!--<img src="https://digifigs.com/postslate-emails/images/key@2x.png" alt="" class="key" >-->
             <p class="greeting">Forgot your password?</p>
             <p class="description">Not to worry, we got you! Let’s get you a new password.</p>
-            <a href="https://postslate.com/password-reset/{{TOKEN}}"><button class="verify">Reset Password</button></a>
-            <p class="disregard">If you didn’t request to change your Postslate. password, you don’t have to do anything. So that’s easy. :) </p>
+            <a href="https://postpaddy.com/password-reset/{{TOKEN}}"><button class="verify">Reset Password</button></a>
+            <p class="disregard">If you didn’t request to change your PostPaddy. password, you don’t have to do anything. So that’s easy. :) </p>
         </div>
         <h2 class="feedback-prompt lg">We'd love to hear from you!</h2>
         <p class="text-with-link lg">Help us improve by sharing your feedback in this short <u><a href="#">survey</a></u></p>
@@ -179,8 +179,8 @@
             <img src="https://digifigs.com/postslate-emails/images/twitter@2x.png" alt="" class="social-icon" >
             <img src="https://digifigs.com/postslate-emails/images/instagram-glyph-1@2x.png" alt="" class="social-icon" >
         </div>
-        <p class="bottom lg">Copyright © 2020 <a href="#"><b>Postslate</b></a> All Rights Reserved. </p>
-        <p class="bottom lg"><a href="mailto:help@Postslate.com"><b>help@Postslate.com</b></a> | +234 90 1908 9009</p>
+        <p class="bottom lg">Copyright © 2020 <a href="#"><b>PostPaddy</b></a> All Rights Reserved. </p>
+        <p class="bottom lg"><a href="mailto:help@postpaddy.com"><b>help@postpaddy.com</b></a> | +234 90 1908 9009</p>
     </div>
 </body>
 </html>
