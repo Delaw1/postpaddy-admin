@@ -48,7 +48,7 @@ class User extends Authenticatable
     public function getImageAttribute($value)
     {
         if ($value !== NULL) {
-            return "https://postslate.com/api/profile/" . $value;
+            return env("APP_CALLBACK_BASE_URL"). "/profile/" . $value;
         }
         // return "https://postslate.com/api/profile/user_profile.png";
         return $value;
