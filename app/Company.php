@@ -42,7 +42,6 @@ class Company extends Model
         if($value !== NULL) {
             return env("APP_CALLBACK_BASE_URL"). "/profile/".$value;
         }
-        // return "https://postslate.com/api/profile/user_profile.png";
         return $value;
     }
 
