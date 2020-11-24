@@ -115,7 +115,7 @@ class FacebookController extends Controller
         // echo "Error Code: " . $helper->getErrorCode() . "\n";
         // echo "Error Reason: " . $helper->getErrorReason() . "\n";
         // echo "Error Description: " . $helper->getErrorDescription() . "\n";
-        return response()->json(['status' => 'failure', 'error' => $e->getError()]);
+        return response()->json(['status' => 'failure', 'error' => $helper->getErrorReason()]);
       } else {
         header('HTTP/1.0 400 Bad Request');
         return response()->json(['status' => 'failure', 'error' => 'Bad request']);
