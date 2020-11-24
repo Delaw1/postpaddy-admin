@@ -66,7 +66,7 @@ class EmailController extends Controller
         $html = file_get_contents(resource_path('views/emails/welcomemail.blade.php'));
         $html = str_replace(
             ['{{NAME}}', '{{VERIFY_LINK}}'],
-            [$data['name'], "https://postslate.com/api/VerifyEmail/" . base64_encode($data['email'])],
+            [$data['name'], "https://postpaddy.com/api/VerifyEmail/" . base64_encode($data['email'])],
             $html
         );
         $body = [
@@ -82,8 +82,8 @@ class EmailController extends Controller
                             'Name' => $data['name']
                         ]
                     ],
-                    'Subject' => "Welcome to Postslate",
-                    'TextPart' => "Welcome to Postslate",
+                    'Subject' => "Welcome to PostPaddy",
+                    'TextPart' => "Welcome to PostPaddy",
                     'HTMLPart' => $html,
                     'CustomID' => "AppGettingStartedTest"
                 ]
