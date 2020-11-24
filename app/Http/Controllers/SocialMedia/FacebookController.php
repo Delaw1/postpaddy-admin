@@ -74,7 +74,7 @@ class FacebookController extends Controller
     }
 
     $permissions = ['email', 'pages_manage_posts', 'pages_read_engagement']; // Optional permissions
-    $loginUrl = $helper->getLoginUrl('https://postpaddy.com/api/facebook_callback', $permissions);
+    $loginUrl = $helper->getLoginUrl(env("APP_CALLBACK_BASE_URL").'/facebook_callback', $permissions);
 
     return redirect($loginUrl);
   }
@@ -94,17 +94,19 @@ class FacebookController extends Controller
     ]);
     $helper = $fb->getRedirectLoginHelper();
     try {
-      $accessToken = $helper->getAccessToken("https://postpaddy.com/api/facebook_callback");
+      $accessToken = $helper->getAccessToken(env("APP_CALLBACK_BASE_URL")."/facebook_callback");
     } catch (Facebook\Exception\ResponseException $e) {
       // When Graph returns an error
       // var_dump($helper->getError());
       // echo 'Graph returned an error: ' . $e->getMessage();
-      return response()->json(['status' => 'failure', 'error' => $e->getMessage()]);
+      // return response()->json(['status' => 'failure', 'error' => $e->getMessage()]);
+      return redirect(env('APP_FRONTEND_URL') . "/dashboard/client-accounts/add-social-media-accounts?facebook=false&error=Network Error");
       // exit;
     } catch (Facebook\Exception\SDKException $e) {
       // When validation fails or other local issues
       // echo 'Facebook SDK returned an error: ' . $e->getMessage();
-      return response()->json(['status' => 'failure', 'error' => $e->getMessage()]);
+      // return response()->json(['status' => 'failure', 'error' => $e->getMessage()]);
+      return redirect(env('APP_FRONTEND_URL') . "/dashboard/client-accounts/add-social-media-accounts?facebook=false&error=Network Error");
       // exit;
     }
 
@@ -119,7 +121,8 @@ class FacebookController extends Controller
         return redirect(env('APP_FRONTEND_URL') . "/dashboard/client-accounts/add-social-media-accounts?facebook=false&error=".$helper->getErrorReason());
       } else {
         header('HTTP/1.0 400 Bad Request');
-        return response()->json(['status' => 'failure', 'error' => 'Bad request']);
+        return redirect(env('APP_FRONTEND_URL') . "/dashboard/client-accounts/add-social-media-accounts?facebook=false&error=Network Error");
+        // return response()->json(['status' => 'failure', 'error' => 'Bad request']);
       }
     }
 
@@ -134,12 +137,14 @@ class FacebookController extends Controller
     } catch (\Facebook\Exception\FacebookResponseException $e) {
       // When Graph returns an error
       // echo 'Graph returned an error: ' . $e->getMessage();
-      return response()->json(['status' => 'failure', 'error' => $e->getMessage()]);
+      // return response()->json(['status' => 'failure', 'error' => $e->getMessage()]);
+      return redirect(env('APP_FRONTEND_URL') . "/dashboard/client-accounts/add-social-media-accounts?facebook=false&error=Network Error");
       // exit;
     } catch (\Facebook\Exception\FacebookSDKException $e) {
       // When validation fails or other local issues
       // echo 'Facebook SDK returned an error: ' . $e->getMessage();
-      return response()->json(['status' => 'failure', 'error' => $e->getMessage()]);
+      // return response()->json(['status' => 'failure', 'error' => $e->getMessage()]);
+      return redirect(env('APP_FRONTEND_URL') . "/dashboard/client-accounts/add-social-media-accounts?facebook=false&error=Network Error");
       // exit;
     }
     $me = $response->getGraphUser();
@@ -156,10 +161,12 @@ class FacebookController extends Controller
       // $data = $graphObject["data"];
       // return response()->json($graphObject);
     } catch (\Facebook\Exception\FacebookResponseException $e) {
-      return response()->json(['status' => 'failure', 'error' => $e->getMessage()]);
+      // return response()->json(['status' => 'failure', 'error' => $e->getMessage()]);
+      return redirect(env('APP_FRONTEND_URL') . "/dashboard/client-accounts/add-social-media-accounts?facebook=false&error=Network Error");
       // exit;
     } catch (\Facebook\Exception\FacebookSDKException $e) {
-      return response()->json(['status' => 'failure', 'error' => $e->getMessage()]);
+      // return response()->json(['status' => 'failure', 'error' => $e->getMessage()]);
+      return redirect(env('APP_FRONTEND_URL') . "/dashboard/client-accounts/add-social-media-accounts?facebook=false&error=Network Error");
       // exit;
     }
 
