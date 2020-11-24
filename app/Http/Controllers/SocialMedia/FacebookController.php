@@ -74,7 +74,7 @@ class FacebookController extends Controller
     }
 
     $permissions = ['email', 'pages_manage_posts', 'pages_read_engagement']; // Optional permissions
-    $loginUrl = $helper->getLoginUrl('https://postslate.com/api/facebook_callback', $permissions);
+    $loginUrl = $helper->getLoginUrl('https://postpaddy.com/api/facebook_callback', $permissions);
 
     return redirect($loginUrl);
   }
@@ -94,7 +94,7 @@ class FacebookController extends Controller
     ]);
     $helper = $fb->getRedirectLoginHelper();
     try {
-      $accessToken = $helper->getAccessToken("https://postslate.com/api/facebook_callback");
+      $accessToken = $helper->getAccessToken("https://postpaddy.com/api/facebook_callback");
     } catch (Facebook\Exception\ResponseException $e) {
       // When Graph returns an error
       // var_dump($helper->getError());
