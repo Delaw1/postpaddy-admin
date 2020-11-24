@@ -116,7 +116,7 @@ class FacebookController extends Controller
         // echo "Error Reason: " . $helper->getErrorReason() . "\n";
         // echo "Error Description: " . $helper->getErrorDescription() . "\n";
         // return response()->json(['status' => 'failure', 'error' => $helper->getErrorReason()]);
-        return redirect(env('APP_FRONTEND_URL') . "/dashboard/client-accounts/add-social-media-accounts?facebook=true&error=".$helper->getErrorReason());
+        return redirect(env('APP_FRONTEND_URL') . "/dashboard/client-accounts/add-social-media-accounts?facebook=false&error=".$helper->getErrorReason());
       } else {
         header('HTTP/1.0 400 Bad Request');
         return response()->json(['status' => 'failure', 'error' => 'Bad request']);
