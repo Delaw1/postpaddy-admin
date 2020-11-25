@@ -221,7 +221,8 @@ class PostManager extends Controller
 
     public function test()
     {
-        return public_path(Utils::UPLOADS_DIR);
+        $posts = Post::where('schedule_date', '!=', '')->where('schedule_date', '<=', $date->timestamp)->where('is_posted', 0)->get();
+        return response()->json($posts);
     }
 
     public function scheduler()

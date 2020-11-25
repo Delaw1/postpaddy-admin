@@ -45,14 +45,14 @@ class schedulePost extends Command
         $date = \Carbon\Carbon::now();
         $date->setTimezone("Africa/Lagos");
 
-        $posts = Post::where('schedule_date', '!=', '')->where('schedule_date', '<=', $date->timestamp)->where('is_posted', '!=', true)->get();
+        $posts = Post::where('schedule_date', '!=', '')->where('schedule_date', '<=', $date->timestamp)->where('is_posted', 0)->get();
 
         foreach ($posts as $post) {
             foreach (array_keys($post->platforms) as $platform) {
                 switch ($platform) {
                     case "linkedin":
                         (new LinkedinController())->postNow($post);
-                        print("posted to linkedin");
+                        // print("posted to linkedin");
                         break;
                     case "twitter":
                         (new TwitterController())->postNow($post);
