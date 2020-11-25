@@ -45,7 +45,7 @@ class schedulePost extends Command
         $date = \Carbon\Carbon::now();
         $date->setTimezone("Africa/Lagos");
 
-        $posts = Post::where('schedule_date', '!=', '')->where('schedule_date', '<=', $date->timestamp)->where('is_posted', 0)->get();
+        $posts = Post::where('schedule_date', '!=', '')->where('schedule_date', '<=', $date->timestamp*1000)->where('is_posted', 0)->get();
 
         foreach ($posts as $post) {
             foreach (array_keys($post->platforms) as $platform) {
