@@ -224,7 +224,7 @@ class PostManager extends Controller
         $date = \Carbon\Carbon::now();
         $date->setTimezone("Africa/Lagos");
         $posts = Post::where('schedule_date', '!=', '')->where('is_posted', 0)->get();
-        return response()->json($posts);
+        return response()->json([$posts, $date->timestamp]);
     }
 
     public function scheduler()
