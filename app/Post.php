@@ -14,7 +14,8 @@ class Post extends Model
 
     protected $casts = [
         'media' => 'array',
-        'platforms' => 'array'
+        'platforms' => 'array',
+        'schedule_date' => 'integer'
     ];
 
     public function getPlatformListAttribute() {
