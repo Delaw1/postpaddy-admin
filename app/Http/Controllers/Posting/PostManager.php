@@ -93,7 +93,7 @@ class PostManager extends Controller
     {
         $user = Auth::user();
 
-        $posts = Post::where("user_id", $user->id)->where('is_posted', '=', true)->get();
+        $posts = Post::where("user_id", $user->id)->where('is_posted', true)->get();
         foreach ($posts as $post) {
             $post['company'] = $post->Company;
             // unset($post['company_id']);
