@@ -100,7 +100,7 @@ class LinkedinController extends Controller
     if (env("APP_ENV") == "development") {
       return redirect(env('APP_FRONTEND_URL_DEV') . "/dashboard/linkedin_select_account");
     }
-    return redirect(env('APP_FRONTEND_URL') . "/dashboard/client-accounts/add-social-media-accounts?linkedin=true");
+    return redirect(env('APP_FRONTEND_URL') . "/dashboard/linkedin_select_account");
   }
 
   public function selectAccount(Request $request)
