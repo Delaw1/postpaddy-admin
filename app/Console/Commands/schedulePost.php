@@ -7,6 +7,7 @@ use App\Post;
 use \App\Http\Controllers\Posting\PostManager;
 use \App\Http\Controllers\SocialMedia\LinkedinController;
 use \App\Http\Controllers\SocialMedia\TwitterController;
+use \App\Http\Controllers\SocialMedia\FacebookController;
 
 class schedulePost extends Command
 {
@@ -51,11 +52,14 @@ class schedulePost extends Command
                 switch ($platform) {
                     case "linkedin":
                         (new LinkedinController())->postNow($post);
-                        // print("posted to linkedin");
+                        print("posted to linkedin");
                         break;
                     case "twitter":
                         (new TwitterController())->postNow($post);
                         // print("posted to twitter");
+                        break;
+                    case "facebook":
+                        (new FacebookController())->postNow($post);
                         break;
                 }
             }

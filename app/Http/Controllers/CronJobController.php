@@ -48,7 +48,7 @@ class CronJobController extends Controller
                         [
                             'From' => [
                                 'Email' => "info@digifigs.com",
-                                'Name' => "Postlate"
+                                'Name' => "PostPaddy"
                             ],
                             'To' => [
                                 [
@@ -86,7 +86,7 @@ class CronJobController extends Controller
                             [
                                 'From' => [
                                     'Email' => "info@digifigs.com",
-                                    'Name' => "Postlate"
+                                    'Name' => "PostPaddy"
                                 ],
                                 'To' => [
                                     [
@@ -121,7 +121,7 @@ class CronJobController extends Controller
                             [
                                 'From' => [
                                     'Email' => "info@digifigs.com",
-                                    'Name' => "Postlate"
+                                    'Name' => "PostPaddy"
                                 ],
                                 'To' => [
                                     [

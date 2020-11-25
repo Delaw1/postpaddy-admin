@@ -19,6 +19,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\schedulePost::class,
+        Commands\reminder::class,
     ];
 
     /**
