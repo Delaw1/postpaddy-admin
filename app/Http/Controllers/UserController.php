@@ -121,7 +121,7 @@ class UserController extends Controller
                 [
                     'From' => [
                         'Email' => "info@digifigs.com",
-                        'Name' => "Postlate"
+                        'Name' => "PostPaddy"
                     ],
                     'To' => [
                         [
