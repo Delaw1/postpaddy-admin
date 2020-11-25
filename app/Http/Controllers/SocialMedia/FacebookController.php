@@ -170,7 +170,14 @@ class FacebookController extends Controller
       // exit;
     }
 
-    $pages = array(["access_token" => $access_token, "name" => $name, "id" => $id, "category" => "personal"]);
+    if(empty($fb_pages)) {
+      if (env("APP_ENV") == "development") {
+        return redirect(env('APP_FRONTEND_URL_DEV') . "/dashboard/client-accounts/add-social-media-accounts?facebook=false&error=no pages selected");
+      }
+      return redirect(env('APP_FRONTEND_URL') . "/dashboard/client-accounts/add-social-media-accounts?facebook=false&error=no pages selected");
+    }
+    // $pages = array(["access_token" => $access_token, "name" => $name, "id" => $id, "category" => "personal"]);
+    $pages = array();
     foreach ($fb_pages as $fb_page) {
       array_push($pages, ["access_token" => $fb_page["access_token"], "name" => $fb_page["name"], "id" => $fb_page["id"], "category" => "pages"]);
     }
