@@ -43,7 +43,7 @@ class EmailController extends Controller
                 [
                     'From' => [
                         'Email' => "info@digifigs.com",
-                        'Name' => "Postlate"
+                        'Name' => "PostPaddy"
                     ],
                     'To' => [
                         [
@@ -74,7 +74,7 @@ class EmailController extends Controller
                 [
                     'From' => [
                         'Email' => "info@digifigs.com",
-                        'Name' => "Postlate"
+                        'Name' => "PostPaddy"
                     ],
                     'To' => [
                         [
@@ -108,15 +108,15 @@ class EmailController extends Controller
                 [
                     'From' => [
                         'Email' => "info@digifigs.com",
-                        'Name' => "Postlate"
+                        'Name' => "PostPaddy"
                     ],
                     'To' => [
                         [
                             'Email' => $email,
                         ]
                     ],
-                    'Subject' => "Postlate Password Reset",
-                    'TextPart' => "Postlate Password Reset",
+                    'Subject' => "PostPaddy Password Reset",
+                    'TextPart' => "PostPaddy Password Reset",
                     'HTMLPart' => $html,
                     'CustomID' => "AppGettingStartedTest"
                 ]
