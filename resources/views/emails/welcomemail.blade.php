@@ -28,11 +28,11 @@
                     <p>You have one more step left to activate your
                         PostPaddy account.                        
                     </p>
-                    <p>Please confirm that <span style="font-size: 110%; font-weight: 500;">{{EMAIL}}</span> is your email address by clicking on the button below.</p>
+                    <p>Please confirm that <span style="font-size: 110%; font-weight: 500;">user@email.com</span> is your email address by clicking on the button below.</p>
                     <br>
                     <div style="width: 100%;">
                         <a href="{{VERIFY_LINK}}" style="display: block; width: 100%; margin: auto;">
-                            <button style="width: 100%; padding: 0.7rem 0; font-size: 100%; background-color: #01a3fa; color: #ffffff; border: none; border-radius: 0.3rem; margin-bottom: 1rem; cursor: pointer;">Reset Password</button>
+                            <button style="width: 100%; padding: 0.7rem 0; font-size: 100%; background-color: #01a3fa; color: #ffffff; border: none; border-radius: 0.3rem; margin-bottom: 1rem; cursor: pointer;">Verify Email</button>
                         </a>
                     </div>
                     <p>You can safely ignore this message if you didn’t initiate this process.</p>
