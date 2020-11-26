@@ -24,7 +24,7 @@
 
                 <div style="width: 80%; margin: auto;">
                     <p>Hi <span style="font-weight: 500;">{{NAME}}</span>,</p>
-                    <p style="font-weight: 500; font-size: 110%;">Here’s a timely reminder that your free trial <br />
+                    <p style="font-weight: 500; font-size: 110%;">Here’s a timely reminder that your {{PLAN}} plan <br />
                         to PostPaddy ends in 3 days!                        
                     </p>
                     <p>

@@ -43,10 +43,13 @@ class ForgotPasswordController extends Controller
             return response()->json($data);
         }
 
+        $user = User::where('email', $input["email"])->first();
+
         $emailController = new EmailController();
 
         $emailController->sendPasswordResetEmail([
-            'email' => $input["email"]
+            'email' => $input["email"],
+            'name' => $user->last_name.' '.$user->first_name
         ]);
 
         return response()->json(['success'  => 'Password reset email sent']);

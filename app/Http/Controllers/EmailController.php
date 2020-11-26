@@ -61,7 +61,7 @@ class EmailController extends Controller
                 ]
             ]
         ];
-        $response = $this->mj->post(Resources::$Email, ['body' => $body]);
+        $this->mj->post(Resources::$Email, ['body' => $body]);
     }
 
     public function sendVerificationEmail(array $data)
@@ -102,8 +102,8 @@ class EmailController extends Controller
 
         $html = file_get_contents(resource_path('views/emails/passwordreset.blade.php'));
         $html = str_replace(
-            ['{{TOKEN}}'],
-            [$token],
+            ['{{TOKEN}}', '{{NAME}}'],
+            [$token, $data["name"]],
             $html
         );
         $body = [
@@ -125,13 +125,13 @@ class EmailController extends Controller
                 ]
             ]
         ];
-        $response = $this->mj->post(Resources::$Email, ['body' => $body]);
+        $this->mj->post(Resources::$Email, ['body' => $body]);
     }
 
     public function subscriptionReminder()
     {
         $users = User::all();
-        // $day7 = array();
+        
         foreach ($users as $user) {
             // if ($user->daysLeft == 7 || $user->daysLeft == 3 || $user->daysLeft == 1) {
             //     // array_push($day7, $user);
@@ -197,8 +197,8 @@ class EmailController extends Controller
                 } else {
                     $html = file_get_contents(resource_path('views/emails/plan_expiry_7days.blade.php'));
                     $html = str_replace(
-                        ['{{NAME}}'],
-                        [$user->last_name." ".$user->first_name],
+                        ['{{NAME}}', '{{PLAN}}'],
+                        [$user->last_name." ".$user->first_name, $user->plan->name],
                         $html
                     );
                 }
@@ -243,8 +243,8 @@ class EmailController extends Controller
                 } else {
                     $html = file_get_contents(resource_path('views/emails/plan_expiry_3days.blade.php'));
                     $html = str_replace(
-                        ['{{NAME}}'],
-                        [$user->last_name." ".$user->first_name],
+                        ['{{NAME}}', '{{PLAN}}'],
+                        [$user->last_name." ".$user->first_name, $user->plan->name],
                         $html
                     );
                 }
@@ -289,8 +289,8 @@ class EmailController extends Controller
                 } else {
                     $html = file_get_contents(resource_path('views/emails/plan_expiry_1day.blade.php'));
                     $html = str_replace(
-                        ['{{NAME}}'],
-                        [$user->last_name." ".$user->first_name],
+                        ['{{NAME}}', '{{PLAN}}'],
+                        [$user->last_name." ".$user->first_name, $user->plan->name],
                         $html
                     );
                 }
@@ -318,9 +318,6 @@ class EmailController extends Controller
                 $this->mj->post(Resources::$Email, ['body' => $body]);
             }
 
-
-
-            // return response()->json($day7);
             if ($user->daysLeft <= 0 && $user->expired == 0) {
                 if ($user->plan_id == 1) {
                     Notification::create([
@@ -331,11 +328,11 @@ class EmailController extends Controller
 
                     $html = file_get_contents(resource_path('views/emails/expired_free.blade.php'));
                     $html = str_replace(
-                        ['{{NAME}}', '{{PLAN}}', '{{DAYS}}'],
-                        [$user->last_name." ".$user->first_name, $user->plan->name, $user->daysLeft],
+                        ['{{NAME}}'],
+                        [$user->last_name." ".$user->first_name],
                         $html
                     );
-                    // return $html;
+                    
                     $body = [
                         'Messages' => [
                             [
@@ -356,7 +353,7 @@ class EmailController extends Controller
                             ]
                         ]
                     ];
-                    $response = $this->mj->post(Resources::$Email, ['body' => $body]);
+                    $this->mj->post(Resources::$Email, ['body' => $body]);
                 } else {
                     Notification::create([
                         'user_id' => $user->id,
@@ -366,11 +363,11 @@ class EmailController extends Controller
 
                     $html = file_get_contents(resource_path('views/emails/expired.blade.php'));
                     $html = str_replace(
-                        ['{{NAME}}', '{{PLAN}}', '{{DAYS}}'],
-                        [$user->last_name." ".$user->first_name, $user->plan->name, $user->daysLeft],
+                        ['{{NAME}}', '{{PLAN}}'],
+                        [$user->last_name." ".$user->first_name, $user->plan->name],
                         $html
                     );
-                    return $html;
+
                     $body = [
                         'Messages' => [
                             [
@@ -391,12 +388,12 @@ class EmailController extends Controller
                             ]
                         ]
                     ];
-                    $response = $this->mj->post(Resources::$Email, ['body' => $body]);
+                    $this->mj->post(Resources::$Email, ['body' => $body]);
                 }
                 $user->expired = true;
                 $user->save();
             }
         }
-        return response()->json('success');
+        
     }
 }

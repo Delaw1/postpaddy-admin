@@ -24,12 +24,12 @@
 
                 <div style="width: 80%; margin: auto;">
                     <p>Hi <span style="font-weight: 500;">{{NAME}}</span>,</p>
-                    <p>How are you enjoying your freemium subscription so far? <br />
+                    <p>How are you enjoying your {{PLAN}} plan subscription so far? <br />
                         We trust it’s been amazing.
                     </p>
                     <p>We’d hate to cut short an amazing experience, it’s why 
                         we came with a friendly reminder that
-                        <span style="font-weight: 500; font-size: 110%;">your free trial will be ending in 7 days.</span>
+                        <span style="font-weight: 500; font-size: 110%;">your {{PLAN}} plan will be ending in 7 days.</span>
                     </p>
                     <p>To ensure continued subscription to PostPaddy premium
                         features, now is a great time to upgrade to one of our

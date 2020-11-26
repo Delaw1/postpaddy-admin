@@ -106,39 +106,6 @@ class UserController extends Controller
         return response()->json(['status' => 'failure', 'message' => 'No active subscription']);
     }
 
-    public function sendSubscriptionEmail(array $data)
-    {
-        $mj = new \Mailjet\Client(env('MAILJET_APIKEY'), env('MAILJET_APISECRET'), true, ['version' => 'v3.1']);
-
-        $html = file_get_contents(resource_path('views/emails/subscription.blade.php'));
-        $html = str_replace(
-            ['{{NAME}}', '{{PLAN}}'],
-            [$data['name'], $data['plan_name']],
-            $html
-        );
-        $body = [
-            'Messages' => [
-                [
-                    'From' => [
-                        'Email' => "info@digifigs.com",
-                        'Name' => "PostPaddy"
-                    ],
-                    'To' => [
-                        [
-                            'Email' => $data['email'],
-                            'Name' => $data['name']
-                        ]
-                    ],
-                    'Subject' => "Subscription successfully",
-                    'TextPart' => "Subscription successfully",
-                    'HTMLPart' => $html,
-                    'CustomID' => "AppGettingStartedTest"
-                ]
-            ]
-        ];
-        $response = $mj->post(Resources::$Email, ['body' => $body]);
-    }
-
     public function getLatestNotifications()
     {
         $notification = Notification::where('user_id', Auth::User()->id)->where('read', 0)->first();
@@ -273,5 +240,9 @@ class UserController extends Controller
             return response()->json(['status' => 'failure', 'error' => 'Minimum number of allowed post exceeded, Upgrade you account']);
         }
         return response()->json($post);
+    }
+
+    public function test2() {
+        return response()->json(User::all());
     }
 }
