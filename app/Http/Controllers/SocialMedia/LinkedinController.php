@@ -215,7 +215,6 @@ class LinkedinController extends Controller
               $id = $this->uploadMedia($personID, 'person', $linkedinAccount->linkedin_access_token, $m);
               array_push($uploadedContents, $id);
             }
-           
           }
         }
 
@@ -444,38 +443,33 @@ class LinkedinController extends Controller
     ]);
 
     if ($validation->fails()) {
-      $data = json_decode($validation->errors(), true);
-
       $data = ['status' => 'failure', 'error' => $validation->errors()->first()];
 
       return response()->json($data);
     }
 
-    $sub = (new UserController())->checkSubcription();
+    $userController = new UserController();
+    
+    $sub = $userController->checkSubcription();
     // Check active subscription
     if (!$sub) {
       return response()->json(['status' => 'failure', 'error' => 'Subcription expired, upgrade your plan']);
     }
 
-    if ($sub->remove_social <= 0) {
-      return response()->json(['status' => 'failure', 'error' => "You've exceeded your limit, Upgrade you account"]);
-    }
-
-    // $gs = Gs::first();
-    // $company = Company::where('id', $company_id)->first();
-    // // return $company->removed['linkedin'];
-    // if ($company->removed >= $gs->remove_social_media) {
-    //   return response()->json(['status' => 'failure', "error" => "You cant remove a social account more than " . $gs->remove_social_media . " times on this plan"]);
+    // if ($sub->remove_social <= 0) {
+    //   return response()->json(['status' => 'failure', 'error' => "You've exceeded your limit, Upgrade you account"]);
     // }
 
-    // $company = Company::where('id', $company_id)->update([
-    //   "removed" => $company->removed + 1
-    // ]);
+    $remove = $userController->checkRemoveSocial($company_id, $sub);
+
+    if ($remove->getData()->status === 'failure') {
+      return $remove;
+    }
 
     LinkedinAccount::where('company_id', $company_id)->delete();
 
-    $sub->remove_social -= 1;
-    $sub->save();
+    // $sub->remove_social -= 1;
+    // $sub->save();
 
     return response()->json(['status' => 'success', 'msg' => 'Linkedin account successfully deleted']);
   }

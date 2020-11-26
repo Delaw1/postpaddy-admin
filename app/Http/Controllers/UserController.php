@@ -89,6 +89,19 @@ class UserController extends Controller
         return false;
     }
 
+    public function checkRemoveSocial($company_id, $sub)
+    {
+        $company = Company::where('id', $company_id)->first();
+        // // return $company->removed['linkedin'];
+        if ($company->remove_social >= $sub->remove_social) {
+            return response()->json(['status' => 'failure', "error" => "You cant remove a social account more than " . $sub->remove_social . " times on this plan"]);
+        }
+
+        $company["remove_social"] += 1;
+        $company->save();
+        return response()->json(['status' => 'success']);
+    }
+
     public function prevSubcription()
     {
         $sub = Subscription::where('user_id', Auth::user()->id)->get();
@@ -154,7 +167,6 @@ class UserController extends Controller
     {
         if ($sub->enterprise_id !== null) {
             if ($sub->enterprise->name === "PPD") {
-
             }
             if ($sub->enterprise->name === "PPC") {
                 $company = Company::find($client['company_id']);
@@ -162,7 +174,6 @@ class UserController extends Controller
                 $company->save();
             }
             if ($sub->enterprise->name === "TNC") {
-                
             }
         } else {
             $sub->posts -= 1;
@@ -242,7 +253,8 @@ class UserController extends Controller
         return response()->json($post);
     }
 
-    public function test2() {
+    public function test2()
+    {
         return response()->json(User::all());
     }
 }

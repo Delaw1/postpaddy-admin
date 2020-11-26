@@ -145,27 +145,25 @@ class TwitterController extends Controller
         ]);
 
         if ($validation->fails()) {
-            $data = json_decode($validation->errors(), true);
-
             $data = ['status' => 'failure', 'error' => $validation->errors()->first()];
 
             return response()->json($data);
         }
 
-        $sub = (new UserController())->checkSubcription();
+        $userController = new UserController();
+        $sub = $userController->checkSubcription();
         // Check active subscription
         if (!$sub) {
-            return response()->json(['status' => 'failure', 'error' => 'Subcription expired, upgrade your plan']);
+          return response()->json(['status' => 'failure', 'error' => 'Subcription expired, upgrade your plan']);
         }
-
-        if ($sub->remove_social <= 0) {
-            return response()->json(['status' => 'failure', 'error' => "You've exceeded your limit, Upgrade you account"]);
+    
+        $remove = $userController->checkRemoveSocial($company_id, $sub);
+        
+        if($remove->getData()->status === 'failure') {
+            return $remove;
         }
 
         TwitterAccount::where('company_id', $company_id)->delete();
-
-        $sub->remove_social -= 1;
-        $sub->save();
 
         return response()->json(['status' => 'success', 'msg' => 'Twitter account successfully deleted']);
     }

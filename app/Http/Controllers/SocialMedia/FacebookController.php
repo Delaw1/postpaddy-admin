@@ -32,7 +32,7 @@ class FacebookController extends Controller
     //   'cookie' => true
     // ]);
   }
-  
+
   public function addAccount(Request $request)
   {
     $input = $request->all();
@@ -54,7 +54,7 @@ class FacebookController extends Controller
     Session::put('social_company_id', $company_id);
 
 
-  
+
     session_start();
     $clientID = env('FACEBOOK_CLIENT_ID');
     $clientSecret = env('FACEBOOK_CLIENT_SECRET');
@@ -74,7 +74,7 @@ class FacebookController extends Controller
     }
 
     $permissions = ['email', 'pages_manage_posts', 'pages_read_engagement']; // Optional permissions
-    $loginUrl = $helper->getLoginUrl(env("APP_CALLBACK_BASE_URL").'/facebook_callback', $permissions);
+    $loginUrl = $helper->getLoginUrl(env("APP_CALLBACK_BASE_URL") . '/facebook_callback', $permissions);
 
     return redirect($loginUrl);
   }
@@ -94,7 +94,7 @@ class FacebookController extends Controller
     ]);
     $helper = $fb->getRedirectLoginHelper();
     try {
-      $accessToken = $helper->getAccessToken(env("APP_CALLBACK_BASE_URL")."/facebook_callback");
+      $accessToken = $helper->getAccessToken(env("APP_CALLBACK_BASE_URL") . "/facebook_callback");
     } catch (Facebook\Exception\ResponseException $e) {
       // When Graph returns an error
       // var_dump($helper->getError());
@@ -118,7 +118,7 @@ class FacebookController extends Controller
         // echo "Error Reason: " . $helper->getErrorReason() . "\n";
         // echo "Error Description: " . $helper->getErrorDescription() . "\n";
         // return response()->json(['status' => 'failure', 'error' => $helper->getErrorReason()]);
-        return redirect(env('APP_FRONTEND_URL') . "/dashboard/client-accounts/add-social-media-accounts?facebook=false&error=".$helper->getErrorReason());
+        return redirect(env('APP_FRONTEND_URL') . "/dashboard/client-accounts/add-social-media-accounts?facebook=false&error=" . $helper->getErrorReason());
       } else {
         header('HTTP/1.0 400 Bad Request');
         return redirect(env('APP_FRONTEND_URL') . "/dashboard/client-accounts/add-social-media-accounts?facebook=false&error=Network Error");
@@ -170,7 +170,7 @@ class FacebookController extends Controller
       // exit;
     }
 
-    if(empty($fb_pages)) {
+    if (empty($fb_pages)) {
       if (env("APP_ENV") == "development") {
         return redirect(env('APP_FRONTEND_URL_DEV') . "/dashboard/client-accounts/add-social-media-accounts?facebook=false&error=no pages selected");
       }
@@ -251,9 +251,8 @@ class FacebookController extends Controller
             try {
               $source = public_path(Utils::UPLOADS_DIR . "/$m");
               $data = ['source' => $fb->fileToUpload($source), 'published' => false];
-              
+
               $response = $fb->post('/' . $account['id'] . '/photos', $data, $account['access_token']);
-              
             } catch (Facebook\Exceptions\FacebookResponseException $e) {
               return 'Graph returned an error: ' . $e->getMessage();
               exit;
@@ -296,27 +295,26 @@ class FacebookController extends Controller
     ]);
 
     if ($validation->fails()) {
-      $data = json_decode($validation->errors(), true);
-
       $data = ['status' => 'failure', 'error' => $validation->errors()->first()];
 
       return response()->json($data);
     }
 
-    $sub = (new UserController())->checkSubcription();
+    $userController = new UserController();
+
+    $sub = $userController->checkSubcription();
     // Check active subscription
     if (!$sub) {
       return response()->json(['status' => 'failure', 'error' => 'Subcription expired, upgrade your plan']);
     }
 
-    if ($sub->remove_social <= 0) {
-      return response()->json(['status' => 'failure', 'error' => "You've exceeded your limit, Upgrade you account"]);
+    $remove = $userController->checkRemoveSocial($company_id, $sub);
+
+    if ($remove->getData()->status === 'failure') {
+      return $remove;
     }
 
     FacebookAccount::where('company_id', $company_id)->delete();
-
-    $sub->remove_social -= 1;
-    $sub->save();
 
     return response()->json(['status' => 'success', 'msg', 'Facebok account successfully deleted']);
   }

@@ -160,7 +160,7 @@ class CompanyManager extends Controller
         $input['id'] = $request->company_id;
 
         $validation = Validator::make($input, [
-            'id' => ['required', 'exists:companies']
+            'id' => ['required', 'exists:companies,id']
         ]);
 
         if ($validation->fails()) {
