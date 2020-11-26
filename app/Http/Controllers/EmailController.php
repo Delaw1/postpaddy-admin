@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Mail\MyMail;
 use Illuminate\Support\Facades\Mail;
 use \Mailjet\Resources;
+use App\User;
+use App\Notification;
+use Carbon\Carbon;
 
 class EmailController extends Controller
 {
@@ -42,7 +45,7 @@ class EmailController extends Controller
             'Messages' => [
                 [
                     'From' => [
-                        'Email' => "info@digifigs.com",
+                        'Email' => env("MAILJET_FROM"),
                         'Name' => "PostPaddy"
                     ],
                     'To' => [
@@ -51,8 +54,8 @@ class EmailController extends Controller
                             'Name' => $data['name']
                         ]
                     ],
-                    'Subject' => "Subscription successfully",
-                    'TextPart' => "Subscription successfully",
+                    'Subject' => "Subscription successful",
+                    'TextPart' => "Subscription successful",
                     'HTMLPart' => $html,
                     'CustomID' => "AppGettingStartedTest"
                 ]
@@ -65,15 +68,15 @@ class EmailController extends Controller
     {
         $html = file_get_contents(resource_path('views/emails/welcomemail.blade.php'));
         $html = str_replace(
-            ['{{NAME}}', '{{VERIFY_LINK}}'],
-            [$data['name'], "https://postpaddy.com/api/VerifyEmail/" . base64_encode($data['email'])],
+            ['{{NAME}}', '{{VERIFY_LINK}}', '{{EMAIL}}'],
+            [$data['name'], "https://postpaddy.com/api/VerifyEmail/" . base64_encode($data['email']), $data['email']],
             $html
         );
         $body = [
             'Messages' => [
                 [
                     'From' => [
-                        'Email' => "info@digifigs.com",
+                        'Email' => env("MAILJET_FROM"),
                         'Name' => "PostPaddy"
                     ],
                     'To' => [
@@ -107,7 +110,7 @@ class EmailController extends Controller
             'Messages' => [
                 [
                     'From' => [
-                        'Email' => "info@digifigs.com",
+                        'Email' => env("MAILJET_FROM"),
                         'Name' => "PostPaddy"
                     ],
                     'To' => [
@@ -123,5 +126,277 @@ class EmailController extends Controller
             ]
         ];
         $response = $this->mj->post(Resources::$Email, ['body' => $body]);
+    }
+
+    public function subscriptionReminder()
+    {
+        $users = User::all();
+        // $day7 = array();
+        foreach ($users as $user) {
+            // if ($user->daysLeft == 7 || $user->daysLeft == 3 || $user->daysLeft == 1) {
+            //     // array_push($day7, $user);
+            //     Notification::create([
+            //         'user_id' => $user->id,
+            //         'message' => "Your subscription to the " . $user->plan->name . " will expire soon, which means your access to the " . $user->plan->name . " features would be cancelled soon. Only " . $user->daysLeft . " days left."
+
+            //     ]);
+
+            //     if ($user->plan_id == 1) {
+            //         $html = file_get_contents(resource_path('views/emails/reminder_free.blade.php'));
+            //         $html = str_replace(
+            //             ['{{NAME}}', '{{PLAN}}', '{{DAYS}}', '{{PRICE}}', '{{DATE}}'],
+            //             [$user->last_name." ".$user->first_name, $user->plan->name, $user->daysLeft, $user->plan->price, Carbon::parse($user->ended_at)->format('d M')],
+            //             $html
+            //         );
+            //     } else {
+            //         $html = file_get_contents(resource_path('views/emails/reminder.blade.php'));
+            //         $html = str_replace(
+            //             ['{{NAME}}', '{{PLAN}}', '{{DAYS}}', '{{PRICE}}', '{{DATE}}'],
+            //             [$user->last_name." ".$user->first_name, $user->plan->name, $user->daysLeft, $user->plan->price, Carbon::parse($user->ended_at)->format('d M')],
+            //             $html
+            //         );
+            //     }
+
+            //     $body = [
+            //         'Messages' => [
+            //             [
+            //                 'From' => [
+            //                     'Email' => env("MAILJET_FROM"),
+            //                     'Name' => "PostPaddy"
+            //                 ],
+            //                 'To' => [
+            //                     [
+            //                         'Email' => $user->email,
+            //                         'Name' => $user->last_name." ".$user->first_name
+            //                     ]
+            //                 ],
+            //                 'Subject' => "Subscription Reminder",
+            //                 'TextPart' => "Subscription Reminder",
+            //                 'HTMLPart' => $html,
+            //                 'CustomID' => "AppGettingStartedTest"
+            //             ]
+            //         ]
+            //     ];
+            //     $this->mj->post(Resources::$Email, ['body' => $body]);
+            // }
+
+            if($user->daysLeft == 7) {
+                Notification::create([
+                    'user_id' => $user->id,
+                    'message' => "Your subscription to the " . $user->plan->name . " will expire soon, which means your access to the " . $user->plan->name . " features would be cancelled soon. Only " . $user->daysLeft . " days left."
+
+                ]);
+
+                if ($user->plan_id == 1) {
+                    $html = file_get_contents(resource_path('views/emails/plan_expiry_7days_free.blade.php'));
+                    $html = str_replace(
+                        ['{{NAME}}'],
+                        [$user->last_name." ".$user->first_name],
+                        $html
+                    );
+                } else {
+                    $html = file_get_contents(resource_path('views/emails/plan_expiry_7days.blade.php'));
+                    $html = str_replace(
+                        ['{{NAME}}'],
+                        [$user->last_name." ".$user->first_name],
+                        $html
+                    );
+                }
+
+                $body = [
+                    'Messages' => [
+                        [
+                            'From' => [
+                                'Email' => env("MAILJET_FROM"),
+                                'Name' => "PostPaddy"
+                            ],
+                            'To' => [
+                                [
+                                    'Email' => $user->email,
+                                    'Name' => $user->last_name." ".$user->first_name
+                                ]
+                            ],
+                            'Subject' => "Subscription Reminder",
+                            'TextPart' => "Subscription Reminder",
+                            'HTMLPart' => $html,
+                            'CustomID' => "AppGettingStartedTest"
+                        ]
+                    ]
+                ];
+                $this->mj->post(Resources::$Email, ['body' => $body]);
+            }
+
+            if($user->daysLeft == 3) {
+                Notification::create([
+                    'user_id' => $user->id,
+                    'message' => "Your subscription to the " . $user->plan->name . " will expire soon, which means your access to the " . $user->plan->name . " features would be cancelled soon. Only " . $user->daysLeft . " days left."
+
+                ]);
+
+                if ($user->plan_id == 1) {
+                    $html = file_get_contents(resource_path('views/emails/plan_expiry_3days_free.blade.php'));
+                    $html = str_replace(
+                        ['{{NAME}}'],
+                        [$user->last_name." ".$user->first_name],
+                        $html
+                    );
+                } else {
+                    $html = file_get_contents(resource_path('views/emails/plan_expiry_3days.blade.php'));
+                    $html = str_replace(
+                        ['{{NAME}}'],
+                        [$user->last_name." ".$user->first_name],
+                        $html
+                    );
+                }
+
+                $body = [
+                    'Messages' => [
+                        [
+                            'From' => [
+                                'Email' => env("MAILJET_FROM"),
+                                'Name' => "PostPaddy"
+                            ],
+                            'To' => [
+                                [
+                                    'Email' => $user->email,
+                                    'Name' => $user->last_name." ".$user->first_name
+                                ]
+                            ],
+                            'Subject' => "Subscription Reminder",
+                            'TextPart' => "Subscription Reminder",
+                            'HTMLPart' => $html,
+                            'CustomID' => "AppGettingStartedTest"
+                        ]
+                    ]
+                ];
+                $this->mj->post(Resources::$Email, ['body' => $body]);
+            }
+
+            if($user->daysLeft == 1) {
+                Notification::create([
+                    'user_id' => $user->id,
+                    'message' => "Your subscription to the " . $user->plan->name . " will expire soon, which means your access to the " . $user->plan->name . " features would be cancelled soon. Only " . $user->daysLeft . " days left."
+
+                ]);
+
+                if ($user->plan_id == 1) {
+                    $html = file_get_contents(resource_path('views/emails/plan_expiry_1day_free.blade.php'));
+                    $html = str_replace(
+                        ['{{NAME}}'],
+                        [$user->last_name." ".$user->first_name],
+                        $html
+                    );
+                } else {
+                    $html = file_get_contents(resource_path('views/emails/plan_expiry_1day.blade.php'));
+                    $html = str_replace(
+                        ['{{NAME}}'],
+                        [$user->last_name." ".$user->first_name],
+                        $html
+                    );
+                }
+
+                $body = [
+                    'Messages' => [
+                        [
+                            'From' => [
+                                'Email' => env("MAILJET_FROM"),
+                                'Name' => "PostPaddy"
+                            ],
+                            'To' => [
+                                [
+                                    'Email' => $user->email,
+                                    'Name' => $user->last_name." ".$user->first_name
+                                ]
+                            ],
+                            'Subject' => "Subscription Reminder",
+                            'TextPart' => "Subscription Reminder",
+                            'HTMLPart' => $html,
+                            'CustomID' => "AppGettingStartedTest"
+                        ]
+                    ]
+                ];
+                $this->mj->post(Resources::$Email, ['body' => $body]);
+            }
+
+
+
+            // return response()->json($day7);
+            if ($user->daysLeft <= 0 && $user->expired == 0) {
+                if ($user->plan_id == 1) {
+                    Notification::create([
+                        'user_id' => $user->id,
+                        'message' => "Your subscription to the " . $user->plan->name . " has expired, which means your access to the " . $user->plan->name . " features has been cancelled."
+
+                    ]);
+
+                    $html = file_get_contents(resource_path('views/emails/expired_free.blade.php'));
+                    $html = str_replace(
+                        ['{{NAME}}', '{{PLAN}}', '{{DAYS}}'],
+                        [$user->last_name." ".$user->first_name, $user->plan->name, $user->daysLeft],
+                        $html
+                    );
+                    // return $html;
+                    $body = [
+                        'Messages' => [
+                            [
+                                'From' => [
+                                    'Email' => env("MAILJET_FROM"),
+                                    'Name' => "PostPaddy"
+                                ],
+                                'To' => [
+                                    [
+                                        'Email' => $user->email,
+                                        'Name' => $user->last_name." ".$user->first_name
+                                    ]
+                                ],
+                                'Subject' => "Subscription Expired",
+                                'TextPart' => "Subscription Expired",
+                                'HTMLPart' => $html,
+                                'CustomID' => "AppGettingStartedTest"
+                            ]
+                        ]
+                    ];
+                    $response = $this->mj->post(Resources::$Email, ['body' => $body]);
+                } else {
+                    Notification::create([
+                        'user_id' => $user->id,
+                        'message' => "Your subscription to the " . $user->plan->name . " has expired, which means your access to the " . $user->plan->name . " features has been cancelled."
+
+                    ]);
+
+                    $html = file_get_contents(resource_path('views/emails/expired.blade.php'));
+                    $html = str_replace(
+                        ['{{NAME}}', '{{PLAN}}', '{{DAYS}}'],
+                        [$user->last_name." ".$user->first_name, $user->plan->name, $user->daysLeft],
+                        $html
+                    );
+                    return $html;
+                    $body = [
+                        'Messages' => [
+                            [
+                                'From' => [
+                                    'Email' => env("MAILJET_FROM"),
+                                    'Name' => "PostPaddy"
+                                ],
+                                'To' => [
+                                    [
+                                        'Email' => $user->email,
+                                        'Name' => $user->last_name." ".$user->first_name
+                                    ]
+                                ],
+                                'Subject' => "Subscription Reminder",
+                                'TextPart' => "Subscription Reminder",
+                                'HTMLPart' => $html,
+                                'CustomID' => "AppGettingStartedTest"
+                            ]
+                        ]
+                    ];
+                    $response = $this->mj->post(Resources::$Email, ['body' => $body]);
+                }
+                $user->expired = true;
+                $user->save();
+            }
+        }
+        return response()->json('success');
     }
 }

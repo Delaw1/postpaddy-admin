@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Http\Controllers\CronJobController;
+use App\Http\Controllers\EmailController;
 
 class reminder extends Command
 {
@@ -38,7 +38,7 @@ class reminder extends Command
      */
     public function handle()
     {
-        (new CronJobController())->subscriptionReminder();
+        (new EmailController())->subscriptionReminder();
         $this->info("Reminder sent");
     }
 }

@@ -19,25 +19,32 @@
             <div style="width: 100%; height: 0.3rem; background-color: #042250; "></div>
             <div style="width: 100%;">
                 <div style="width: 80%; margin: 2rem auto;">
-                    <img style="width: auto; height: 2rem;" src="https://postpaddy.com/api/images/logo_postpaddy.png" alt="Postslate" />
+                    <img style="width: auto; height: 2rem;" src="https://postpaddy.com/api/images/logo_postpaddy.png" alt="PostPaddy" />
                 </div>
 
                 <div style="width: 80%; margin: auto;">
-                    <h1 style="font-weight: 600; color: #0D2B57">You’re all set!</h1>
                     <p>Hi <span style="font-weight: 500;">{{NAME}}</span>,</p>
-                    <p> Your subscription to the <span style="font-weight: 500;">{{PLAN}}</span> plan was successful.</p>
-                    <p>You now have the essentials you need for super-efficient
-                        post-scheduling like you’ve never had before!
-                        </p>
+                    <p style="font-weight: 500; font-size: 110%;">Here’s a timely reminder that your free trial <br />
+                        to PostPaddy ends in 3 days!                        
+                    </p>
+                    <p>
+                        Now’s just the right time to upgrade to one of our 
+                        value-priced plans if you want to keep enjoying full 
+                        access to PostPaddy’s premium features.                        
+                    </p>
                     <br>
                     <div style="width: 100%;">
-                        <!-- take user to sign in page -->
-                        <a href="#" style="display: block; width: 100%; margin: auto;">
-                            <button style="width: 100%; padding: 0.7rem 0; font-size: 100%; background-color: #01a3fa; color: #ffffff; border: none; border-radius: 0.3rem; margin-bottom: 1rem; cursor: pointer;">Get Started</button>
+                        <!-- take user to sign in page with query string upgrade=true -->
+                        <a href="https://postpaddy.com/sign-in?upgrade=true" style="display: block; width: 100%; margin: auto;">
+                            <button style="width: 100%; padding: 0.7rem 0; font-size: 100%; background-color: #01a3fa; color: #ffffff; border: none; border-radius: 0.3rem; margin-bottom: 1rem; cursor: pointer;">Subscribe to a Plan</button>
                         </a>
                     </div>
+                    <p>If you have extra inquiries about any of our pricing plans or
+                        using PostPaddy, hit the <span style="font-weight: 500;">“reply”</span> button and send us a 
+                        message, we’re available to help.
+                    </p>
                     <br />
-                    <p>Cheers,<br />The PostPaddy Team.</p>
+                    <p>Best Regards,<br />The PostPaddy Team.</p>
                 </div>
             </div>
             <div style="width: 80%; margin: auto; border-top: 0.05rem solid #e8e8e8; margin-top: 2rem; padding-top: 2.5rem;">
