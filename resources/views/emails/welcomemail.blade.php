@@ -28,7 +28,7 @@
                     <p>You have one more step left to activate your
                         PostPaddy account.                        
                     </p>
-                    <p>Please confirm that <span style="font-size: 110%; font-weight: 500;">user@email.com</span> is your email address by clicking on the button below.</p>
+                    <p>Please confirm that <span style="font-size: 110%; font-weight: 500;">{{EMAIL}}</span> is your email address by clicking on the button below.</p>
                     <br>
                     <div style="width: 100%;">
                         <a href="{{VERIFY_LINK}}" style="display: block; width: 100%; margin: auto;">
