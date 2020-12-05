@@ -53,9 +53,9 @@ class PostManager extends Controller
             return response()->json($data, 400);
         }
 
-        $checkPost = $userController->checkPostStatus($sub, ['company_id' => $input['company_id']]);
+        $checkPostStatus = $userController->checkPostStatus($sub, ['company_id' => $input['company_id']]);
 
-        if (!$checkPost) {
+        if (!$checkPostStatus) {
             return response()->json(['status' => 'failure', 'error' => 'Minimum number of allowed post exceeded, Upgrade you account']);
         }
 
@@ -65,7 +65,7 @@ class PostManager extends Controller
 
         $post = Post::create($input);
 
-        $checkPost = $userController->reducePost($sub, ['company_id' => $input['company_id']]);
+        $reducePost = $userController->reducePost($sub, ['company_id' => $input['company_id']]);
         // $sub->posts -= 1;
         // $sub->save();
 
