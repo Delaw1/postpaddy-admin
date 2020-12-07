@@ -56,7 +56,7 @@ class PostManager extends Controller
         $checkPostStatus = $userController->checkPostStatus($sub, ['company_id' => $input['company_id']]);
 
         if (!$checkPostStatus) {
-            return response()->json(['status' => 'failure', 'error' => 'Minimum number of allowed post exceeded, Upgrade you account']);
+            return response()->json(['status' => 'failure', 'error' => 'Sorry, you have reached your plan limit']);
         }
 
         if (empty($input["media"])) {

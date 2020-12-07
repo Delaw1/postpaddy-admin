@@ -40,7 +40,7 @@ class CompanyManager extends Controller
         // }
 
         if($sub->clients <= 0) {
-            return response()->json(['status' => 'failure', 'error' => 'Minimum number of client exceeded, Upgrade you account']);
+            return response()->json(['status' => 'failure', 'error' => 'Sorry, you have reached your plan limit']);
         }
         // Check subscription limit
         // $baseClient = Plan::find(Auth::User()->plan_id)->clients;
