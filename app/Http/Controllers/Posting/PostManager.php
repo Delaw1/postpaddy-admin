@@ -119,7 +119,7 @@ class PostManager extends Controller
     public function uploadMedia(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'media.*' => 'required|mimes:3gp,mp4,avi,mov,jpeg,png,jpg,gif,svg|max:20480',
+            'media.*' => 'required|mimes:3gp,mp4,avi,mov,jpeg,png,jpg,gif,svg|max:204800',
         ]);
 
         //return errors if any

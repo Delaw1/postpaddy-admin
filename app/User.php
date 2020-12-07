@@ -87,4 +87,8 @@ class User extends Authenticatable
     {
         return $this->hasMany('\App\OauthAccessToken');
     }   
+
+    public function Plan() {
+        return $this->belongsTo('App\Plan');
+    }
 }

@@ -9,7 +9,7 @@ use \App\FacebookAccount;
 
 class Company extends Model
 {
-    protected $appends = ['platformList'];
+    protected $appends = ['platformList', 'postLeft'];
 
     protected $fillable = [
         'user_id', 'name', 'email_address', 'category', 'image'
@@ -45,6 +45,15 @@ class Company extends Model
         return $value;
     }
 
+    public function getPostLeftAttribute()
+    {
+        // return $this->user;
+        if($this->user->plan->name == 'Plus') {
+            return $this->user->plan->posts - $this->posts;
+        }
+        return null;
+    }
+
     public function getPlatformListAttribute() {
         $data = [];
 
@@ -59,5 +68,9 @@ class Company extends Model
         }
         
         return $data;
+    }
+
+    public function User() {
+        return $this->belongsTo('App\User');
     }
 }
