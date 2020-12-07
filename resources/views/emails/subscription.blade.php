@@ -19,7 +19,7 @@
             <div style="width: 100%; height: 0.3rem; background-color: #042250; "></div>
             <div style="width: 100%;">
                 <div style="width: 80%; margin: 2rem auto;">
-                    <img style="width: auto; height: 2rem;" src="https://postpaddy.com/api/images/logo_postpaddy.png" alt="Postslate" />
+                    <img style="width: auto; height: 2rem;" src="https://postpaddy.com/api/images/logo_postpaddy.png" alt="PostPaddy" />
                 </div>
 
                 <div style="width: 80%; margin: auto;">

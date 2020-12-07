@@ -19,12 +19,12 @@
             <div style="width: 100%; height: 0.3rem; background-color: #042250; "></div>
             <div style="width: 100%;">
                 <div style="width: 80%; margin: 2rem auto;">
-                    <img style="width: auto; height: 2rem;" src="https://postpaddy.com/api/images/logo_postpaddy.png" alt="Postslate" />
+                    <img style="width: auto; height: 2rem;" src="https://postpaddy.com/api/images/logo_postpaddy.png" alt="PostPaddy" />
                 </div>
 
                 <div style="width: 80%; margin: auto;">
                     <p>Hi <span style="font-weight: 500;">{{NAME}}</span>,</p>
-                    <p style="font-weight: 500; font-size: 110%;">Your {{PLAN}} plan to PostSlate ends tomorrow!</p>
+                    <p style="font-weight: 500; font-size: 110%;">Your {{PLAN}} plan to PostPaddy ends tomorrow!</p>
                     <p>
                         Now’s just the right time to upgrade to one of our 
                         value-priced plans if you want to keep enjoying full 

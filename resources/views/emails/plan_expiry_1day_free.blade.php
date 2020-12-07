@@ -24,7 +24,7 @@
 
                 <div style="width: 80%; margin: auto;">
                     <p>Hi <span style="font-weight: 500;">{{NAME}}</span>,</p>
-                    <p style="font-weight: 500; font-size: 110%;">Your free trial to PostSlate ends tomorrow!</p>
+                    <p style="font-weight: 500; font-size: 110%;">Your free trial to PostPaddy ends tomorrow!</p>
                     <p>
                         Now’s just the right time to upgrade to one of our 
                         value-priced plans if you want to keep enjoying full 
