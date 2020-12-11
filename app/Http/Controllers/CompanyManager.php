@@ -55,7 +55,7 @@ class CompanyManager extends Controller
 
         $validation = Validator::make($input, [
             'name' => ['required', 'string'],
-            'email_address' => ['string', 'email', 'unique:companies'],
+            'email_address' => ['string', 'email'],
             'profile_img' => 'image|mimes:jpeg,png,jpg,gif,sng|max:2048',
             'category' => 'required|string'
         ]);
