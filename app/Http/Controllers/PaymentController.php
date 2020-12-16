@@ -316,16 +316,16 @@ class PaymentController extends Controller
                 $data = ['msg' => 'User account successfully upgraded'];
 
                 if (env("APP_ENV") == "development") {
-                    return redirect(env('APP_FRONTEND_URL_DEV') . "/payment?success=true");
+                    return redirect(env('APP_FRONTEND_URL_DEV') . "/dashboard/payment?success=true");
                   }
-                return redirect(env('APP_FRONTEND_URL') . "/payment?success=true");
+                return redirect(env('APP_FRONTEND_URL', 'https://postpaddy.com') . "/dashboard/payment?success=true");
             }
         }
         $data = ['error' => 'Payment failed, pls try again'];
 
         if (env("APP_ENV") == "development") {
-            return redirect(env('APP_FRONTEND_URL_DEV') . "/payment?success=false");
+            return redirect(env('APP_FRONTEND_URL_DEV') . "/dashboard/payment?success=false");
           }
-        return redirect(env('APP_FRONTEND_URL') . "/payment?success=false");
+        return redirect(env('APP_FRONTEND_URL', 'https://postpaddy.com') . "/dashboard/payment?success=false");
     }
 }
