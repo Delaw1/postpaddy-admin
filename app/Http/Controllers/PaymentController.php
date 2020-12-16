@@ -318,7 +318,7 @@ class PaymentController extends Controller
                 if (env("APP_ENV") == "development") {
                     return redirect(env('APP_FRONTEND_URL_DEV') . "/dashboard/payment?success=true");
                   }
-                return redirect(env('APP_FRONTEND_URL', 'https://postpaddy.com') . "/dashboard/payment?success=true");
+                return redirect("https://postpaddy.com/dashboard/payment?success=true");
             }
         }
         $data = ['error' => 'Payment failed, pls try again'];
@@ -326,6 +326,6 @@ class PaymentController extends Controller
         if (env("APP_ENV") == "development") {
             return redirect(env('APP_FRONTEND_URL_DEV') . "/dashboard/payment?success=false");
           }
-        return redirect(env('APP_FRONTEND_URL', 'https://postpaddy.com') . "/dashboard/payment?success=false");
+        return redirect("https://postpaddy.com/dashboard/payment?success=false");
     }
 }

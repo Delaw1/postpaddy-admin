@@ -44,20 +44,20 @@ class ResetPasswordController extends Controller
         ];
         $validate = Validator::make($request->all(), $rules);
         if ($validate->fails()) {
-            return response()->json(['error' => $validate->errors()->first()], 400);
+            return response()->json(['error' => $validate->errors()->first()]);
         }
         // return (Hash::check($request->current_password, Auth::User()->password));
         
         if (Hash::check($request->current_password, Auth::User()->password)) {
             if (strcmp($request->current_password, $request->new_password) == 0) {
-                return response()->json(['error' => 'New password cant be the same as current passowrd'], 400);
+                return response()->json(['error' => 'New password cant be the same as current passowrd']);
             }
             $user = Auth::user();
             $user->password = bcrypt($request->new_password);
             $user->save();
             return response()->json(['success' => 'Password changed successfully']);
         } else {
-            return response()->json(['error' => 'Your current password is incorrect'], 400);
+            return response()->json(['error' => 'Your current password is incorrect']);
         }
         
         
