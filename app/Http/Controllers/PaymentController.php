@@ -260,7 +260,7 @@ class PaymentController extends Controller
 
                     $data = ['msg' => 'User account successfully upgraded'];
 
-                    return redirect('/payment?success=true');
+                    return redirect(env('APP_FRONTEND_URL') . "/dashboard/payment?success=true");
                 }
             }
             if ($enterprise_id) {
