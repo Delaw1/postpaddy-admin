@@ -20,6 +20,10 @@ class UserController extends Controller
     {
     }
 
+    public function welcome() {
+        return view('welcome');
+    }
+
     public function EditProfile(Request $request)
     {
         // return response()->json($request->profile_img);

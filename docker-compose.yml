@@ -1,0 +1,46 @@
+version: '2'
+
+services:
+  app:
+    container_name: postpaddy
+    build:
+      context: ./
+      dockerfile: development/app.dockerfile
+    volumes:
+      - ./storage:/var/www/storage
+    env_file: '.env.prod'
+    environment:
+      - "DB_HOST=database"
+      - "REDIS_HOST=cache"
+
+# The Web Server
+  web:
+    container_name: nginx_server
+    build:
+      context: ./
+      dockerfile: development/web.dockerfile
+    volumes:
+      - ./storage/logs/:/var/log/nginx
+    ports:
+      - 8990:80
+# The Database
+  database:
+    container_name: mysql_database
+    image: mysql:5.7
+    volumes:
+      - dbdata:/var/lib/mysql
+    environment:
+      - "MYSQL_DATABASE=digisuite"
+      - "MYSQL_USER=root"
+      - "MYSQL_PASSWORD=root"
+      - "MYSQL_ROOT_PASSWORD=digisuite"
+    ports:
+      - 8991:3306
+
+  # redis
+
+  cache:
+    image: redis:3.0-alpine
+
+volumes:
+  dbdata:

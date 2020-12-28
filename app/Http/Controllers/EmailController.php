@@ -145,14 +145,14 @@ class EmailController extends Controller
             //         $html = file_get_contents(resource_path('views/emails/reminder_free.blade.php'));
             //         $html = str_replace(
             //             ['{{NAME}}', '{{PLAN}}', '{{DAYS}}', '{{PRICE}}', '{{DATE}}'],
-            //             [$user->last_name." ".$user->first_name, $user->plan->name, $user->daysLeft, $user->plan->price, Carbon::parse($user->ended_at)->format('d M')],
+            //             [$user->last_name." ".$user->last_name, $user->plan->name, $user->daysLeft, $user->plan->price, Carbon::parse($user->ended_at)->format('d M')],
             //             $html
             //         );
             //     } else {
             //         $html = file_get_contents(resource_path('views/emails/reminder.blade.php'));
             //         $html = str_replace(
             //             ['{{NAME}}', '{{PLAN}}', '{{DAYS}}', '{{PRICE}}', '{{DATE}}'],
-            //             [$user->last_name." ".$user->first_name, $user->plan->name, $user->daysLeft, $user->plan->price, Carbon::parse($user->ended_at)->format('d M')],
+            //             [$user->last_name." ".$user->last_name, $user->plan->name, $user->daysLeft, $user->plan->price, Carbon::parse($user->ended_at)->format('d M')],
             //             $html
             //         );
             //     }
@@ -167,7 +167,7 @@ class EmailController extends Controller
             //                 'To' => [
             //                     [
             //                         'Email' => $user->email,
-            //                         'Name' => $user->last_name." ".$user->first_name
+            //                         'Name' => $user->last_name." ".$user->last_name
             //                     ]
             //                 ],
             //                 'Subject' => "Subscription Reminder",
@@ -191,14 +191,14 @@ class EmailController extends Controller
                     $html = file_get_contents(resource_path('views/emails/plan_expiry_7days_free.blade.php'));
                     $html = str_replace(
                         ['{{NAME}}'],
-                        [$user->last_name." ".$user->first_name],
+                        [$user->first_name." ".$user->last_name],
                         $html
                     );
                 } else {
                     $html = file_get_contents(resource_path('views/emails/plan_expiry_7days.blade.php'));
                     $html = str_replace(
                         ['{{NAME}}', '{{PLAN}}'],
-                        [$user->last_name." ".$user->first_name, $user->plan->name],
+                        [$user->first_name." ".$user->last_name, $user->plan->name],
                         $html
                     );
                 }
@@ -213,7 +213,7 @@ class EmailController extends Controller
                             'To' => [
                                 [
                                     'Email' => $user->email,
-                                    'Name' => $user->last_name." ".$user->first_name
+                                    'Name' => $user->first_name." ".$user->last_name
                                 ]
                             ],
                             'Subject' => "Subscription Reminder",
@@ -237,14 +237,14 @@ class EmailController extends Controller
                     $html = file_get_contents(resource_path('views/emails/plan_expiry_3days_free.blade.php'));
                     $html = str_replace(
                         ['{{NAME}}'],
-                        [$user->last_name." ".$user->first_name],
+                        [$user->first_name." ".$user->last_name],
                         $html
                     );
                 } else {
                     $html = file_get_contents(resource_path('views/emails/plan_expiry_3days.blade.php'));
                     $html = str_replace(
                         ['{{NAME}}', '{{PLAN}}'],
-                        [$user->last_name." ".$user->first_name, $user->plan->name],
+                        [$user->first_name." ".$user->last_name, $user->plan->name],
                         $html
                     );
                 }
@@ -259,7 +259,7 @@ class EmailController extends Controller
                             'To' => [
                                 [
                                     'Email' => $user->email,
-                                    'Name' => $user->last_name." ".$user->first_name
+                                    'Name' => $user->first_name." ".$user->last_name
                                 ]
                             ],
                             'Subject' => "Subscription Reminder",
@@ -283,14 +283,14 @@ class EmailController extends Controller
                     $html = file_get_contents(resource_path('views/emails/plan_expiry_1day_free.blade.php'));
                     $html = str_replace(
                         ['{{NAME}}'],
-                        [$user->last_name." ".$user->first_name],
+                        [$user->first_name." ".$user->last_name],
                         $html
                     );
                 } else {
                     $html = file_get_contents(resource_path('views/emails/plan_expiry_1day.blade.php'));
                     $html = str_replace(
                         ['{{NAME}}', '{{PLAN}}'],
-                        [$user->last_name." ".$user->first_name, $user->plan->name],
+                        [$user->first_name." ".$user->last_name, $user->plan->name],
                         $html
                     );
                 }
@@ -305,7 +305,7 @@ class EmailController extends Controller
                             'To' => [
                                 [
                                     'Email' => $user->email,
-                                    'Name' => $user->last_name." ".$user->first_name
+                                    'Name' => $user->first_name." ".$user->last_name
                                 ]
                             ],
                             'Subject' => "Subscription Reminder",
@@ -329,7 +329,7 @@ class EmailController extends Controller
                     $html = file_get_contents(resource_path('views/emails/expired_free.blade.php'));
                     $html = str_replace(
                         ['{{NAME}}'],
-                        [$user->last_name." ".$user->first_name],
+                        [$user->first_name." ".$user->last_name],
                         $html
                     );
                     
@@ -343,7 +343,7 @@ class EmailController extends Controller
                                 'To' => [
                                     [
                                         'Email' => $user->email,
-                                        'Name' => $user->last_name." ".$user->first_name
+                                        'Name' => $user->first_name." ".$user->last_name
                                     ]
                                 ],
                                 'Subject' => "Subscription Expired",
@@ -364,7 +364,7 @@ class EmailController extends Controller
                     $html = file_get_contents(resource_path('views/emails/expired.blade.php'));
                     $html = str_replace(
                         ['{{NAME}}', '{{PLAN}}'],
-                        [$user->last_name." ".$user->first_name, $user->plan->name],
+                        [$user->first_name." ".$user->last_name, $user->plan->name],
                         $html
                     );
 
@@ -378,7 +378,7 @@ class EmailController extends Controller
                                 'To' => [
                                     [
                                         'Email' => $user->email,
-                                        'Name' => $user->last_name." ".$user->first_name
+                                        'Name' => $user->first_name." ".$user->last_name
                                     ]
                                 ],
                                 'Subject' => "Subscription Reminder",

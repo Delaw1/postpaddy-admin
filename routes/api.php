@@ -14,9 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'UserController@welcome');
 
 //Auth
 Route::get("/unauthorized", 'UserController@guest')->name("unauthorized");
