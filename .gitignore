@@ -5,6 +5,9 @@
 /public/storage
 /storage/*.key
 /vendor
+/development
+.env.prod
+docker-compose.yml
 .env
 .env.backup
 .phpunit.result.cache
