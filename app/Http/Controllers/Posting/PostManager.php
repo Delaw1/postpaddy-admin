@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 use \App\User;
 use \App\Utils;
 use \App\Post;
-use App\Subscription;
+use App\Notification;
 use \App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\File;
 
@@ -68,6 +68,10 @@ class PostManager extends Controller
         $reducePost = $userController->reducePost($sub, ['company_id' => $input['company_id']]);
         // $sub->posts -= 1;
         // $sub->save();
+        Notification::create([
+            'user_id' => Auth::user()->id,
+            'message' => "You just sent out a post. You can still create ".$reducePost." more posts on your ".$sub->plan->name." plan."
+        ]);
 
         if (!isset($input["schedule_date"]) || $input["schedule_date"] == NULL) {
             foreach (array_keys($input["platforms"]) as $platform) {

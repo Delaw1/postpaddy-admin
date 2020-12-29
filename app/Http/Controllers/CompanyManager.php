@@ -17,7 +17,7 @@ use \App\Http\Controllers\SocialMedia\TwitterController;
 use \App\Http\Controllers\SocialMedia\FacebookController;
 use App\Post; 
 use App\Plan;
-use App\Subscription;
+use App\Notification;
 use \App\Http\Controllers\UserController;
 
 class CompanyManager extends Controller
@@ -82,6 +82,11 @@ class CompanyManager extends Controller
         $company = Company::create($input);
         $sub->clients -= 1;
         $sub->save();
+
+        Notification::create([
+            'user_id' => $post->user_id,
+            'message' => "Your client account is now active. You can still create ".$sub->clients." more client accounts on your ".$sub->plan->name." plan."
+        ]);
 
         return response()->json(['status' => 'success', 'company' => $company]);
     }

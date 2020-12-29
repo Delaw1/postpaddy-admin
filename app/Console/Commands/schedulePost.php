@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Post;
+use App\Notification;
 use \App\Http\Controllers\Posting\PostManager;
 use \App\Http\Controllers\SocialMedia\LinkedinController;
 use \App\Http\Controllers\SocialMedia\TwitterController;
@@ -47,6 +48,7 @@ class schedulePost extends Command
 
         $posts = Post::where('schedule_date', '!=', '')->where('schedule_date', '<=', $date->timestamp*1000)->where('is_posted', 0)->get();
 
+        $acct = '';
         foreach ($posts as $post) {
             foreach (array_keys($post->platforms) as $platform) {
                 switch ($platform) {
@@ -64,6 +66,14 @@ class schedulePost extends Command
                 }
             }
             $post->update(["is_posted" => true]);
+            Notification::create([
+                'user_id' => $post->user_id,
+                'message' => "Hurray!
+
+                Your scheduled post(s) just went live.
+                To see more on your post schedule details, please visit your dashboard.
+                "
+            ]);
         }
         $this->info("Scheduled post sent");
     }

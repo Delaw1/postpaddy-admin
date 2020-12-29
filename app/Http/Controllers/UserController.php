@@ -182,6 +182,7 @@ class UserController extends Controller
         } else {
             $sub->posts -= 1;
             $sub->save();
+            return $sub->posts;
         }
         return false;
     }

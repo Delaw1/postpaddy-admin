@@ -192,7 +192,9 @@ class PaymentController extends Controller
 
                     Notification::create([
                         'user_id' => $user->id,
-                        'message' => "You've successfully subscribe to " . $plan->name . ". Subscription will expire on " . date('d, M. Y', strtotime($user->ended_at))
+                        'message' => "WooHoo! 
+                        Your subscription to the ".$plan->name." plan is now active.  You now have access to efficient social media management like you’ve never had before!
+                        "
                     ]);
 
                     Transaction::create([
@@ -241,7 +243,9 @@ class PaymentController extends Controller
 
                     Notification::create([
                         'user_id' => $user->id,
-                        'message' => "You've successfully subscribe to " . $plan->name . ". Subscription will expire on " . date('d, M. Y', strtotime($user->ended_at))
+                        'message' => "WooHoo! 
+                        Your subscription to the ".$plan->name." plan is now active.  You now have access to efficient social media management like you’ve never had before!
+                        "
                     ]);
 
                     Transaction::create([
@@ -296,7 +300,9 @@ class PaymentController extends Controller
 
                 Notification::create([
                     'user_id' => $user->id,
-                    'message' => "You've successfully subscribe to " . $plan->name . ". Subscription will expire on " . date('d, M. Y', strtotime($user->ended_at))
+                    'message' => "WooHoo! 
+                    Your subscription to the ".$plan->name." plan is now active.  You now have access to efficient social media management like you’ve never had before!
+                    "
                 ]);
 
                 Transaction::create([
