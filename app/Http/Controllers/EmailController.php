@@ -36,11 +36,29 @@ class EmailController extends Controller
     public function sendSubscriptionEmail(array $data)
     {
         $html = file_get_contents(resource_path('views/emails/subscription.blade.php'));
+        
+        if($data['plan_name'] == "Freemium") {
+            $html = file_get_contents(resource_path('views/emails/subscription_freemium.blade.php'));
+        }
+
+        if($data['plan_name'] == "Starter") {
+            $html = file_get_contents(resource_path('views/emails/subscription_starter.blade.php'));
+        }
+
+        if($data['plan_name'] == "Basic") {
+            $html = file_get_contents(resource_path('views/emails/subscription_basic.blade.php'));
+        }
+
+        if($data['plan_name'] == "Plus") {
+            $html = file_get_contents(resource_path('views/emails/subscription_plus.blade.php'));
+        }
+
         $html = str_replace(
             ['{{NAME}}', '{{PLAN}}'],
             [$data['name'], $data['plan_name']],
             $html
         );
+
         $body = [
             'Messages' => [
                 [
