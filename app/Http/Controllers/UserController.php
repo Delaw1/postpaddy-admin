@@ -265,7 +265,7 @@ class UserController extends Controller
     public function test2(Request $request)
     {
         $oClient = OClient::where('password_client', 1)->latest()->first();;
-        // $client = new Client();
+        $client = new Client();
         $body = [
             'grant_type' => 'password',
             'client_id' => $oClient->id,
@@ -288,18 +288,21 @@ class UserController extends Controller
 
         // ]);
 
-        $response = Http::asForm()->post('https://www.postpaddy.com/api/oauth/token', [
-            'grant_type' => 'password',
-                'client_id' => $oClient->id,
-                'client_secret' => $oClient->secret,
-                'username' => $request->input('email'),
-                'password' => $request->input('password'),
-                'scope' => '*'
-        ]);
+        // $response = Http::asForm()->post('https://www.postpaddy.com/api/oauth/token', [
+        //     'grant_type' => 'password',
+        //         'client_id' => $oClient->id,
+        //         'client_secret' => $oClient->secret,
+        //         'username' => $request->input('email'),
+        //         'password' => $request->input('password'),
+        //         'scope' => '*'
+        // ]);
+
+        // $response = Http::asForm()->get('https://jsonplaceholder.typicode.com/posts');
+        $response = $client->request('GET', 'https://jsonplaceholder.typicode.com/posts');
 
 
-        // $result = json_decode((string) $response->getBody(), true);
-        dd($response);
-        return response()->json($response, 200);
+        $result = json_decode((string) $response->getBody(), true);
+        // dd($response);
+        return response()->json($result, 200);
     }
 }
