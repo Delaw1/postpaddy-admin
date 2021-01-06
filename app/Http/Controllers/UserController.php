@@ -275,18 +275,18 @@ class UserController extends Controller
             'scope' => '*'
         ];
         // $response = Utils::curlPostRequest('https://www.postpaddy.com/api/oauth/token', '', $body, ['Content-Type: application/json']);
-        $response = $client->request('POST', 'https://www.postpaddy.com/api/oauth/token', [
-            'form_params' =>
-            [
-                'grant_type' => 'password',
-                'client_id' => 3,
-                'client_secret' => '1LYkAjc8uFUrLOgQwP7mAgApyXLqWdl0jJ6pPkvF',
-                'username' => 'lawrenceajayi481@gmail.com',
-                'password' => '12345678',
-                'scope' => '*'
-            ]
+        // $response = $client->request('POST', 'https://www.postpaddy.com/api/oauth/token', [
+        //     'form_params' =>
+        //     [
+        //         'grant_type' => 'password',
+        //         'client_id' => 3,
+        //         'client_secret' => '1LYkAjc8uFUrLOgQwP7mAgApyXLqWdl0jJ6pPkvF',
+        //         'username' => 'lawrenceajayi481@gmail.com',
+        //         'password' => '12345678',
+        //         'scope' => '*'
+        //     ]
 
-        ]);
+        // ]);
 
         // $response = Http::asForm()->post('https://www.postpaddy.com/api/oauth/token', [
         //     'grant_type' => 'password',
@@ -298,7 +298,13 @@ class UserController extends Controller
         // ]);
 
         // $response = Http::asForm()->get('https://jsonplaceholder.typicode.com/posts');
-        // $response = $client->request('GET', 'https://jsonplaceholder.typicode.com/posts');
+        $response = $client->request('POST', 'https://jsonplaceholder.typicode.com/posts', [
+            'form_params' =>
+            [
+                'title' => 'password'
+            ]
+
+        ]);
 
 
         $result = json_decode((string) $response->getBody(), true);
