@@ -277,8 +277,8 @@ class UserController extends Controller
             ]);
         
         
-        // $result = json_decode((string) $response->getBody(), true);
-        dd($response);
-        // return response()->json($response, 200);
+        $result = json_decode((string) $response->getBody(), true);
+        // dd($response);
+        return response()->json($result, 200);
     }
 }
