@@ -275,7 +275,7 @@ class UserController extends Controller
             'scope' => '*'
         ];
         // $response = Utils::curlPostRequest('https://www.postpaddy.com/api/oauth/token', '', $body, ['Content-Type: application/json']);
-        $response = $client->request('POST', 'http://www.postpaddy.com/api/oauth/token', [
+        $response = $client->request('POST', 'https://www.postpaddy.com/api/oauth/token', [
             'form_params' =>
             [
                 'grant_type' => 'password',
