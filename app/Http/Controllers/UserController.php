@@ -13,6 +13,8 @@ use App\Subscription;
 use App\Notification;
 use \Mailjet\Resources;
 use App\Company;
+use GuzzleHttp\Client;
+use Laravel\Passport\Client as OClient; 
 
 class UserController extends Controller
 {
@@ -258,8 +260,24 @@ class UserController extends Controller
         return response()->json($post);
     }
 
-    public function test2()
+    public function test2(Request $request)
     {
-        return response()->json(User::all());
+        $oClient = OClient::where('password_client', 1)->first();
+        $http = new Client();
+        
+            $response = $http->request('POST', 'https://www.postpaddy.com/api/oauth/token', [
+                'form_params' => [
+                    'grant_type' => 'password',
+                    'client_id' => $oClient->id,
+                    'client_secret' => $oClient->secret,
+                    'username' => $request->input('email'),
+                    'password' => $request->input('password'),
+                    'scope' => '*',
+                ],
+            ]);
+        
+        
+        $result = json_decode((string) $response->getBody(), true);
+        return response()->json($oClient , 200);
     }
 }
