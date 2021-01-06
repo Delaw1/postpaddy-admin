@@ -266,18 +266,18 @@ class UserController extends Controller
         $http = new Client();
         
             $response = $http->request('POST', 'https://www.postpaddy.com/api/oauth/token', [
-                'form_params' => [
-                    'grant_type' => 'password',
+                'body' => 
+                    ['grant_type' => 'password',
                     'client_id' => $oClient->id,
                     'client_secret' => $oClient->secret,
                     'username' => $request->input('email'),
                     'password' => $request->input('password'),
-                    'scope' => '*',
-                ],
+                    'scope' => '*']
+            
             ]);
         
         
         $result = json_decode((string) $response->getBody(), true);
-        return response()->json($request->input('email'), 200);
+        return response()->json($result, 200);
     }
 }
