@@ -290,8 +290,8 @@ class UserController extends Controller
 
         $response = Http::asForm()->post('https://www.postpaddy.com/api/oauth/token', [
             'grant_type' => 'password',
-                'client_id' => $oClient->id,
-                'client_secret' => $oClient->secret,
+                'client_id' => 4
+                'client_secret' => '$oClient->secre',
                 'username' => $request->input('email'),
                 'password' => $request->input('password'),
                 'scope' => '*'
