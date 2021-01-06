@@ -278,6 +278,6 @@ class UserController extends Controller
         
         
         // $result = json_decode((string) $response->getBody(), true);
-        return response()->json($oClient->secret, 200);
+        return response()->json($oClient->id, 200);
     }
 }
