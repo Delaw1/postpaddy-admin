@@ -279,10 +279,10 @@ class UserController extends Controller
             'form_params' =>
             [
                 'grant_type' => 'password',
-                'client_id' => $oClient->id,
-                'client_secret' => $oClient->secret,
-                'username' => $request->input('email'),
-                'password' => $request->input('password'),
+                'client_id' => 3,
+                'client_secret' => '1LYkAjc8uFUrLOgQwP7mAgApyXLqWdl0jJ6pPkvF',
+                'username' => 'lawrenceajayi481@gmail.com',
+                'password' => '12345678',
                 'scope' => '*'
             ]
 
