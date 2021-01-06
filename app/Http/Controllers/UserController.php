@@ -14,7 +14,7 @@ use App\Notification;
 use \Mailjet\Resources;
 use App\Company;
 use GuzzleHttp\Client;
-use Laravel\Passport\Client as OClient; 
+use Laravel\Passport\Client as OClient;
 
 class UserController extends Controller
 {
@@ -22,7 +22,8 @@ class UserController extends Controller
     {
     }
 
-    public function welcome() {
+    public function welcome()
+    {
         return view('welcome');
     }
 
@@ -263,22 +264,32 @@ class UserController extends Controller
     public function test2(Request $request)
     {
         $oClient = OClient::where('password_client', 1)->latest()->first();;
-        $client = new Client();
-        
-            $response = $client->request('POST', 'http://www.postpaddy.com/api/oauth/token', [
-                'form_params' => 
-                    ['grant_type' => 'password',
-                    'client_id' => $oClient->id,
-                    'client_secret' => $oClient->secret,
-                    'username' => $request->input('email'),
-                    'password' => $request->input('password'),
-                    'scope' => '*']
-            
-            ]);
-        
-        
-        $result = json_decode((string) $response->getBody(), true);
-        // dd($response);
-        return response()->json($result, 200);
+        // $client = new Client();
+        $body = [
+            'grant_type' => 'password',
+            'client_id' => $oClient->id,
+            'client_secret' => $oClient->secret,
+            'username' => $request->input('email'),
+            'password' => $request->input('password'),
+            'scope' => '*'
+        ];
+        $response = Utils::curlPostRequest('http://www.postpaddy.com/api/oauth/token', '', $body, ['Content-Type: application/json']);
+        // $response = $client->request('POST', 'http://www.postpaddy.com/api/oauth/token', [
+        //     'form_params' =>
+        //     [
+        //         'grant_type' => 'password',
+        //         'client_id' => $oClient->id,
+        //         'client_secret' => $oClient->secret,
+        //         'username' => $request->input('email'),
+        //         'password' => $request->input('password'),
+        //         'scope' => '*'
+        //     ]
+
+        // ]);
+
+
+        // $result = json_decode((string) $response->getBody(), true);
+        dd($response);
+        return response()->json($response, 200);
     }
 }
