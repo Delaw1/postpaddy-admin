@@ -266,14 +266,7 @@ class UserController extends Controller
         $http = new Client();
         
             $response = $http->request('POST', 'https://www.postpaddy.com/api/oauth/token', [
-                'form_params' => [
-                    'grant_type' => 'password',
-                    'client_id' => $oClient->id,
-                    'client_secret' => $oClient->secret,
-                    'username' => $request->input('email'),
-                    'password' => $request->input('password'),
-                    'scope' => '*',
-                ],
+                
             ]);
         
         
