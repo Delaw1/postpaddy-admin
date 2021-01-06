@@ -38,23 +38,23 @@ class LoginController extends Controller
                 $response["user_data"] = Auth::user();
                 $response['token'] = Auth::user()->createToken('myApp')->accessToken;
 
-                $oClient = OClient::where('password_client', 1)->first();
-                $http = new Client();
+                // $oClient = OClient::where('password_client', 1)->first();
+                // $http = new Client();
                 
-                    $response = $http->request('POST', 'https://www.postpaddy.com/api/oauth/token', [
-                        'form_params' => [
-                            'grant_type' => 'password',
-                            'client_id' => $oClient->id,
-                            'client_secret' => $oClient->secret,
-                            'username' => $request->input('email'),
-                            'password' => $request->input('password'),
-                            'scope' => '*',
-                        ],
-                    ]);
+                //     $response = $http->request('POST', 'https://www.postpaddy.com/api/oauth/token', [
+                //         'form_params' => [
+                //             'grant_type' => 'password',
+                //             'client_id' => $oClient->id,
+                //             'client_secret' => $oClient->secret,
+                //             'username' => $request->input('email'),
+                //             'password' => $request->input('password'),
+                //             'scope' => '*',
+                //         ],
+                //     ]);
                 
                 
-                $result = json_decode((string) $response->getBody(), true);
-                return response()->json($result, 200);
+                // $result = json_decode((string) $response->getBody(), true);
+                // return response()->json($result, 200);
 
                 return response()->json([$response]);
             }
