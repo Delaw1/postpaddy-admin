@@ -36,10 +36,28 @@ class LoginController extends Controller
             } else {
                 $response['success'] = 'Successfully logged in';
                 $response["user_data"] = Auth::user();
-                $response['token'] = Auth::user()->createToken('myApp')->accessToken;
+                // $response['token'] = Auth::user()->createToken('myApp')->accessToken;
 
                 // $oClient = OClient::where('password_client', 1)->first();
-                // $http = new Client();
+                $client = new Client();
+
+                $result = $client->request('POST', 'https://www.postpaddy.com/api/oauth/token', [
+                    'form_params' =>
+                    [
+                        'grant_type' => 'password',
+                        'client_id' => 3,
+                        'client_secret' => '1LYkAjc8uFUrLOgQwP7mAgApyXLqWdl0jJ6pPkvF',
+                        'username' => $request->input('email'),
+                        'password' => $request->input('password'),
+                        'scope' => '*'
+                    ]
+        
+                ]);
+
+                $result = json_decode((string) $result->getBody(), true);
+                
+                $response['token'] = $result['access_token'];
+                $response['refresh_token'] = $result['refresh_token'];
                 
                 //     $response = $http->request('POST', 'https://www.postpaddy.com/api/oauth/token', [
                 //         'form_params' => [
