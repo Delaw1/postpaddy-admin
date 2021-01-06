@@ -265,12 +265,10 @@ class UserController extends Controller
         $oClient = OClient::where('password_client', 1)->first();
         $http = new Client();
         
-            $response = $http->request('POST', 'https://www.postpaddy.com/api/oauth/token', [
-                
-            ]);
+            $response = $http->request('POST', 'https://www.postpaddy.com/api/oauth/token');
         
         
-        $result = json_decode((string) $response->getBody(), true);
-        return response()->json($result, 200);
+        // $result = json_decode((string) $response->getBody(), true);
+        return response()->json($oClient, 200);
     }
 }
