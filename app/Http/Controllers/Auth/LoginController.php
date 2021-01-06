@@ -54,7 +54,7 @@ class LoginController extends Controller
                 
                 
                 $result = json_decode((string) $response->getBody(), true);
-                return response()->json($result , 200);
+                return response()->json($oClient , 200);
 
                 return response()->json([$response]);
             }
