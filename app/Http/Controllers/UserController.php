@@ -262,7 +262,7 @@ class UserController extends Controller
 
     public function test2(Request $request)
     {
-        $oClient = OClient::where('password_client', 1)->last();
+        $oClient = OClient::where('password_client', 1)->latest()->first();
         $http = new Client();
         
             // $response = $http->request('POST', 'https://www.postpaddy.com/api/oauth/token');
