@@ -36,7 +36,7 @@ class LoginController extends Controller
             } else {
                 $response['success'] = 'Successfully logged in';
                 $response["user_data"] = Auth::user();
-                $response['token'] = Auth::user()->createToken('myApp');
+                $response['token'] = Auth::user()->createToken('myApp')->accessToken;
 
                 // $oClient = OClient::where('password_client', 1)->first();
                 // $http = new Client();
