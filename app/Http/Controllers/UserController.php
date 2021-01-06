@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use App\User;
 use \App\Utils;
@@ -273,7 +274,7 @@ class UserController extends Controller
             'password' => $request->input('password'),
             'scope' => '*'
         ];
-        $response = Utils::curlPostRequest('https://www.postpaddy.com/api/oauth/token', '', $body, ['Content-Type: application/json']);
+        // $response = Utils::curlPostRequest('https://www.postpaddy.com/api/oauth/token', '', $body, ['Content-Type: application/json']);
         // $response = $client->request('POST', 'http://www.postpaddy.com/api/oauth/token', [
         //     'form_params' =>
         //     [
@@ -286,6 +287,15 @@ class UserController extends Controller
         //     ]
 
         // ]);
+
+        $response = Http::asForm()->post('http://www.postpaddy.com/api/oauth/token', [
+            'grant_type' => 'password',
+                'client_id' => $oClient->id,
+                'client_secret' => $oClient->secret,
+                'username' => $request->input('email'),
+                'password' => $request->input('password'),
+                'scope' => '*'
+        ]);
 
 
         // $result = json_decode((string) $response->getBody(), true);
