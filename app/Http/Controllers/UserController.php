@@ -16,6 +16,8 @@ use \Mailjet\Resources;
 use App\Company;
 use GuzzleHttp\Client;
 use Laravel\Passport\Client as OClient;
+use Illuminate\Support\Facades\Route;
+// use Illuminate\Foundation\Application;
 
 class UserController extends Controller
 {
@@ -288,14 +290,19 @@ class UserController extends Controller
 
         // ]);
 
-        $response = Http::asForm()->post('http://3.23.161.239/api/oauth/token', [
-            'grant_type' => 'password',
-                'client_id' => $oClient->id,
-                'client_secret' => $oClient->secret,
-                'username' => $request->input('email'),
-                'password' => $request->input('password'),
-                'scope' => '*'
-        ]);
+        // $response = Http::asForm()->post('http://3.23.161.239/api/oauth/token', [
+        //     'grant_type' => 'password',
+        //         'client_id' => $oClient->id,
+        //         'client_secret' => $oClient->secret,
+        //         'username' => $request->input('email'),
+        //         'password' => $request->input('password'),
+        //         'scope' => '*'
+        // ]);
+
+        $request = Request::create('/oauth/token', 'POST', $body);
+        $response = Route::dispatch($request);
+
+        dd($response->getContent());
 
         // $response = Http::get('https://jsonplaceholder.typicode.com/posts');
         // $response = $client->request('POST', 'https://jsonplaceholder.typicode.com/posts', [
