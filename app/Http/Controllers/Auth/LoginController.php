@@ -66,6 +66,25 @@ class LoginController extends Controller
         return response()->json($response);
     }
 
+    public function refreshToken(Request $request)
+    {
+        $oClient = OClient::where('password_client', 1)->latest()->first();
+
+        $body = [
+            'grant_type' => 'refresh_token',
+            'refresh_token' => $request->refresh_token,
+            'client_id' => $oClient->id,
+            'client_secret' => $oClient->secret,
+            'scope' => '*'
+        ];
+
+        $request = Request::create('/oauth/token', 'POST', $body);
+        $result = $this->app->handle($request);
+
+        $result = json_decode($result->getContent(), true);
+
+        return response()->json($result);
+    }
     public function isLoggedIn()
     {
         if (Auth::guard('api')->check()) {
