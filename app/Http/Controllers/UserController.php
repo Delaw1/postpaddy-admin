@@ -17,12 +17,13 @@ use App\Company;
 use GuzzleHttp\Client;
 use Laravel\Passport\Client as OClient;
 use Illuminate\Support\Facades\Route;
-// use Illuminate\Foundation\Application;
+use Illuminate\Foundation\Application;
 
 class UserController extends Controller
 {
-    public function __construct()
+    public function __construct(Application $app)
     {
+        $this->app = $app;
     }
 
     public function welcome()
@@ -267,11 +268,11 @@ class UserController extends Controller
     public function test2(Request $request)
     {
         $oClient = OClient::where('password_client', 1)->latest()->first();;
-        // $client = new Client();
+        $client = new Client();
         $body = [
             'grant_type' => 'password',
-            'client_id' => 3,
-            'client_secret' => '1LYkAjc8uFUrLOgQwP7mAgApyXLqWdl0jJ6pPkvF',
+            'client_id' => $oClient->id,
+            'client_secret' => $oClient->secret,
             'username' => $request->input('email'),
             'password' => $request->input('password'),
             'scope' => '*'
@@ -300,7 +301,8 @@ class UserController extends Controller
         // ]);
 
         $request = Request::create('/oauth/token', 'POST', $body);
-        $response = Route::dispatch($request);
+        $response = $this->app->handle($request);
+        // $response = Route::dispatch($request);
 
         // dd($response->getContent());
 
