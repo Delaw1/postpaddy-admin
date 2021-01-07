@@ -10,13 +10,14 @@ use Illuminate\Support\Str;
 use App\Gs;
 use App\User;
 use GuzzleHttp\Client;
-use Laravel\Passport\Client as OClient; 
+use Laravel\Passport\Client as OClient;
+use Illuminate\Foundation\Application;
 
 class LoginController extends Controller
 {
-    public function __construct()
+    public function __construct(Application $app)
     {
-        //$this->middleware('guest')->except('logout');
+        $this->app = $app;
     }
 
     public function login(Request $request)
@@ -38,41 +39,24 @@ class LoginController extends Controller
                 $response["user_data"] = Auth::user();
                 // $response['token'] = Auth::user()->createToken('myApp')->accessToken;
 
-                // $oClient = OClient::where('password_client', 1)->first();
-                $client = new Client();
+                $oClient = OClient::where('password_client', 1)->latest()->first();
 
-                $result = $client->request('POST', 'https://www.postpaddy.com/api/oauth/token', [
-                    'form_params' =>
-                    [
-                        'grant_type' => 'password',
-                        'client_id' => 3,
-                        'client_secret' => '1LYkAjc8uFUrLOgQwP7mAgApyXLqWdl0jJ6pPkvF',
-                        'username' => $request->input('email'),
-                        'password' => $request->input('password'),
-                        'scope' => '*'
-                    ]
-        
-                ]);
+                $body = [
+                    'grant_type' => 'password',
+                    'client_id' => $oClient->id,
+                    'client_secret' => $oClient->secret,
+                    'username' => $request->input('email'),
+                    'password' => $request->input('password'),
+                    'scope' => '*'
+                ];
 
-                $result = json_decode((string) $result->getBody(), true);
-                
+                $request = Request::create('/oauth/token', 'POST', $body);
+                $result = $this->app->handle($request);
+
+                $result = json_decode($result->getContent(), true);
+
                 $response['token'] = $result['access_token'];
                 $response['refresh_token'] = $result['refresh_token'];
-                
-                //     $response = $http->request('POST', 'https://www.postpaddy.com/api/oauth/token', [
-                //         'form_params' => [
-                //             'grant_type' => 'password',
-                //             'client_id' => $oClient->id,
-                //             'client_secret' => $oClient->secret,
-                //             'username' => $request->input('email'),
-                //             'password' => $request->input('password'),
-                //             'scope' => '*',
-                //         ],
-                //     ]);
-                
-                
-                // $result = json_decode((string) $response->getBody(), true);
-                // return response()->json($result, 200);
 
                 return response()->json([$response]);
             }

@@ -282,9 +282,6 @@ class UserController extends Controller
         //     'form_params' =>
         //     [
         //         'grant_type' => 'password',
-        //         'client_id' => 3,
-        //         'client_secret' => '1LYkAjc8uFUrLOgQwP7mAgApyXLqWdl0jJ6pPkvF',
-        //         'username' => 'lawrenceajayi481@gmail.com',
         //         'password' => '12345678',
         //         'scope' => '*'
         //     ]
@@ -321,6 +318,6 @@ class UserController extends Controller
         // $kkk['token'] = $result['access_token'];
         // $kkk['refresh_token'] = $result['refresh_token'];
         // dd($response);
-        return response()->json($response->getContent(), 200);
+        return response()->json(json_decode($response->getContent()), 200);
     }
 }
