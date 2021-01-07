@@ -177,6 +177,8 @@ return [
 
         // Paystack
         Unicodeveloper\Paystack\PaystackServiceProvider::class,
+
+        // Optimus\ApiConsumer\Provider\LaravelServiceProvider::class,
     ],
 
     /*
