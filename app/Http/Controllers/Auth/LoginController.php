@@ -68,6 +68,7 @@ class LoginController extends Controller
 
     public function refreshToken(Request $request)
     {
+        $response;
         $oClient = OClient::where('password_client', 1)->latest()->first();
 
         $body = [
@@ -83,7 +84,10 @@ class LoginController extends Controller
 
         $result = json_decode($result->getContent(), true);
 
-        return response()->json($result);
+        $response['token'] = $result['access_token'];
+        $response['refresh_token'] = $result['refresh_token'];
+
+        return response()->json($response);
     }
     public function isLoggedIn()
     {
