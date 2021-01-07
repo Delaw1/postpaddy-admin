@@ -267,11 +267,11 @@ class UserController extends Controller
     public function test2(Request $request)
     {
         $oClient = OClient::where('password_client', 1)->latest()->first();;
-        $client = new Client();
+        // $client = new Client();
         $body = [
             'grant_type' => 'password',
-            'client_id' => $oClient->id,
-            'client_secret' => $oClient->secret,
+            'client_id' => 3,
+            'client_secret' => '1LYkAjc8uFUrLOgQwP7mAgApyXLqWdl0jJ6pPkvF',
             'username' => $request->input('email'),
             'password' => $request->input('password'),
             'scope' => '*'
@@ -302,7 +302,7 @@ class UserController extends Controller
         $request = Request::create('/oauth/token', 'POST', $body);
         $response = Route::dispatch($request);
 
-        dd($response->getContent());
+        // dd($response->getContent());
 
         // $response = Http::get('https://jsonplaceholder.typicode.com/posts');
         // $response = $client->request('POST', 'https://jsonplaceholder.typicode.com/posts', [
@@ -319,6 +319,6 @@ class UserController extends Controller
         // $kkk['token'] = $result['access_token'];
         // $kkk['refresh_token'] = $result['refresh_token'];
         // dd($response);
-        return response()->json($response->json(), 200);
+        return response()->json($response->getContent(), 200);
     }
 }
