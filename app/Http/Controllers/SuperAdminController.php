@@ -31,8 +31,9 @@ class SuperAdminController extends Controller
     }
 
     public function getUsers() {
-        $users = User::all();
-        return response()->json($users);
+        return response()->json(["status" => "failure", "message" => "test"]);
+        // $users = User::all();
+        // return response()->json($users);
     }
 
     public function getUser($id) {
