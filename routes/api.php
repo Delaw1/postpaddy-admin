@@ -18,6 +18,8 @@ Route::get('/', 'UserController@welcome');
 
 Route::get('/test', 'SuperAdminController@getUsers');
 
+Route::get('/users', 'SuperAdminController@getUsers');
+Route::get('/user/{id}', 'SuperAdminController@getUser');
 //Auth
 Route::get("/unauthorized", 'UserController@guest')->name("unauthorized");
 
@@ -48,8 +50,7 @@ Route::get('/facebook_callback', 'SocialMedia\FacebookController@saveAccessToken
 
 Route::group(['middleware' => 'auth:api'], function () {
     Route::post('/create_admin', 'SuperAdminController@createAdmin');
-    Route::get('/users', 'SuperAdminController@getUsers');
-    Route::get('/user/{id}', 'SuperAdminController@getUser');
+    
 
 
     Route::post('/ChangePassword', 'Auth\ResetPasswordController@ChangePassword');
