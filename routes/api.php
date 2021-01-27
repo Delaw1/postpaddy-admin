@@ -21,7 +21,7 @@ Route::get('/test', 'SuperAdminController@getUsers');
 Route::get('/users', 'SuperAdminController@getUsers');
 Route::get('/user/{id}', 'SuperAdminController@getUser');
 //Auth
-Route::get("/unauthorized", 'UserController@guest')->name("unauthorized");
+Route::post("/unauthorized", 'UserController@guest')->name("unauthorized");
 
 Route::post('/Login', 'Auth\LoginController@login');
 Route::post('/refresh_token', 'Auth\LoginController@refreshToken');
