@@ -16,7 +16,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'UserController@welcome'); 
 
-Route::get('/test', 'SuperAdminController@getUsers');
+Route::get('/test', function() {
+    return response()->json(["status" => "failure", "message" => "test"]);
+});
 
 Route::get('/users', 'SuperAdminController@getUsers');
 Route::get('/user/{id}', 'SuperAdminController@getUser');
