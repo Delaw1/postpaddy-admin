@@ -1,1 +1,1 @@
-Postslate API
+PostPaddy Admin API

@@ -30,12 +30,13 @@ class LoginController extends Controller
         /* check if user credentials is okay */
 
         if (Auth::attempt($conditions)) {
-            if (Auth::user()->email_verified_at == NULL) {
-                $response['failure'] = 'Please verify your email';
+            if (Auth::user()->role == 'user') {
+                $response['failure'] = 'Error';
             } elseif (Str::contains($request->header("Content-Type"), 'form')) {
                 return redirect($request->headers->get('origin') . "/dashboard");
             } else {
                 $response['success'] = 'Successfully logged in';
+                
                 $response["user_data"] = Auth::user();
                 // $response['token'] = Auth::user()->createToken('myApp')->accessToken;
 

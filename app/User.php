@@ -22,10 +22,14 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'first_name', 'last_name', 'email', 'password', 'status', 'category', 'business_name', 'phone', 'employees', 'image', 'plan_id', 'started_at', 'ended_at'
+        'first_name', 'last_name', 'email', 'password', 'status', 'category',
+        'business_name', 'phone', 'employees', 'image', 'plan_id', 'started_at', 'ended_at',
+        'role', 'email_verified_at'
     ];
 
     protected $appends = ['daysLeft', 'plan', 'updateprofile'];
+    // protected $appends = ['plan'];
+
 
     /**
      * The attributes that should be hidden for arrays.
@@ -48,47 +52,55 @@ class User extends Authenticatable
     public function getImageAttribute($value)
     {
         if ($value !== NULL) {
-            return env("APP_CALLBACK_BASE_URL"). "/profile/" . $value;
+            return env("APP_CALLBACK_BASE_URL") . "/profile/" . $value;
         }
         return $value;
     }
 
     public function getDaysLeftAttribute()
     {
-        $start_date = Carbon::createFromFormat('Y-m-d H:i:s', Carbon::now());
-        $end_date = Carbon::createFromFormat('Y-m-d H:i:s', $this->ended_at);
-        $different_days = $start_date->diffInDays($end_date);
+        if ($this->role == "user") {
+            $start_date = Carbon::createFromFormat('Y-m-d H:i:s', Carbon::now());
+            $end_date = Carbon::createFromFormat('Y-m-d H:i:s', $this->ended_at);
+            $different_days = $start_date->diffInDays($end_date);
 
-        $now = strtotime(Carbon::now());
-        $end = strtotime($this->ended_at);
-        if ($end >= $now) {
-            return $different_days;
+            $now = strtotime(Carbon::now());
+            $end = strtotime($this->ended_at);
+            if ($end >= $now) {
+                return $different_days;
+            }
+            if ($different_days === 0) {
+                return $different_days;
+            } else {
+                return -1 * $different_days;
+            }
+            // return 0;
         }
-        if ($different_days === 0) {
-            return $different_days;
-        } else {
-            return -1 * $different_days;
-        }
-        // return 0;
     }
 
     public function getPlanAttribute()
     {
-        $plan = Plan::find($this->plan_id);
-        return $plan;
+        if ($this->role == "user") {
+            $plan = Plan::find($this->plan_id);
+            return $plan;
+        }
     }
 
     public function getUpdateProfileAttribute()
     {
-        return $this->created_at->addDays(5);
+        if ($this->role == "user") {
+            return $this->created_at->addDays(5);
+        }
+        
     }
 
     public function AauthAcessToken()
     {
         return $this->hasMany('\App\OauthAccessToken');
-    }   
+    }
 
-    public function Plan() {
+    public function Plan()
+    {
         return $this->belongsTo('App\Plan');
     }
 }

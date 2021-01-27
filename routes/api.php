@@ -14,13 +14,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', 'UserController@welcome');
+Route::get('/', 'UserController@welcome'); 
+
+Route::get('/test', 'SuperAdminController@getUsers');
 
 //Auth
 Route::get("/unauthorized", 'UserController@guest')->name("unauthorized");
 
 Route::post('/Login', 'Auth\LoginController@login');
 Route::post('/refresh_token', 'Auth\LoginController@refreshToken');
+
+
 Route::post('/Register', 'Auth\RegisterController@register');
 Route::get('/VerifyEmail/{emailb64}', 'Auth\RegisterController@verifyEmail');
 Route::post('/PasswordReset/Request', 'Auth\ForgotPasswordController@forgot');
@@ -43,6 +47,11 @@ Route::get('/add_facebook_account', 'SocialMedia\FacebookController@addAccount')
 Route::get('/facebook_callback', 'SocialMedia\FacebookController@saveAccessToken');
 
 Route::group(['middleware' => 'auth:api'], function () {
+    Route::post('/create_admin', 'SuperAdminController@createAdmin');
+    Route::get('/users', 'SuperAdminController@getUsers');
+    Route::get('/user/{id}', 'SuperAdminController@getUser');
+
+
     Route::post('/ChangePassword', 'Auth\ResetPasswordController@ChangePassword');
     
     //Company APIs
@@ -112,7 +121,7 @@ Route::get('/payment/callback', 'PaymentController@handleGatewayCallback');
 Route::get('/payforenterprise', 'PaymentController@payforenterprise');
 
 
-Route::get('/test', 'UserController@test2');
+
 // Route::get('/test2', 'CronJobController@subscriptionReminder');
 Route::get('/sendmail', 'EmailController@sendMail');
 
